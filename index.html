@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SchemeRoute — Find the Right Scheme</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Syne:wght@600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- ── NAV ── -->
+  <header class="nav-wrap">
+    <nav class="nav-inner">
+      <a href="#" class="nav-logo">
+        <span class="logo-icon">S</span>
+        <span class="logo-text">SchemeRoute</span>
+      </a>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#explore">Explore Schemes</a></li>
+        <li><a href="#how">How It Works</a></li>
+        <li><a href="#about">About</a></li>
+      </ul>
+      <a href="#explore" class="btn-primary nav-cta">Find My Schemes</a>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+  </header>
+
+  <!-- ── HERO ── -->
+  <section class="hero" id="home">
+    <div class="hero-bg-circle"></div>
+    <div class="container hero-inner">
+      <p class="eyebrow">● A Clearer Route to Opportunity</p>
+      <h1 class="hero-heading">Find the right scheme for<br>your next big step.</h1>
+      <p class="hero-sub">Discover relevant government scheme opportunities for your business in<br>one place — without starting every search from scratch.</p>
+      <div class="hero-actions">
+        <a href="#explore" class="btn-primary">Explore schemes ↗</a>
+        <a href="#how" class="btn-ghost">How it works</a>
+      </div>
+      <p class="hero-note">Built with illustrative sample scheme data for this prototype.</p>
+    </div>
+  </section>
+
+  <!-- ── EXPLORE ── -->
+  <section class="explore-section" id="explore">
+    <div class="container">
+      <div class="explore-top">
+        <div class="explore-top-left">
+          <p class="eyebrow">Explore Opportunities</p>
+          <h2 class="section-heading">Start with what matters<br>to your business.</h2>
+        </div>
+        <p class="explore-hint">Use keywords and filters to compare sample matches across sectors,<br>stages, and locations.</p>
+      </div>
+
+      <!-- Search + Filters -->
+      <div class="filter-box">
+        <div class="search-row">
+          <span class="search-icon">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="6.5" cy="6.5" r="5" stroke="#999" stroke-width="1.5"/><path d="M11 11l3 3" stroke="#999" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </span>
+          <input class="search-input" type="text" placeholder="Search by business type, location, funding, or sector" id="search-input" />
+        </div>
+        <div class="filter-grid">
+          <div class="filter-group">
+            <label class="filter-label">Entrepreneur Stage</label>
+            <select class="filter-select" id="filter-stage">
+              <option value="">All stages</option>
+              <option value="idea">Idea stage</option>
+              <option value="startup">Startup</option>
+              <option value="growth">Growth</option>
+              <option value="established">Established</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label class="filter-label">Business Sector</label>
+            <select class="filter-select" id="filter-sector">
+              <option value="">All sectors</option>
+              <option value="agri">Agriculture</option>
+              <option value="tech">Technology</option>
+              <option value="manufacturing">Manufacturing</option>
+              <option value="services">Services</option>
+              <option value="women">Women-led</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label class="filter-label">State or Region</label>
+            <select class="filter-select" id="filter-state">
+              <option value="">All India</option>
+              <option value="assam">Assam</option>
+              <option value="karnataka">Karnataka</option>
+              <option value="maharashtra">Maharashtra</option>
+              <option value="rajasthan">Rajasthan</option>
+              <option value="up">Uttar Pradesh</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label class="filter-label">Scheme Type</label>
+            <select class="filter-select" id="filter-type">
+              <option value="">All types</option>
+              <option value="grant">Grant support</option>
+              <option value="loan">Loan support</option>
+              <option value="subsidy">Subsidy support</option>
+              <option value="incubation">Incubation support</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label class="filter-label">Eligibility</label>
+            <select class="filter-select" id="filter-eligibility">
+              <option value="">Any eligibility</option>
+              <option value="scst">SC/ST entrepreneur</option>
+              <option value="women">Women entrepreneur</option>
+              <option value="msme">MSME</option>
+              <option value="startup">Recognised startup</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label class="filter-label">Funding Range</label>
+            <select class="filter-select" id="filter-funding">
+              <option value="">Any range</option>
+              <option value="small">Up to ₹5 lakh</option>
+              <option value="medium">₹5–₹25 lakh</option>
+              <option value="large">Above ₹25 lakh</option>
+            </select>
+          </div>
+        </div>
+        <div class="filter-footer">
+          <span class="match-count" id="match-count">6 illustrative scheme matches</span>
+          <button class="reset-btn" id="reset-btn">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M12 7A5 5 0 1 1 7 2a5 5 0 0 1 3.5 1.4L12 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M12 2v3h-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Reset filters
+          </button>
+        </div>
+      </div>
+
+      <!-- Scheme Cards -->
+      <div class="cards-grid" id="cards-grid">
+
+        <div class="scheme-card" data-type="grant" data-sector="tech" data-state="" data-eligibility="startup" data-funding="medium">
+          <div class="card-top">
+            <span class="card-badge grant">Grant support</span>
+            <span class="card-scope">National</span>
+          </div>
+          <h3 class="card-title">Startup Seed Support</h3>
+          <p class="card-desc">Illustrative early-stage support route for innovation-led ventures preparing to validate an idea or build a first product.</p>
+          <div class="card-meta">
+            <div class="meta-pair">
+              <span class="meta-label">Category</span>
+              <span class="meta-val">Technology startup</span>
+            </div>
+            <div class="meta-pair">
+              <span class="meta-label">Potential Benefit</span>
+              <span class="meta-val">Up to ₹20 lakh</span>
+            </div>
+            <div class="meta-pair">
+              <span class="meta-label">Eligibility</span>
+              <span class="meta-val">Recognised startup</span>
+            </div>
+          </div>
+          <a href="#" class="card-link">View details ↗</a>
+        </div>
+
+        <div class="scheme-card" data-type="loan" data-sector="services" data-state="" data-eligibility="msme" data-funding="medium">
+          <div class="card-top">
+            <span class="card-badge loan">Loan support</span>
+            <span class="card-scope">National</span>
+          </div>
+          <h3 class="card-title">Micro Enterprise Growth Loan</h3>
+          <p class="card-desc">Illustrative credit pathway for small businesses seeking working capital, equipment support, or capacity expansion.</p>
+          <div class="card-meta">
+            <div class="meta-pair">
+              <span class="meta-label">Category</span>
+              <span class="meta-val">Micro enterprise</span>
+            </div>
+            <div class="meta-pair">
+              <span class="meta-label">Potential Benefit</span>
+              <span class="meta-val">Up to ₹10 lakh</span>
+            </div>
+            <div class="meta-pair">
+              <span class="meta-label">Eligibility</span>
+              <span class="meta-val">MSME</span>
+            </div>
+          </div>
+          <a href="#" class="card-link">View details ↗</a>
+        </div>
+
+        <div class="scheme-card" data-type="loan" data-sector="women" data-state="" data-eligibility="women" data-funding="medium">
+          <div class="card-top">
+            <span class="card-badge loan">Loan support</span>
+            <span class="card-scope">National</span>
+          </div>
+          <h3 class="card-title">Women Enterprise Catalyst</h3>
+          <p class="card-desc">Illustrative support programme for women entrepreneurs exploring finance, mentoring, and formal business growth.</p>
+          <div class="card-meta">
+            <div class="meta-pair">
+              <span class="meta-label">Category</span>
+              <span class="meta-val">Women-led enterprise</span>
+            </div>
+            <div class="meta-pair">
+              <span class="meta-label">Potential Benefit</span>
+              <span class="meta-val">Up to ₹25 lakh</span>
+            </div>
+            <div class="meta-pair">
+              <span class="meta-label">Eligibility</span>
+              <span class="meta-val">Women entrepreneur</span>
+            </div>
+          </div>
+          <a href="#" class="card-link">View details ↗</a>
+        </div>
+
+        <div class="scheme-card" data-type="subsidy" data-sector="agri" data-state="assam" data-eligibility="" data-funding="small">
+          <div class="card-top">
+            <span class="card-badge subsidy">Subsidy support</span>
+            <span class="card-scope">Assam</span>
+          </div>
+          <h3 class="card-title">Assam Agri Value Add Support</h3>
+          <p class="card-desc">Illustrative regional programme for ventures building value-added products, processing capacity, or agri-linked services.</p>
+          <div class="card-meta">
+            <div class="meta-pair">
+              <span class="meta-label">Category</span>
+              <span class="meta-val">Agri enterprise</span>
+            </div>
+            <div class="meta-pair">
+              <span class="meta-label">Potential Benefit</span>
+              <span class="meta-val">Up to ₹5 lakh</span>
+            </div>
+            <div class="meta-pair">
+              <span class="meta-label">Eligibility</span>
+              <span class="meta-val">Indian entrepreneur</span>
+            </div>
+          </div>
+          <a href="#" class="card-link">View details ↗</a>
+        </div>
+
+        <div class="scheme-card" data-type="incubation" data-sector="tech" data-state="karnataka" data-eligibility="startup" data-funding="small">
+          <div class="card-top">
+            <span class="card-badge incubation">Incubation support</span>
+            <span class="card-scope">Karnataka</span>
+          </div>
+          <h3 class="card-title">Innovation Incubation Pathway</h3>
+          <p class="card-desc">Illustrative incubation opportunity for founders looking for structured mentorship, networks, and product readiness support.</p>
+          <div class="card-meta">
+            <div class="meta-pair">
+              <span class="meta-label">Category</span>
+              <span class="meta-val">Idea-stage venture</span>
+            </div>
+            <div class="meta-pair">
+              <span class="meta-label">Potential Benefit</span>
+              <span class="meta-val">Mentoring + support</span>
+            </div>
+            <div class="meta-pair">
+              <span class="meta-label">Eligibility</span>
+              <span class="meta-val">Startup</span>
+            </div>
+          </div>
+          <a href="#" class="card-link">View details ↗</a>
+        </div>
+
+        <div class="scheme-card" data-type="subsidy" data-sector="manufacturing" data-state="maharashtra" data-eligibility="msme" data-funding="large">
+          <div class="card-top">
+            <span class="card-badge subsidy">Subsidy support</span>
+            <span class="card-scope">Maharashtra</span>
+          </div>
+          <h3 class="card-title">Manufacturing Modernisation Support</h3>
+          <p class="card-desc">Illustrative scheme route for registered enterprises considering machinery upgrades and production improvements.</p>
+          <div class="card-meta">
+            <div class="meta-pair">
+              <span class="meta-label">Category</span>
+              <span class="meta-val">Manufacturing MSME</span>
+            </div>
+            <div class="meta-pair">
+              <span class="meta-label">Potential Benefit</span>
+              <span class="meta-val">Above ₹25 lakh</span>
+            </div>
+            <div class="meta-pair">
+              <span class="meta-label">Eligibility</span>
+              <span class="meta-val">MSME</span>
+            </div>
+          </div>
+          <a href="#" class="card-link">View details ↗</a>
+        </div>
+
+      </div><!-- /cards-grid -->
+    </div>
+  </section>
+
+  <!-- ── HOW IT WORKS ── -->
+  <section class="how-section" id="how">
+    <div class="container">
+      <p class="eyebrow">How SchemeRoute Works</p>
+      <h2 class="section-heading">A more confident way to begin.</h2>
+      <div class="steps-grid">
+        <div class="step">
+          <span class="step-num">01</span>
+          <h3 class="step-title">Tell us about your business</h3>
+          <p class="step-desc">Start with your sector, business stage, location, and the kind of support you are looking for.</p>
+        </div>
+        <div class="step">
+          <span class="step-num">02</span>
+          <h3 class="step-title">Get matched with relevant schemes</h3>
+          <p class="step-desc">Use focused filters to narrow a broad universe of opportunities into practical options to compare.</p>
+        </div>
+        <div class="step">
+          <span class="step-num">03</span>
+          <h3 class="step-title">Take the next step with confidence</h3>
+          <p class="step-desc">Review the official source, check current eligibility, and prepare to move forward with a clearer shortlist.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CTA DARK ── -->
+  <section class="cta-dark" id="about">
+    <div class="container cta-inner">
+      <div class="cta-left">
+        <p class="eyebrow-light">Built for Clarity, Not Complexity</p>
+        <h2 class="cta-heading">Less time untangling information.<br>More time building what matters.</h2>
+      </div>
+      <div class="cta-right">
+        <p class="cta-body">SchemeRoute makes it easier to begin finding and comparing possible support routes, so entrepreneurs can approach official scheme research with better context.</p>
+        <p class="cta-disclaimer">SchemeRoute is an independent discovery prototype and is not affiliated with any government body.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <p class="footer-logo">SchemeRoute</p>
+        <p class="footer-tagline">A simpler starting point for entrepreneurs exploring government scheme opportunities.</p>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col-head">Navigate</p>
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#explore">Explore schemes</a></li>
+          <li><a href="#how">How it works</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col-head">Important Note</p>
+        <p class="footer-note">Scheme details are illustrative in this prototype. Always verify benefits, eligibility, documents, and application steps on official government websites.</p>
+        <a href="#" class="footer-link">Contact SchemeRoute</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ── FLOATING ASSISTANT ── -->
+  <button class="ask-btn" id="ask-btn" aria-label="Ask Assistant">
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2C5.58 2 2 5.134 2 9c0 1.907.832 3.636 2.178 4.9L3 17l3.82-1.2A8.27 8.27 0 0 0 10 16c4.42 0 8-3.134 8-7s-3.58-7-8-7z" fill="white"/></svg>
+    Ask Assistant
+  </button>
+
+  <div class="ask-panel" id="ask-panel" aria-hidden="true">
+    <div class="ask-panel-head">
+      <div class="ask-panel-title">
+        <span class="ask-dot"></span>
+        <span>SchemeRoute Assistant</span>
+      </div>
+      <button class="ask-close" id="ask-close" aria-label="Close">✕</button>
+    </div>
+    <div class="ask-messages" id="ask-messages">
+      <div class="ask-msg bot">
+        <div class="ask-bubble">Hi! I can help you find government schemes for your business. What sector are you in?</div>
+        <div class="ask-time">Just now</div>
+      </div>
+      <div class="ask-msg user">
+        <div class="ask-bubble">I run a small tailoring business in Rajasthan. I belong to an SC community.</div>
+        <div class="ask-time">Just now</div>
+      </div>
+      <div class="ask-msg bot">
+        <div class="ask-bubble">Based on your profile, you may qualify for <strong>NSFDC Micro Credit Finance</strong> — loans up to ₹1 lakh at 6% interest for SC/ST entrepreneurs. Want me to check your full eligibility?</div>
+        <div class="ask-time">Just now</div>
+      </div>
+    </div>
+    <div class="ask-input-row">
+      <input class="ask-input" id="ask-input" type="text" placeholder="Ask about schemes…" />
+      <button class="ask-send" id="ask-send" aria-label="Send">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M14 8L2 2l3 6-3 6 12-6z" fill="white"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
