@@ -31,6 +31,8 @@ const SEARCH_INDEX = [
 ];
 
 
+const API_BASE = (window.APP_CONFIG && window.APP_CONFIG.API_BASE_URL) || 'http://localhost:8000';
+
 /* ══════════════════════════════════════════════════
    1. AUTH
 ══════════════════════════════════════════════════ */
@@ -44,23 +46,22 @@ const SEARCH_INDEX = [
   const btnSI    = document.getElementById('btn-signin');
   const btnSU    = document.getElementById('btn-signup');
 
-  /* Switch between Sign In / Sign Up */
   function showForm(form) {
+    if (!formSI || !formSU) return;
     formSI.classList.remove('active');
     formSU.classList.remove('active');
     form.classList.add('active');
     clearErrors();
   }
+
   goSignup && goSignup.addEventListener('click', (e) => { e.preventDefault(); showForm(formSU); });
   goSignin && goSignin.addEventListener('click', (e) => { e.preventDefault(); showForm(formSI); });
 
-  /* Clear all error messages */
   function clearErrors() {
     document.querySelectorAll('.form-error').forEach(el => { el.textContent = ''; });
     document.querySelectorAll('.form-input').forEach(el => el.classList.remove('error'));
   }
 
-  /* Show field error */
   function setError(inputId, errId, msg) {
     const input = document.getElementById(inputId);
     const err   = document.getElementById(errId);
@@ -69,72 +70,134 @@ const SEARCH_INDEX = [
     return false;
   }
 
-  /* Validate email */
-  function isEmail(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
+  function isEmail(v) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+  }
 
-  /* Launch main app */
-  function launchApp(name) {
+  function launchApp(name, email) {
+    if (!overlay || !app) return;
     overlay.style.display = 'none';
     app.classList.remove('hidden');
-    // Update avatar and nav
-    const initials = name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
+
+    const safeName = String(name || 'Farmer User').trim();
+    const safeEmail = String(email || localStorage.getItem('user_email') || '').trim();
+    const initials = safeName.split(' ').filter(Boolean).map(w => w[0]).join('').toUpperCase().slice(0, 2) || 'FU';
     const navAvatar = document.getElementById('nav-avatar');
     if (navAvatar) navAvatar.textContent = initials;
-    MOCK_USER.name = name;
+
+    localStorage.setItem('user_email', safeEmail);
+    localStorage.setItem('user_name', safeName);
+
+    MOCK_USER.name = safeName;
+    MOCK_USER.email = safeEmail;
     MOCK_USER.initials = initials;
+
     updateProfileDisplay();
     renderDocs();
     calculateEMI();
   }
 
-  /* Sign In */
-  btnSI && btnSI.addEventListener('click', () => {
+  async function checkExistingSession() {
+    const savedName = localStorage.getItem('user_name');
+    const savedEmail = localStorage.getItem('user_email');
+
+    if (savedEmail) launchApp(savedName || 'Farmer User', savedEmail);
+  }
+
+  btnSI && btnSI.addEventListener('click', async () => {
     clearErrors();
     const email = document.getElementById('si-email').value.trim();
     const pw    = document.getElementById('si-password').value;
+
     let ok = true;
-    if (!email)          ok = setError('si-email',    'si-email-err', 'Email is required.');
-    else if (!isEmail(email)) ok = setError('si-email', 'si-email-err', 'Enter a valid email address.');
-    if (!pw)             ok = setError('si-password', 'si-pw-err',    'Password is required.');
-    else if (pw.length < 6) ok = setError('si-password', 'si-pw-err', 'Password must be at least 6 characters.');
+    if (!email) ok = setError('si-email', 'si-email-err', 'Email is required.') && ok;
+    else if (!isEmail(email)) ok = setError('si-email', 'si-email-err', 'Enter a valid email.') && ok;
+    if (!pw) ok = setError('si-password', 'si-pw-err', 'Password is required.') && ok;
     if (!ok) return;
-    const name = email.split('@')[0].split('.').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-    launchApp(name);
+
+    btnSI.textContent = 'Signing in...';
+    btnSI.disabled = true;
+
+    try {
+      const res = await fetch(`${API_BASE}/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password: pw })
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError('si-email', 'si-email-err', data.detail || 'Login failed');
+        return;
+      }
+
+      const name = data.name || email.split('@')[0];
+      launchApp(name, email);
+    } catch (err) {
+      setError('si-email', 'si-email-err', 'Cannot connect to server.');
+    } finally {
+      btnSI.textContent = 'Sign In';
+      btnSI.disabled = false;
+    }
   });
 
-  /* Sign Up */
-  btnSU && btnSU.addEventListener('click', () => {
+  btnSU && btnSU.addEventListener('click', async () => {
     clearErrors();
     const name    = document.getElementById('su-name').value.trim();
     const email   = document.getElementById('su-email').value.trim();
     const pw      = document.getElementById('su-password').value;
     const confirm = document.getElementById('su-confirm').value;
     const terms   = document.getElementById('su-terms').checked;
+
     let ok = true;
-    if (!name)          ok = setError('su-name',    'su-name-err',    'Full name is required.');
-    if (!email)         ok = setError('su-email',   'su-email-err',   'Email is required.') && ok;
-    else if (!isEmail(email)) ok = setError('su-email', 'su-email-err', 'Enter a valid email address.') && ok;
-    if (!pw)            ok = setError('su-password','su-pw-err',      'Password is required.') && ok;
-    else if (pw.length < 8) ok = setError('su-password','su-pw-err', 'Password must be at least 8 characters.') && ok;
-    if (!confirm)       ok = setError('su-confirm', 'su-confirm-err', 'Please confirm your password.') && ok;
-    else if (pw !== confirm) ok = setError('su-confirm','su-confirm-err', 'Passwords do not match.') && ok;
+    if (!name) ok = setError('su-name', 'su-name-err', 'Full name is required.') && ok;
+    if (!email) ok = setError('su-email', 'su-email-err', 'Email is required.') && ok;
+    else if (!isEmail(email)) ok = setError('su-email', 'su-email-err', 'Enter a valid email.') && ok;
+    if (!pw) ok = setError('su-password', 'su-pw-err', 'Password is required.') && ok;
+    else if (pw.length < 6) ok = setError('su-password', 'su-pw-err', 'Password must be at least 6 chars.') && ok;
+    if (!confirm) ok = setError('su-confirm', 'su-confirm-err', 'Please confirm password.') && ok;
+    else if (pw !== confirm) ok = setError('su-confirm', 'su-confirm-err', 'Passwords do not match.') && ok;
     if (!terms) {
       const err = document.getElementById('su-terms-err');
-      if (err) err.textContent = 'You must agree to the Terms of Service.';
+      if (err) err.textContent = 'You must agree to the Terms.';
       ok = false;
     }
     if (!ok) return;
-    launchApp(name);
+
+    btnSU.textContent = 'Creating account...';
+    btnSU.disabled = true;
+
+    try {
+      const res = await fetch(`${API_BASE}/register`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, password: pw })
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError('su-email', 'su-email-err', data.detail || 'Registration failed');
+        return;
+      }
+
+      launchApp(name, email);
+    } catch (err) {
+      setError('su-email', 'su-email-err', 'Cannot connect to server.');
+    } finally {
+      btnSU.textContent = 'Create Account';
+      btnSU.disabled = false;
+    }
   });
 
-  /* Enter key support */
   document.addEventListener('keydown', (e) => {
     if (e.key !== 'Enter') return;
-    if (formSI.classList.contains('active') && overlay.style.display !== 'none') btnSI.click();
-    if (formSU.classList.contains('active') && overlay.style.display !== 'none') btnSU.click();
+    if (!overlay || overlay.style.display === 'none') return;
+    if (formSI && formSI.classList.contains('active') && btnSI) btnSI.click();
+    if (formSU && formSU.classList.contains('active') && btnSU) btnSU.click();
   });
 
-  /* Password visibility toggles */
   document.querySelectorAll('.pw-toggle').forEach(btn => {
     btn.addEventListener('click', () => {
       const input = document.getElementById(btn.dataset.target);
@@ -143,6 +206,8 @@ const SEARCH_INDEX = [
       btn.style.opacity = input.type === 'text' ? '1' : '.5';
     });
   });
+
+  checkExistingSession();
 })();
 
 
@@ -287,17 +352,35 @@ function updateProfileDisplay() {
     setEditable(false);
   });
 
-  saveBtn && saveBtn.addEventListener('click', () => {
+  saveBtn && saveBtn.addEventListener('click', async () => {
+const name = document.getElementById('p-name').value;
+const email = document.getElementById('p-email').value;
+const phone = document.getElementById('p-phone').value;
+
+try {
+  const token = localStorage.getItem('token');
+  const response = await fetch(`${API_BASE}/users/me`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify({ name, email, phone })
+  });
+
+  if (response.ok) {
     updateProfileDisplay();
     setEditable(false);
-    // Brief success feedback
-    if (saveBtn) {
-      const old = saveBtn.textContent;
-      saveBtn.textContent = '✓ Saved';
-      saveBtn.style.background = '#16A34A';
-      setTimeout(() => { saveBtn.textContent = old; saveBtn.style.background = ''; }, 2000);
-    }
-  });
+
+    const old = saveBtn.textContent;
+    saveBtn.textContent = '✓ Saved';
+    saveBtn.style.background = '#16A34A';
+    setTimeout(() => { saveBtn.textContent = old; saveBtn.style.background = ''; }, 2000);
+  }
+} catch (err) {
+  alert('Failed to save profile');
+}
+});
 })();
 
 
@@ -634,4 +717,21 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   const home = document.getElementById('page-home');
   if (home) home.classList.add('active');
+});
+document.addEventListener('DOMContentLoaded', () => {
+checkExistingSession();
+// ... rest of your code
+});
+
+function logout() {
+localStorage.removeItem('token');
+localStorage.removeItem('username');
+window.location.reload();
+}
+
+// Add to nav avatar click
+document.getElementById('nav-avatar')?.addEventListener('click', () => {
+if (confirm('Logout?')) {
+  logout();
+}
 });
