@@ -1,2251 +1,562 @@
-/* ── TOKENS ── */
-:root {
-  /* Primary palette: just two colors */
-  --navy:   #21295C;
-  --copper: #BE7C4D;
-
-  /* Derived tints */
-  --navy-dark:    #181e45;
-  --navy-mid:     #2a3470;
-  --copper-light: #d49468;
-
-  /* Semantic tokens (light mode) */
-  --ink:    #21295C;
-  --ink2:   #3d4f6e;
-  --ink3:   #6b7ba0;
-  --surf:   #FFFCF9;
-  --surf2:  #F4EDE4;
-  --cream:  #F2EAE0;
-  --bord:   rgba(33,41,92,.11);
-  --bord2:  rgba(33,41,92,.06);
-  --sh:     0 2px 16px rgba(33,41,92,.10);
-  --sh2:    0 8px 32px rgba(33,41,92,.14);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --ink:   #E4EAF8;
-    --ink2:  #A8BAD4;
-    --ink3:  #6B7BA0;
-    --surf:  #141929;
-    --surf2: #1A2138;
-    --bord:  rgba(190,124,77,.12);
-    --bord2: rgba(190,124,77,.06);
-    --cream: #1A2138;
-    --sh:    0 2px 16px rgba(0,0,0,.3);
-    --sh2:   0 8px 32px rgba(0,0,0,.4);
-  }
-}
-
-:root[data-theme="dark"] {
-  --ink:   #E4EAF8;
-  --ink2:  #A8BAD4;
-  --ink3:  #6B7BA0;
-  --surf:  #141929;
-  --surf2: #1A2138;
-  --bord:  rgba(190,124,77,.12);
-  --bord2: rgba(190,124,77,.06);
-  --cream: #1A2138;
-  --sh:    0 2px 16px rgba(0,0,0,.3);
-  --sh2:   0 8px 32px rgba(0,0,0,.4);
-}
-
-/* ── RESET ── */
-*, *::before, *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-html {
-  scroll-behavior: smooth;
-}
-
-body {
-  font-family: 'Inter', system-ui, sans-serif;
-  background: var(--surf);
-  color: var(--ink);
-  font-size: 16px;
-  line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
-}
-
-img { max-width: 100%; display: block; }
-h1, h2, h3, h4 { font-family: 'Syne', sans-serif; text-wrap: balance; }
-a { color: inherit; text-decoration: none; }
-
-/* ── NAV ── */
-nav {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  background: rgba(33,41,92,.96);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(255,255,255,.07);
-  padding: 0 clamp(20px, 5vw, 64px);
-  height: 58px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-}
-
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.brand-mark {
-  width: 30px;
-  height: 30px;
-  background: var(--copper);
-  border-radius: 7px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.brand-mark svg { width: 16px; height: 16px; }
-
-.brand-name {
-  font-family: 'Syne', sans-serif;
-  font-weight: 800;
-  font-size: 1rem;
-  color: #fff;
-  letter-spacing: -0.3px;
-}
-
-.nav-links {
-  display: flex;
-  align-items: center;
-  gap: 24px;
-  list-style: none;
-}
-
-.nav-links a {
-  font-size: 0.83rem;
-  font-weight: 500;
-  color: rgba(255,255,255,.65);
-  transition: color .15s;
-}
-
-.nav-links a:hover { color: #fff; }
-
-.nav-cta { color: var(--copper) !important; }
-
-.nav-toggle {
-  display: none;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 4px;
-  flex-direction: column;
-  gap: 5px;
-}
-
-.nav-toggle span {
-  display: block;
-  width: 22px;
-  height: 2px;
-  background: rgba(255,255,255,.7);
-  border-radius: 1px;
-  transition: transform .2s, opacity .2s;
-}
-
-@media (max-width: 640px) {
-  .nav-links {
-    display: none;
-    position: absolute;
-    top: 58px;
-    left: 0; right: 0;
-    background: rgba(33,41,92,.98);
-    flex-direction: column;
-    padding: 16px 24px 20px;
-    gap: 12px;
-    border-bottom: 1px solid rgba(255,255,255,.07);
-  }
-  .nav-links.open { display: flex; }
-  .nav-toggle { display: flex; }
-}
-
-/* ── HERO ── */
-.hero {
-  background: linear-gradient(160deg, var(--navy) 0%, var(--navy-mid) 55%, #1f2e60 100%);
-  padding: clamp(60px, 10vw, 120px) clamp(20px, 5vw, 64px) 0;
-  overflow: hidden;
-  position: relative;
-}
-
-.hero::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(ellipse 60% 80% at 80% 110%, rgba(190,124,77,.25) 0%, transparent 70%),
-    radial-gradient(ellipse 40% 50% at 10% 30%, rgba(190,124,77,.06) 0%, transparent 60%);
-  pointer-events: none;
-}
-
-.hero-inner {
-  max-width: 1080px;
-  margin: 0 auto;
-  position: relative;
-  z-index: 1;
-}
-
-.hero-tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  background: rgba(255,255,255,.08);
-  border: 1px solid rgba(255,255,255,.14);
-  border-radius: 99px;
-  padding: 5px 12px 5px 8px;
-  margin-bottom: 28px;
-}
-
-.hero-tag-dot {
-  width: 7px;
-  height: 7px;
-  background: var(--copper);
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-
-.hero-tag-text {
-  font-size: 0.72rem;
-  font-weight: 600;
-  color: rgba(255,255,255,.75);
-  letter-spacing: 0.5px;
-}
-
-h1 {
-  font-size: clamp(2.4rem, 6vw, 4.2rem);
-  font-weight: 800;
-  color: #fff;
-  line-height: 1.05;
-  letter-spacing: -1.5px;
-  margin-bottom: 22px;
-  max-width: 780px;
-}
-
-h1 .accent { color: var(--copper); }
-
-.hero-sub {
-  font-size: clamp(1rem, 2vw, 1.18rem);
-  color: rgba(255,255,255,.62);
-  max-width: 520px;
-  line-height: 1.65;
-  margin-bottom: 40px;
-  font-weight: 400;
-}
-
-.hero-actions {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  flex-wrap: wrap;
-  margin-bottom: 56px;
-}
-
-/* ── BUTTONS ── */
-.btn-primary {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: var(--copper);
-  color: #fff;
-  font-family: 'Syne', sans-serif;
-  font-weight: 700;
-  font-size: 0.92rem;
-  padding: 12px 24px;
-  border-radius: 10px;
-  letter-spacing: 0.2px;
-  transition: background .15s, transform .15s;
-  border: none;
-  cursor: pointer;
-}
-
-.btn-primary:hover { background: var(--copper-light); transform: translateY(-1px); }
-
-.btn-ghost {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  color: rgba(255,255,255,.7);
-  font-size: 0.88rem;
-  font-weight: 500;
-  border: 1px solid rgba(255,255,255,.2);
-  padding: 11px 22px;
-  border-radius: 10px;
-  transition: border-color .15s, color .15s;
-  background: none;
-  cursor: pointer;
-}
-
-.btn-ghost:hover { border-color: rgba(255,255,255,.4); color: #fff; }
-
-/* ── MOCK UI ── */
-.hero-ui {
-  max-width: 860px;
-  margin: 0 auto;
-  background: #fff;
-  border-radius: 16px 16px 0 0;
-  box-shadow: 0 -4px 48px rgba(0,0,0,.35);
-  overflow: hidden;
-  color: #21295C;
-}
-
-.ui-bar {
-  background: #f0f0f2;
-  padding: 10px 16px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  border-bottom: 1px solid #e4e4e8;
-}
-
-.ui-dots { display: flex; gap: 5px; }
-
-.ui-dots span {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-}
-
-.ui-dots span:nth-child(1) { background: #ff5f57; }
-.ui-dots span:nth-child(2) { background: #febc2e; }
-.ui-dots span:nth-child(3) { background: #28c840; }
-
-.ui-url {
-  flex: 1;
-  background: #fff;
-  border-radius: 6px;
-  padding: 5px 12px;
-  font-size: 0.72rem;
-  color: #666;
-  font-family: 'Inter', monospace;
-}
-
-.ui-body {
-  display: grid;
-  grid-template-columns: 220px 1fr;
-  min-height: 480px;
-}
-
-.ui-sidebar {
-  background: var(--navy);
-  padding: 20px 16px;
-  display: flex;
-  flex-direction: column;
-}
-
-.ui-sidebar-logo {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 24px;
-}
-
-.ui-sidebar-logo-mark {
-  width: 26px;
-  height: 26px;
-  background: var(--copper);
-  border-radius: 6px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.ui-sidebar-logo-name {
-  font-family: 'Syne', sans-serif;
-  font-weight: 800;
-  font-size: 0.85rem;
-  color: #fff;
-}
-
-.ui-nav-item {
-  padding: 9px 12px;
-  border-radius: 8px;
-  font-size: 0.78rem;
-  color: rgba(255,255,255,.62);
-  margin-bottom: 4px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-weight: 500;
-  cursor: pointer;
-  border: 1px solid transparent;
-  transition: background .15s, color .15s, border-color .15s;
-  user-select: none;
-}
-
-.ui-nav-item:hover {
-  background: rgba(255,255,255,.08);
-  color: #fff;
-}
-
-.ui-nav-item.active {
-  background: rgba(255,255,255,.12);
-  color: #fff;
-  border-color: rgba(255,255,255,.1);
-  font-weight: 600;
-}
-
-.ui-nav-icon {
-  width: 20px;
-  height: 20px;
-  background: rgba(255,255,255,.12);
-  border-radius: 5px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  color: rgba(255,255,255,.7);
-  transition: background .15s, color .15s;
-}
-
-.ui-nav-item.active .ui-nav-icon {
-  background: var(--copper);
-  color: #fff;
-}
-
-.ui-main {
-  background: #F8F9FC;
-  padding: 22px 24px;
-  overflow-y: auto;
-  max-height: 560px;
-  position: relative;
-}
-
-/* Tab Panels */
-.ui-tab-panel {
-  display: none;
-  animation: tabFade .2s ease;
-}
-
-.ui-tab-panel.active {
-  display: block;
-}
-
-@keyframes tabFade {
-  from { opacity: 0; transform: translateY(4px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.ui-main-head {
-  font-family: 'Syne', sans-serif;
-  font-weight: 700;
-  font-size: 0.95rem;
-  color: var(--navy);
-  margin-bottom: 16px;
-}
-
-/* ── TAB 1: MATCHED SCHEMES (Preserved) ── */
-.ui-scheme-card {
-  background: #fff;
-  border-radius: 10px;
-  padding: 14px 16px;
-  margin-bottom: 10px;
-  border: 1px solid #e8eaf0;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-
-.ui-match-badge {
-  background: var(--navy);
-  color: #fff;
-  font-size: 0.7rem;
-  font-weight: 700;
-  padding: 3px 9px;
-  border-radius: 99px;
-  flex-shrink: 0;
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
-}
-
-.ui-match-badge.hi  { background: #1a6b3a; }
-.ui-match-badge.mid { background: var(--copper); }
-.ui-match-badge.lo  { background: var(--ink3); }
-
-.ui-scheme-info { flex: 1; min-width: 0; }
-
-.ui-scheme-name {
-  font-family: 'Syne', sans-serif;
-  font-weight: 700;
-  font-size: 0.8rem;
-  color: var(--navy);
-  margin-bottom: 3px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.ui-scheme-meta { font-size: 0.7rem; color: var(--ink3); }
-
-.ui-bar-pill {
-  height: 5px;
-  width: 80px;
-  background: #e8eaf0;
-  border-radius: 3px;
-  overflow: hidden;
-  flex-shrink: 0;
-}
-
-.ui-bar-fill { height: 100%; border-radius: 3px; }
-.ui-bar-fill.hi  { background: #1a6b3a; }
-.ui-bar-fill.mid { background: var(--copper); }
-.ui-bar-fill.lo  { background: var(--ink3); }
-
-/* ── COMMON DASHBOARD BUTTONS & UTILS ── */
-.dash-btn-primary {
-  background: var(--copper);
-  color: #fff;
-  border: none;
-  border-radius: 7px;
-  padding: 8px 16px;
-  font-family: 'Syne', sans-serif;
-  font-size: 0.78rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: background .15s, transform .1s;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-}
-
-.dash-btn-primary:hover {
-  background: var(--copper-light);
-}
-
-.dash-btn-secondary {
-  background: #fff;
-  color: var(--ink2);
-  border: 1px solid #d8dce6;
-  border-radius: 7px;
-  padding: 8px 15px;
-  font-family: 'Inter', sans-serif;
-  font-size: 0.78rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all .15s;
-}
-
-.dash-btn-secondary:hover {
-  border-color: var(--navy);
-  color: var(--navy);
-}
-
-.visually-hidden {
-  position: absolute !important;
-  width: 1px !important;
-  height: 1px !important;
-  padding: 0 !important;
-  margin: -1px !important;
-  overflow: hidden !important;
-  clip: rect(0,0,0,0) !important;
-  border: 0 !important;
-}
-
-/* ── TAB 2: MY PROFILE ── */
-.profile-header-card {
-  background: #fff;
-  border: 1px solid #e8eaf0;
-  border-radius: 10px;
-  padding: 14px 18px;
-  margin-bottom: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-}
-
-.profile-avatar-wrap {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.profile-avatar {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%);
-  color: #fff;
-  font-family: 'Syne', sans-serif;
-  font-weight: 700;
-  font-size: 0.95rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  box-shadow: 0 2px 8px rgba(33,41,92,.18);
-}
-
-.profile-meta {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-}
-
-.profile-name {
-  font-family: 'Syne', sans-serif;
-  font-weight: 700;
-  font-size: 0.95rem;
-  color: var(--navy);
-}
-
-.profile-sub {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.profile-id-badge {
-  font-size: 0.68rem;
-  background: rgba(33,41,92,.06);
-  color: var(--ink2);
-  padding: 2px 7px;
-  border-radius: 4px;
-  font-weight: 600;
-}
-
-.profile-status-badge {
-  font-size: 0.68rem;
-  background: rgba(26,107,58,.1);
-  color: #1a6b3a;
-  padding: 2px 7px;
-  border-radius: 4px;
-  font-weight: 600;
-}
-
-.profile-edit-btn {
-  background: transparent;
-  border: 1px solid var(--copper);
-  color: var(--copper);
-  border-radius: 7px;
-  padding: 6px 12px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  transition: all .15s;
-  flex-shrink: 0;
-}
-
-.profile-edit-btn:hover {
-  background: var(--copper);
-  color: #fff;
-}
-
-.profile-alert {
-  background: rgba(26,107,58,.1);
-  border: 1px solid rgba(26,107,58,.22);
-  color: #14532d;
-  padding: 9px 14px;
-  border-radius: 8px;
-  font-size: 0.78rem;
-  font-weight: 500;
-  margin-bottom: 14px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.alert-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  background: #1a6b3a;
-  color: #fff;
-  font-size: 0.65rem;
-  font-weight: bold;
-}
-
-.dash-card {
-  background: #fff;
-  border: 1px solid #e8eaf0;
-  border-radius: 10px;
-  padding: 16px 18px;
-  margin-bottom: 12px;
-}
-
-.dash-card-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-bottom: 8px;
-  margin-bottom: 12px;
-  border-bottom: 1px solid #f0f2f7;
-}
-
-.dash-card-title {
-  font-family: 'Syne', sans-serif;
-  font-weight: 700;
-  font-size: 0.84rem;
-  color: var(--navy);
-}
-
-.dash-card-tag {
-  font-size: 0.66rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.4px;
-  color: var(--ink3);
-}
-
-.dash-card-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 12px 16px;
-}
-
-.dash-field {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.dash-label {
-  font-size: 0.68rem;
-  font-weight: 600;
-  color: var(--ink3);
-  text-transform: uppercase;
-  letter-spacing: 0.3px;
-}
-
-.field-val {
-  font-size: 0.82rem;
-  color: var(--ink);
-  font-weight: 500;
-  min-height: 26px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.badge-mini-verified {
-  font-size: 0.62rem;
-  background: #1a6b3a;
-  color: #fff;
-  padding: 1px 6px;
-  border-radius: 3px;
-  font-weight: 600;
-}
-
-.dash-input {
-  border: 1px solid #d8dce6;
-  border-radius: 6px;
-  padding: 6px 10px;
-  font-size: 0.8rem;
-  font-family: 'Inter', sans-serif;
-  background: #fafbfe;
-  color: var(--ink);
-  outline: none;
-  transition: border-color .15s, background .15s;
-  width: 100%;
-}
-
-.dash-input:focus {
-  border-color: var(--copper);
-  background: #fff;
-}
-
-/* Edit / View Mode Visibility */
-.profile-view-mode .edit-only {
-  display: none !important;
-}
-
-.profile-edit-mode .field-val {
-  display: none !important;
-}
-
-.profile-edit-mode .edit-only {
-  display: block;
-}
-
-.profile-edit-mode .profile-actions-bar {
-  display: flex;
-}
-
-.profile-actions-bar {
-  display: flex;
-  gap: 10px;
-  margin-top: 14px;
-  justify-content: flex-end;
-}
-
-/* ── TAB 3: FINANCIAL CALC ── */
-.ui-calc-sub {
-  font-size: 0.76rem;
-  color: var(--ink3);
-  margin-top: -10px;
-  margin-bottom: 16px;
-  line-height: 1.5;
-}
-
-.calc-grid {
-  display: grid;
-  grid-template-columns: 1.15fr 1fr;
-  gap: 16px;
-  align-items: start;
-}
-
-.calc-inputs-card {
-  background: #fff;
-  border: 1px solid #e8eaf0;
-  border-radius: 10px;
-  padding: 16px 18px;
-}
-
-.calc-field {
-  margin-bottom: 16px;
-}
-
-.calc-field:last-child {
-  margin-bottom: 0;
-}
-
-.calc-field-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  margin-bottom: 8px;
-}
-
-.calc-label {
-  font-size: 0.74rem;
-  font-weight: 600;
-  color: var(--navy);
-}
-
-.calc-field-display {
-  font-family: 'Syne', sans-serif;
-  font-weight: 700;
-  font-size: 0.86rem;
-  color: var(--copper);
-}
-
-.calc-range {
-  width: 100%;
-  height: 5px;
-  accent-color: var(--copper);
-  cursor: pointer;
-  display: block;
-}
-
-.calc-quick-pills {
-  display: flex;
-  gap: 6px;
-  margin-top: 8px;
-  flex-wrap: wrap;
-}
-
-.calc-pill {
-  background: rgba(33,41,92,.05);
-  border: 1px solid #e4e7ee;
-  border-radius: 20px;
-  padding: 3px 9px;
-  font-size: 0.68rem;
-  font-weight: 600;
-  color: var(--ink2);
-  cursor: pointer;
-  transition: all .15s;
-}
-
-.calc-pill:hover,
-.calc-pill.active {
-  background: var(--navy);
-  color: #fff;
-  border-color: var(--navy);
-}
-
-.calc-ticks {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.64rem;
-  color: var(--ink3);
-  margin-top: 4px;
-}
-
-.calc-helper {
-  font-size: 0.68rem;
-  color: var(--ink3);
-  margin-top: 5px;
-  line-height: 1.35;
-}
-
-.calc-results-card {
-  background: #fff;
-  border: 1px solid #e8eaf0;
-  border-radius: 10px;
-  padding: 16px 18px;
-}
-
-.calc-result-hero {
-  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%);
-  border-radius: 8px;
-  padding: 14px 16px;
-  color: #fff;
-  text-align: center;
-  margin-bottom: 14px;
-}
-
-.calc-hero-label {
-  font-size: 0.68rem;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  color: rgba(255,255,255,.7);
-}
-
-.calc-hero-val {
-  font-family: 'Syne', sans-serif;
-  font-weight: 800;
-  font-size: 1.7rem;
-  color: var(--copper-light);
-  margin: 3px 0;
-  font-variant-numeric: tabular-nums;
-}
-
-.calc-hero-note {
-  font-size: 0.68rem;
-  color: rgba(255,255,255,.6);
-}
-
-.calc-breakdown-list {
-  display: flex;
-  flex-direction: column;
-  gap: 7px;
-  margin-bottom: 12px;
-}
-
-.calc-breakdown-row {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.76rem;
-  padding: 4px 0;
-  border-bottom: 1px solid #f2f4f8;
-}
-
-.calc-row-lbl {
-  color: var(--ink2);
-}
-
-.calc-row-val {
-  font-weight: 600;
-  color: var(--navy);
-  font-variant-numeric: tabular-nums;
-}
-
-.calc-row-val.accent-row {
-  color: var(--copper);
-}
-
-.calc-breakdown-row.total-row {
-  border-bottom: none;
-  padding-top: 8px;
-  border-top: 1.5px dashed #d8dce6;
-  font-size: 0.82rem;
-}
-
-.calc-breakdown-row.total-row .calc-row-lbl {
-  font-weight: 700;
-  color: var(--navy);
-}
-
-.calc-breakdown-row.total-row .calc-row-val {
-  font-family: 'Syne', sans-serif;
-  font-weight: 800;
-  font-size: 0.94rem;
-  color: var(--navy);
-}
-
-.calc-tip-box {
-  background: var(--surf2);
-  border: 1px solid rgba(190,124,77,.2);
-  border-radius: 7px;
-  padding: 10px 12px;
-}
-
-.calc-tip-title {
-  font-size: 0.68rem;
-  font-weight: 700;
-  color: var(--copper);
-  text-transform: uppercase;
-  letter-spacing: 0.4px;
-  margin-bottom: 3px;
-}
-
-.calc-tip-desc {
-  font-size: 0.72rem;
-  color: var(--ink2);
-  line-height: 1.4;
-}
-
-/* ── TAB 4: DOCUMENTS ── */
-.docs-summary-bar {
-  background: #fff;
-  border: 1px solid #e8eaf0;
-  border-radius: 10px;
-  padding: 12px 16px;
-  margin-bottom: 14px;
-}
-
-.docs-summary-info {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 8px;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-
-.docs-stat-title {
-  font-family: 'Syne', sans-serif;
-  font-weight: 700;
-  font-size: 0.85rem;
-  color: var(--navy);
-}
-
-.docs-stat-sub {
-  font-size: 0.72rem;
-  color: var(--ink3);
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.docs-missing-tag {
-  background: rgba(190,124,77,.12);
-  color: var(--copper);
-  font-weight: 700;
-  padding: 2px 6px;
-  border-radius: 4px;
-}
-
-.docs-prog-bar {
-  height: 6px;
-  background: #eef1f6;
-  border-radius: 3px;
-  overflow: hidden;
-}
-
-.docs-prog-fill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--copper), #1a6b3a);
-  border-radius: 3px;
-  transition: width .3s ease;
-}
-
-.docs-upload-zone {
-  border: 1.5px dashed #cbd2e1;
-  border-radius: 10px;
-  background: #fafbfe;
-  padding: 16px;
-  text-align: center;
-  margin-bottom: 14px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  transition: border-color .15s, background .15s;
-}
-
-.docs-upload-zone.dragover {
-  border-color: var(--copper);
-  background: rgba(190,124,77,.05);
-}
-
-.upload-icon-circle {
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  background: rgba(33,41,92,.07);
-  color: var(--navy);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.upload-headline {
-  font-size: 0.82rem;
-  font-weight: 600;
-  color: var(--navy);
-}
-
-.upload-subtext {
-  font-size: 0.7rem;
-  color: var(--ink3);
-}
-
-.upload-actions {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin-top: 4px;
-}
-
-.upload-doc-select {
-  border: 1px solid #d8dce6;
-  border-radius: 6px;
-  padding: 6px 10px;
-  font-size: 0.74rem;
-  color: var(--ink);
-  background: #fff;
-  outline: none;
-}
-
-.upload-btn-label {
-  cursor: pointer;
-  margin: 0;
-}
-
-.doc-upload-feedback {
-  padding: 8px 12px;
-  border-radius: 6px;
-  font-size: 0.75rem;
-  margin-bottom: 12px;
-  animation: tabFade .2s ease;
-}
-
-.doc-upload-feedback.success {
-  background: rgba(26,107,58,.1);
-  color: #14532d;
-  border: 1px solid rgba(26,107,58,.2);
-}
-
-.docs-list {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.doc-item {
-  background: #fff;
-  border: 1px solid #e8eaf0;
-  border-radius: 10px;
-  padding: 11px 14px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  transition: border-color .15s;
-}
-
-.doc-item.missing-item {
-  border-left: 3px solid #dc3545;
-}
-
-.doc-icon-wrap {
-  width: 32px;
-  height: 32px;
-  border-radius: 7px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.doc-icon-wrap.verified {
-  background: rgba(26,107,58,.1);
-  color: #1a6b3a;
-}
-
-.doc-icon-wrap.review {
-  background: rgba(190,124,77,.12);
-  color: var(--copper);
-}
-
-.doc-icon-wrap.missing {
-  background: rgba(220,53,69,.08);
-  color: #dc3545;
-}
-
-.doc-info {
-  flex: 1;
-  min-width: 0;
-}
-
-.doc-name {
-  font-family: 'Syne', sans-serif;
-  font-weight: 700;
-  font-size: 0.8rem;
-  color: var(--navy);
-  margin-bottom: 2px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.doc-details {
-  font-size: 0.68rem;
-  color: var(--ink3);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.doc-status-col {
-  flex-shrink: 0;
-}
-
-.doc-badge {
-  font-size: 0.66rem;
-  font-weight: 700;
-  padding: 3px 8px;
-  border-radius: 99px;
-  white-space: nowrap;
-}
-
-.doc-badge.verified {
-  background: rgba(26,107,58,.12);
-  color: #1a6b3a;
-}
-
-.doc-badge.review {
-  background: rgba(190,124,77,.14);
-  color: var(--copper);
-}
-
-.doc-badge.missing {
-  background: rgba(220,53,69,.12);
-  color: #c53030;
-}
-
-.doc-actions-col {
-  flex-shrink: 0;
-}
-
-.doc-btn-view {
-  background: rgba(33,41,92,.06);
-  border: none;
-  border-radius: 6px;
-  padding: 5px 12px;
-  font-size: 0.72rem;
-  font-weight: 600;
-  color: var(--navy);
-  cursor: pointer;
-  transition: all .15s;
-}
-
-.doc-btn-view:hover {
-  background: var(--navy);
-  color: #fff;
-}
-
-.doc-btn-upload-trigger {
-  background: var(--copper);
-  border: none;
-  border-radius: 6px;
-  padding: 5px 12px;
-  font-size: 0.72rem;
-  font-weight: 600;
-  color: #fff;
-  cursor: pointer;
-  transition: background .15s;
-}
-
-.doc-btn-upload-trigger:hover {
-  background: var(--copper-light);
-}
-
-/* Document Preview Modal */
-.doc-modal-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(10,15,34,.6);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  z-index: 300;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 16px;
-  animation: tabFade .18s ease;
-}
-
-.doc-modal {
-  background: #fff;
-  border-radius: 12px;
-  width: 380px;
-  max-width: 100%;
-  box-shadow: 0 16px 48px rgba(0,0,0,.25);
-  overflow: hidden;
-}
-
-.doc-modal-header {
-  background: var(--navy);
-  padding: 12px 18px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  color: #fff;
-}
-
-.doc-modal-title {
-  font-family: 'Syne', sans-serif;
-  font-weight: 700;
-  font-size: 0.88rem;
-}
-
-.doc-modal-close {
-  background: none;
-  border: none;
-  color: rgba(255,255,255,.7);
-  font-size: 1.4rem;
-  cursor: pointer;
-  line-height: 1;
-  padding: 0;
-}
-
-.doc-modal-close:hover {
-  color: #fff;
-}
-
-.doc-modal-body {
-  padding: 18px;
-}
-
-.doc-preview-box {
-  background: var(--surf2);
-  border-radius: 8px;
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  color: var(--navy);
-  margin-bottom: 14px;
-}
-
-.doc-preview-filename {
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: var(--navy);
-  word-break: break-all;
-}
-
-.doc-modal-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.modal-detail-row {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.74rem;
-  border-bottom: 1px solid #f0f2f7;
-  padding-bottom: 6px;
-}
-
-.modal-detail-row:last-child {
-  border-bottom: none;
-  padding-bottom: 0;
-}
-
-.md-lbl {
-  color: var(--ink3);
-  font-weight: 500;
-}
-
-.md-val {
-  color: var(--navy);
-  font-weight: 600;
-}
-
-.doc-modal-footer {
-  padding: 12px 18px;
-  display: flex;
-  justify-content: flex-end;
-  background: #fafbfe;
-  border-top: 1px solid #f0f2f7;
-}
-
-/* ── TAB 5: AI ADVISOR ── */
-.advisor-head {
-  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%);
-  border-radius: 10px 10px 0 0;
-  padding: 12px 16px;
-  color: #fff;
-}
-
-.advisor-head-info {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.advisor-avatar {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: var(--copper);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.advisor-title {
-  font-family: 'Syne', sans-serif;
-  font-weight: 700;
-  font-size: 0.86rem;
-  color: #fff;
-}
-
-.advisor-status {
-  font-size: 0.68rem;
-  color: rgba(255,255,255,.65);
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.advisor-status-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #4cd964;
-}
-
-.advisor-prompts-bar {
-  background: #fff;
-  border-left: 1px solid #e8eaf0;
-  border-right: 1px solid #e8eaf0;
-  border-bottom: 1px solid #eef1f6;
-  padding: 8px 14px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  overflow-x: auto;
-  scrollbar-width: none;
-}
-
-.advisor-prompts-bar::-webkit-scrollbar {
-  display: none;
-}
-
-.prompts-label {
-  font-size: 0.66rem;
-  font-weight: 700;
-  color: var(--ink3);
-  text-transform: uppercase;
-  letter-spacing: 0.3px;
-  white-space: nowrap;
-}
-
-.prompts-chips {
-  display: flex;
-  gap: 6px;
-  white-space: nowrap;
-}
-
-.prompt-chip {
-  background: var(--surf2);
-  border: 1px solid rgba(190,124,77,.2);
-  border-radius: 20px;
-  padding: 3px 10px;
-  font-size: 0.68rem;
-  font-weight: 500;
-  color: var(--ink);
-  cursor: pointer;
-  transition: all .15s;
-  white-space: nowrap;
-}
-
-.prompt-chip:hover {
-  background: var(--copper);
-  color: #fff;
-  border-color: var(--copper);
-}
-
-.advisor-chat-window {
-  background: #fff;
-  border-left: 1px solid #e8eaf0;
-  border-right: 1px solid #e8eaf0;
-  height: 250px;
-  overflow-y: auto;
-  padding: 14px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.advisor-chat-window .chat-msg.bot .chat-bubble {
-  background: var(--surf2);
-  color: var(--navy);
-  border-bottom-left-radius: 4px;
-}
-
-.advisor-chat-window .chat-msg.user .chat-bubble {
-  background: var(--navy);
-  color: #fff;
-  border-bottom-right-radius: 4px;
-}
-
-.advisor-chat-window .chat-bubble strong {
-  color: var(--copper);
-}
-
-.advisor-chat-window .chat-msg.user .chat-bubble strong {
-  color: rgba(255,255,255,.9);
-}
-
-.advisor-chat-window .chat-time {
-  font-size: 0.68rem;
-  color: var(--ink3);
-  opacity: .7;
-  padding: 0 4px;
-}
-
-.advisor-input-row {
-  background: #fff;
-  border: 1px solid #e8eaf0;
-  border-top: 1px solid #eef1f6;
-  border-radius: 0 0 10px 10px;
-  padding: 10px 12px;
-  display: flex;
-  gap: 8px;
-}
-
-.advisor-input {
-  flex: 1;
-  border: 1px solid #d8dce6;
-  border-radius: 8px;
-  padding: 8px 12px;
-  font-size: 0.78rem;
-  font-family: 'Inter', sans-serif;
-  background: #fafbfe;
-  color: var(--ink);
-  outline: none;
-  transition: border-color .15s, background .15s;
-}
-
-.advisor-input:focus {
-  border-color: var(--copper);
-  background: #fff;
-}
-
-.advisor-send-btn {
-  width: 34px;
-  height: 34px;
-  border-radius: 8px;
-  background: var(--copper);
-  border: none;
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: background .15s;
-  flex-shrink: 0;
-}
-
-.advisor-send-btn:hover {
-  background: var(--copper-light);
-}
-
-/* ── RESPONSIVE DASHBOARD ── */
-@media (max-width: 760px) {
-  .calc-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 680px) {
-  .ui-body {
-    grid-template-columns: 1fr;
-    min-height: auto;
-  }
-  .ui-sidebar {
-    padding: 10px 14px;
-    flex-direction: row;
-    overflow-x: auto;
-    gap: 6px;
-    white-space: nowrap;
-    border-bottom: 1px solid rgba(255,255,255,.08);
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-  }
-  .ui-sidebar::-webkit-scrollbar {
-    display: none;
-  }
-  .ui-sidebar-logo {
-    display: none;
-  }
-  .ui-nav-item {
-    margin-bottom: 0;
-    flex-shrink: 0;
-    padding: 6px 11px;
-    font-size: 0.74rem;
-  }
-  .ui-main {
-    padding: 16px;
-    max-height: none;
-  }
-  .dash-card-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* ── SHARED SECTION ── */
-.sec {
-  padding: clamp(56px, 8vw, 100px) clamp(20px, 5vw, 64px);
-}
-
-.sec-inner { max-width: 1080px; margin: 0 auto; }
-
-.eyebrow {
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 1.8px;
-  text-transform: uppercase;
-  color: var(--copper);
-  margin-bottom: 10px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.eyebrow::before {
-  content: '';
-  display: inline-block;
-  width: 20px;
-  height: 2px;
-  background: var(--copper);
-  border-radius: 1px;
-  flex-shrink: 0;
-}
-
-h2 {
-  font-size: clamp(1.7rem, 3.5vw, 2.6rem);
-  font-weight: 800;
-  color: var(--ink);
-  letter-spacing: -0.8px;
-  margin-bottom: 14px;
-}
-
-.lead {
-  font-size: 1.05rem;
-  color: var(--ink2);
-  max-width: 600px;
-  line-height: 1.7;
-}
-
-/* ── HOW IT WORKS ── */
-.how { background: var(--surf); }
-
-.steps {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0;
-  margin-top: 56px;
-  position: relative;
-}
-
-.steps::before {
-  content: '';
-  position: absolute;
-  top: 28px;
-  left: calc(16.66% + 28px);
-  right: calc(16.66% + 28px);
-  height: 2px;
-  background: linear-gradient(90deg, var(--copper), rgba(190,124,77,.3));
-}
-
-.step { padding: 0 24px 40px; text-align: center; position: relative; }
-
-.step-circle {
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  background: var(--navy);
-  color: #fff;
-  font-family: 'Syne', sans-serif;
-  font-weight: 800;
-  font-size: 1.1rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 20px;
-  position: relative;
-  z-index: 1;
-  flex-shrink: 0;
-}
-
-.step:nth-child(2) .step-circle { background: var(--copper); }
-
-.step-title {
-  font-family: 'Syne', sans-serif;
-  font-weight: 700;
-  font-size: 1rem;
-  color: var(--ink);
-  margin-bottom: 8px;
-}
-
-.step-desc { font-size: 0.87rem; color: var(--ink2); line-height: 1.65; }
-
-@media (max-width: 640px) {
-  .steps { grid-template-columns: 1fr; }
-  .steps::before { display: none; }
-  .step { text-align: left; display: flex; gap: 20px; padding: 0 0 28px; align-items: flex-start; }
-  .step-circle { margin: 0; }
-}
-
-/* ── FEATURES ── */
-.features { background: var(--cream); }
-
-.feat-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 2px;
-  margin-top: 52px;
-  border-radius: 18px;
-  overflow: hidden;
-  border: 1px solid var(--bord);
-}
-
-.feat {
-  background: var(--surf);
-  padding: 32px 28px;
-  transition: background .2s;
-}
-
-.feat-grid .feat:nth-child(odd) { background: var(--surf2); }
-
-.feat-icon-wrap {
-  width: 46px;
-  height: 46px;
-  border-radius: 12px;
-  background: rgba(33,41,92,.07);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.25rem;
-  margin-bottom: 16px;
-}
-
-.feat-title {
-  font-family: 'Syne', sans-serif;
-  font-weight: 700;
-  font-size: 1rem;
-  color: var(--ink);
-  margin-bottom: 8px;
-}
-
-.feat-body { font-size: 0.87rem; color: var(--ink2); line-height: 1.7; }
-
-@media (max-width: 640px) {
-  .feat-grid { grid-template-columns: 1fr; }
-}
-
-/* ── TECH ── */
-.tech { background: var(--navy); }
-.tech h2 { color: #fff; }
-.tech .lead { color: rgba(255,255,255,.6); margin-bottom: 0; }
-.tech .eyebrow { color: var(--copper); }
-
-.tech-layout {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 64px;
-  margin-top: 48px;
-}
-
-.tech-stack-title {
-  font-family: 'Syne', sans-serif;
-  font-weight: 700;
-  font-size: 0.88rem;
-  color: var(--copper);
-  letter-spacing: 0.3px;
-  margin-bottom: 16px;
-}
-
-.stack-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 11px 0;
-  border-bottom: 1px solid rgba(255,255,255,.07);
-  font-size: 0.88rem;
-}
-
-.stack-row:last-child { border-bottom: none; }
-.stack-layer { color: rgba(190,124,77,.7); font-weight: 500; }
-.stack-val   { color: rgba(255,255,255,.85); text-align: right; }
-
-.layer-chips {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 10px;
-  margin-top: 32px;
-}
-
-.layer-chip {
-  background: rgba(255,255,255,.05);
-  border: 1px solid rgba(255,255,255,.1);
-  border-radius: 12px;
-  padding: 16px 14px;
-}
-
-.layer-chip-label {
-  font-size: 0.65rem;
-  font-weight: 700;
-  letter-spacing: 1.2px;
-  text-transform: uppercase;
-  color: var(--copper);
-  margin-bottom: 5px;
-}
-
-.layer-chip-name {
-  font-family: 'Syne', sans-serif;
-  font-weight: 700;
-  font-size: 0.88rem;
-  color: #fff;
-  margin-bottom: 4px;
-}
-
-.layer-chip-desc { font-size: 0.75rem; color: rgba(255,255,255,.45); line-height: 1.5; }
-
-.pipeline { list-style: none; }
-
-.pipeline li {
-  display: flex;
-  gap: 14px;
-  align-items: flex-start;
-  padding: 11px 0;
-  border-bottom: 1px solid rgba(255,255,255,.06);
-}
-
-.pipeline li:last-child { border-bottom: none; }
-
-.pipe-n {
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  background: var(--copper);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.65rem;
-  font-weight: 800;
-  color: #fff;
-  flex-shrink: 0;
-  margin-top: 2px;
-  font-variant-numeric: tabular-nums;
-}
-
-.pipe-text { font-size: 0.85rem; color: rgba(255,255,255,.72); line-height: 1.5; }
-.pipe-text strong { color: #fff; font-weight: 600; }
-
-@media (max-width: 700px) {
-  .tech-layout { grid-template-columns: 1fr; gap: 40px; }
-  .layer-chips  { grid-template-columns: 1fr; }
-}
-
-/* ── STATS ── */
-.stats { background: var(--navy-dark); }
-.stats h2   { color: #fff; }
-.stats .lead { color: rgba(255,255,255,.55); }
-.stats .eyebrow { color: var(--copper); }
-
-.stat-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
-  margin-top: 48px;
-}
-
-.stat-box {
-  background: rgba(255,255,255,.06);
-  border: 1px solid rgba(190,124,77,.2);
-  border-radius: 14px;
-  padding: 24px 18px;
-}
-
-.stat-num {
-  font-family: 'Syne', sans-serif;
-  font-size: clamp(1.5rem, 3vw, 2.1rem);
-  font-weight: 800;
-  color: var(--copper);
-  line-height: 1.1;
-  font-variant-numeric: tabular-nums;
-  margin-bottom: 7px;
-}
-
-.stat-lbl  { font-size: 0.78rem; color: rgba(255,255,255,.5); line-height: 1.45; }
-.stat-source {
-  margin-top: 24px;
-  font-size: 0.75rem;
-  color: rgba(255,255,255,.35);
-  font-style: italic;
-}
-
-@media (max-width: 640px) {
-  .stat-grid { grid-template-columns: 1fr 1fr; }
-}
-
-/* ── COMPARE ── */
-.compare { background: var(--surf); }
-
-.compare-table-wrap {
-  margin-top: 48px;
-  overflow-x: auto;
-  border-radius: 16px;
-  border: 1px solid var(--bord);
-}
-
-.compare-table {
-  width: 100%;
-  border-collapse: collapse;
-  min-width: 520px;
-}
-
-.compare-table thead th {
-  padding: 14px 22px;
-  font-family: 'Syne', sans-serif;
-  font-weight: 700;
-  font-size: 0.85rem;
-  text-align: left;
-}
-
-.compare-table thead th:first-child {
-  background: rgba(33,41,92,.05);
-  color: var(--ink2);
-  width: 50%;
-}
-
-.compare-table thead th:last-child {
-  background: var(--navy);
-  color: #fff;
-}
-
-.compare-table tbody td {
-  padding: 13px 22px;
-  font-size: 0.9rem;
-  border-bottom: 1px solid var(--bord2);
-  vertical-align: top;
-  line-height: 1.55;
-}
-
-.compare-table tbody tr:last-child td { border-bottom: none; }
-.compare-table tbody td:first-child  { color: var(--ink2); background: rgba(33,41,92,.02); }
-.compare-table tbody td:last-child   { color: var(--ink); font-weight: 500; background: rgba(33,41,92,.01); }
-
-.tick {
-  display: inline-block;
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  background: var(--copper);
-  color: #fff;
-  font-size: 0.65rem;
-  font-weight: 700;
-  text-align: center;
-  line-height: 18px;
-  margin-right: 8px;
-  vertical-align: middle;
-}
-
-/* ── CTA ── */
-.cta {
-  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%);
-  padding: clamp(64px, 10vw, 120px) clamp(20px, 5vw, 64px);
-  text-align: center;
-}
-
-.cta h2    { color: #fff; margin-bottom: 14px; font-size: clamp(2rem, 5vw, 3rem); }
-.cta .lead { color: rgba(255,255,255,.6); margin: 0 auto 40px; text-align: center; max-width: 480px; }
-
-.cta-actions {
-  display: flex;
-  gap: 14px;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-
-/* ── FOOTER ── */
-footer {
-  background: #0a0f22;
-  padding: 32px clamp(20px, 5vw, 64px);
-  border-top: 1px solid rgba(255,255,255,.06);
-}
-
-.footer-inner {
-  max-width: 1080px;
-  margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 16px;
-}
-
-.footer-brand-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 4px;
-}
-
-.footer-brand-mark {
-  width: 22px;
-  height: 22px;
-  background: var(--copper);
-  border-radius: 5px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.footer-brand-name {
-  font-family: 'Syne', sans-serif;
-  font-weight: 800;
-  font-size: 0.9rem;
-  color: #fff;
-}
-
-.footer-tagline { font-size: 0.75rem; color: rgba(255,255,255,.3); }
-.footer-right   { font-size: 0.75rem; color: rgba(255,255,255,.3); text-align: right; }
-
-@media (max-width: 500px) { .footer-right { text-align: left; } }
-
-/* ── CHATBOT ── */
-.chatbot-btn {
-  position: fixed;
-  bottom: 28px;
-  right: 28px;
-  z-index: 200;
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  background: var(--copper);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  box-shadow: 0 4px 20px rgba(190,124,77,.5);
-  transition: transform .2s, background .15s;
-  user-select: none;
-}
-
-.chatbot-btn:hover { transform: scale(1.06); background: var(--copper-light); }
-
-.chat-icon-close { display: none; }
-
-.chatbot-btn.open .chat-icon-open  { display: none; }
-.chatbot-btn.open .chat-icon-close { display: block; }
-
-.chatbot-panel {
-  position: fixed;
-  bottom: 96px;
-  right: 28px;
-  z-index: 199;
-  width: 340px;
-  max-width: calc(100vw - 48px);
-  background: var(--surf);
-  border-radius: 18px;
-  box-shadow: 0 16px 48px rgba(33,41,92,.25);
-  border: 1px solid var(--bord);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  transform: scale(.92) translateY(12px);
-  opacity: 0;
-  pointer-events: none;
-  transition: transform .22s cubic-bezier(.34,1.56,.64,1), opacity .18s;
-}
-
-.chatbot-panel.open {
-  transform: scale(1) translateY(0);
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.chatbot-head {
-  background: var(--navy);
-  padding: 14px 18px;
-  flex-shrink: 0;
-}
-
-.chatbot-head-info {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.chatbot-avatar {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: var(--copper);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.chatbot-head-name {
-  font-family: 'Syne', sans-serif;
-  font-weight: 700;
-  font-size: 0.9rem;
-  color: #fff;
-}
-
-.chatbot-head-status {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  font-size: 0.72rem;
-  color: rgba(255,255,255,.55);
-  margin-top: 2px;
-}
-
-.chatbot-status-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: #4cd964;
-  flex-shrink: 0;
-}
-
-.chatbot-messages {
-  flex: 1;
-  overflow-y: auto;
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  max-height: 320px;
-  background: var(--surf);
-}
-
-.chat-msg { display: flex; flex-direction: column; gap: 4px; }
-.chat-msg.user { align-items: flex-end; }
-.chat-msg.bot  { align-items: flex-start; }
-
-.chat-bubble {
-  max-width: 85%;
-  padding: 10px 14px;
-  border-radius: 14px;
-  font-size: 0.84rem;
-  line-height: 1.55;
-}
-
-.chat-msg.bot  .chat-bubble {
-  background: var(--surf2);
-  color: var(--ink);
-  border-bottom-left-radius: 4px;
-}
-
-.chat-msg.user .chat-bubble {
-  background: var(--navy);
-  color: #fff;
-  border-bottom-right-radius: 4px;
-}
-
-.chat-bubble strong { color: var(--copper); }
-.chat-msg.user .chat-bubble strong { color: rgba(255,255,255,.85); }
-
-.chat-time {
-  font-size: 0.68rem;
-  color: var(--ink3);
-  opacity: .6;
-  padding: 0 4px;
-}
-
-.chatbot-input-row {
-  display: flex;
-  gap: 8px;
-  padding: 12px 14px;
-  border-top: 1px solid var(--bord);
-  background: var(--surf);
-  flex-shrink: 0;
-}
-
-.chatbot-input {
-  flex: 1;
-  border: 1px solid var(--bord);
-  border-radius: 10px;
-  padding: 9px 14px;
-  font-size: 0.85rem;
-  font-family: 'Inter', sans-serif;
-  background: var(--surf);
-  color: var(--ink);
-  outline: none;
-  transition: border-color .15s;
-}
-
-.chatbot-input:focus { border-color: var(--copper); }
-.chatbot-input::placeholder { color: var(--ink3); }
-
-.chatbot-send {
-  width: 38px;
-  height: 38px;
-  border-radius: 10px;
-  background: var(--copper);
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: background .15s;
-  flex-shrink: 0;
-}
-
-.chatbot-send:hover { background: var(--copper-light); }
-
-.chat-typing {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  padding: 10px 14px;
-}
-
-.chat-typing span {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--ink3);
-  animation: typing .8s infinite;
-}
-
-.chat-typing span:nth-child(2) { animation-delay: .15s; }
-.chat-typing span:nth-child(3) { animation-delay: .3s; }
-
-@keyframes typing {
-  0%, 60%, 100% { opacity: .3; transform: scale(1); }
-  30% { opacity: 1; transform: scale(1.2); }
-}
-
-/* ── ANIMATIONS ── */
-.reveal {
-  opacity: 0;
-  transform: translateY(24px);
-  transition: opacity .6s ease, transform .6s ease;
-}
-
-.reveal.visible {
-  opacity: 1;
-  transform: none;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { transition: none !important; animation: none !important; }
-  .reveal { opacity: 1; transform: none; }
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Farmer INT System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<!-- AUTH OVERLAY -->
+<div id="auth-overlay">
+  <div class="auth-bg"></div>
+  <div class="auth-card">
+    <div class="auth-brand">
+      <span class="auth-logo-icon">🌾</span>
+      <span class="auth-brand-name">Farmer INT</span>
+    </div>
+    
+    <!-- Sign In -->
+    <div id="form-signin" class="auth-form active">
+      <h2 class="auth-title">Welcome back</h2>
+      <p class="auth-sub">Sign in to your account</p>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="si-email" placeholder="you@example.com" />
+        <span class="field-error" id="si-email-err"></span>
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <div class="input-with-icon">
+          <input type="password" id="si-password" placeholder="••••••••" />
+          <button class="toggle-pw" data-target="si-password">👁</button>
+        </div>
+        <span class="field-error" id="si-pw-err"></span>
+      </div>
+      <div class="form-row-spaced">
+        <label class="checkbox-label">
+          <input type="checkbox" id="si-remember" />
+          Remember me
+        </label>
+        <a href="#" class="link-text">Forgot password?</a>
+      </div>
+      <button class="btn-auth" id="btn-signin">Sign In</button>
+      <p class="auth-switch">Don't have an account? <a href="#" id="go-signup">Sign up</a></p>
+    </div>
+    
+    <!-- Sign Up -->
+    <div id="form-signup" class="auth-form">
+      <h2 class="auth-title">Create account</h2>
+      <p class="auth-sub">Join the Farmer INT System</p>
+      <div class="form-group">
+        <label>Full Name</label>
+        <input type="text" id="su-name" placeholder="Ramesh Kumar" />
+        <span class="field-error" id="su-name-err"></span>
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="su-email" placeholder="you@example.com" />
+        <span class="field-error" id="su-email-err"></span>
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <div class="input-with-icon">
+          <input type="password" id="su-password" placeholder="Min 8 characters" />
+          <button class="toggle-pw" data-target="su-password">👁</button>
+        </div>
+        <span class="field-error" id="su-pw-err"></span>
+      </div>
+      <div class="form-group">
+        <label>Confirm Password</label>
+        <div class="input-with-icon">
+          <input type="password" id="su-confirm" placeholder="Re-enter password" />
+          <button class="toggle-pw" data-target="su-confirm">👁</button>
+        </div>
+        <span class="field-error" id="su-confirm-err"></span>
+      </div>
+      <div class="form-row-spaced">
+        <label class="checkbox-label">
+          <input type="checkbox" id="su-terms" />
+          I agree to the Terms of Service
+        </label>
+      </div>
+      <button class="btn-auth" id="btn-signup">Create Account</button>
+      <p class="auth-switch">Already have an account? <a href="#" id="go-signin">Sign in</a></p>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div id="app" class="hidden">
+
+  <!-- TOP NAV -->
+  <header id="topnav">
+    <div class="nav-container">
+      <a href="#" class="nav-brand" data-page="home">
+        <span class="nav-logo-icon">🌾</span>
+        <span class="nav-brand-text">Farmer INT</span>
+      </a>
+      <nav class="nav-links" id="nav-links">
+        <a href="#" class="nav-link active" data-page="home">Home</a>
+        <a href="#" class="nav-link" data-page="profile">Profile</a>
+        <a href="#" class="nav-link" data-page="docs">My Docs</a>
+        <a href="#" class="nav-link" data-page="calc">Finance Calculator</a>
+      </nav>
+      <div class="nav-actions">
+        <button class="nav-search-btn" id="nav-search-btn" aria-label="Search">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="8" cy="8" r="5.5" stroke="currentColor" stroke-width="1.6"/><path d="M12.5 12.5l3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        </button>
+        <div class="nav-avatar" id="nav-avatar">R</div>
+        <button class="nav-mobile-toggle" id="nav-mobile-toggle" aria-label="Menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- SEARCH OVERLAY -->
+  <div id="search-overlay" class="search-overlay hidden">
+    <div class="search-overlay-inner">
+      <div class="search-bar-row">
+        <svg class="search-bar-icon" width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="6" stroke="#6B7280" stroke-width="1.7"/><path d="M14 14l3.5 3.5" stroke="#6B7280" stroke-width="1.7" stroke-linecap="round"/></svg>
+        <input type="text" id="search-input" placeholder="Search schemes, documents, features…" autocomplete="off" />
+        <button id="search-close" aria-label="Close search">✕</button>
+      </div>
+      <div id="search-results" class="search-results">
+        <p class="search-empty">Start typing to search…</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE: HOME -->
+  <main id="page-home" class="page active">
+    <section class="home-hero">
+      <div class="container">
+        <div class="home-hero-content">
+          <div class="hero-badge">🌾 AI-Powered Scheme Discovery</div>
+          <h1>Find the right scheme.<br>Apply with confidence.</h1>
+          <p class="hero-sub">Discover government support programmes tailored to your farm, sector, and eligibility — in one place.</p>
+          <div class="hero-actions">
+            <button class="btn-primary" data-page-go="profile">Get Started</button>
+            <button class="btn-secondary" data-page-go="calc">Calculate Finance</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Matched Schemes -->
+    <section class="section">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">Matched Schemes</h2>
+            <p class="section-sub">Based on your profile and eligibility</p>
+          </div>
+          <button class="btn-outline">View All</button>
+        </div>
+        <div class="schemes-grid">
+          <div class="scheme-card matched">
+            <div class="scheme-card-top">
+              <span class="scheme-badge match-high">91% Match</span>
+              <span class="scheme-type">Loan</span>
+            </div>
+            <h3>NSFDC Micro Credit Finance</h3>
+            <p>Loans up to ₹1 lakh at 6% interest for SC/ST entrepreneurs in agri and allied sectors.</p>
+            <div class="scheme-meta">
+              <span>🏛 National</span>
+              <span>💰 Up to ₹1 lakh</span>
+              <span>📋 SC/ST</span>
+            </div>
+            <button class="btn-card-primary">Apply Now</button>
+          </div>
+          <div class="scheme-card">
+            <div class="scheme-card-top">
+              <span class="scheme-badge match-med">78% Match</span>
+              <span class="scheme-type">Subsidy</span>
+            </div>
+            <h3>Rajasthan SCA Term Loan</h3>
+            <p>State-level term loan for SC entrepreneurs up to ₹5 lakh at 8% for agri-linked ventures.</p>
+            <div class="scheme-meta">
+              <span>📍 Rajasthan</span>
+              <span>💰 Up to ₹5 lakh</span>
+              <span>📋 SC</span>
+            </div>
+            <button class="btn-card-secondary">Learn More</button>
+          </div>
+          <div class="scheme-card">
+            <div class="scheme-card-top">
+              <span class="scheme-badge match-low">44% Match</span>
+              <span class="scheme-type">Grant</span>
+            </div>
+            <h3>Stand-Up India</h3>
+            <p>Bank loans between ₹10 lakh–₹1 crore for SC/ST and women setting up greenfield enterprises.</p>
+            <div class="scheme-meta">
+              <span>🏛 National</span>
+              <span>💰 ₹10L–₹1Cr</span>
+              <span>📋 SC/ST/Women</span>
+            </div>
+            <button class="btn-card-secondary">Learn More</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stats -->
+    <section class="section section-alt">
+      <div class="container">
+        <h2 class="section-title text-center">Impact at a Glance</h2>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-num">40+</div>
+            <div class="stat-label">Schemes Indexed</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">₹10K Cr</div>
+            <div class="stat-label">Disbursed via Stand-Up India</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">2.3L+</div>
+            <div class="stat-label">Accounts Sanctioned</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">48%</div>
+            <div class="stat-label">Women Beneficiaries</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- How it works -->
+    <section class="section">
+      <div class="container">
+        <h2 class="section-title text-center">How It Works</h2>
+        <div class="steps-grid">
+          <div class="step-card">
+            <div class="step-icon">👤</div>
+            <div class="step-num">01</div>
+            <h3>Build Your Profile</h3>
+            <p>Enter your personal details, caste category, state, and business type to get started.</p>
+          </div>
+          <div class="step-card">
+            <div class="step-icon">🔍</div>
+            <div class="step-num">02</div>
+            <h3>Get Matched</h3>
+            <p>Our AI scans 40+ schemes and ranks them by your eligibility score.</p>
+          </div>
+          <div class="step-card">
+            <div class="step-icon">📄</div>
+            <div class="step-num">03</div>
+            <h3>Upload Documents</h3>
+            <p>Upload required documents directly to your dashboard with guided checklists.</p>
+          </div>
+          <div class="step-card">
+            <div class="step-icon">✅</div>
+            <div class="step-num">04</div>
+            <h3>Apply with Confidence</h3>
+            <p>Track application status and get notified when your scheme is approved.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- PAGE: PROFILE -->
+  <main id="page-profile" class="page hidden">
+    <div class="container page-content">
+      <div class="page-header">
+        <h1 class="page-title">Profile</h1>
+        <p class="page-sub">Manage your personal information and preferences</p>
+      </div>
+      
+      <!-- Avatar + summary -->
+      <div class="profile-hero-card">
+        <div class="profile-avatar-wrap">
+          <div class="profile-avatar" id="profile-avatar">RK</div>
+          <button class="avatar-change-btn">Change Photo</button>
+        </div>
+        <div class="profile-summary">
+          <h2 id="profile-display-name">Ramesh Kumar</h2>
+          <p id="profile-display-email">ramesh.kumar@example.com</p>
+          <span class="profile-badge">Verified Farmer</span>
+        </div>
+        <button class="btn-primary" id="profile-edit-btn">Edit Profile</button>
+      </div>
+
+      <!-- Forms -->
+      <div class="profile-grid">
+        <!-- Personal Info -->
+        <div class="info-card">
+          <h3 class="card-title">Personal Information</h3>
+          <div class="field-grid">
+            <div class="field-group">
+              <label>Full Name</label>
+              <input type="text" class="field-input" id="p-name" value="Ramesh Kumar" disabled />
+            </div>
+            <div class="field-group">
+              <label>Email</label>
+              <input type="email" class="field-input" id="p-email" value="ramesh.kumar@example.com" disabled />
+            </div>
+            <div class="field-group">
+              <label>Phone</label>
+              <input type="tel" class="field-input" id="p-phone" value="+91 98765 43210" disabled />
+            </div>
+            <div class="field-group">
+              <label>Location</label>
+              <input type="text" class="field-input" id="p-location" value="Jaipur, Rajasthan" disabled />
+            </div>
+            <div class="field-group">
+              <label>Date of Birth</label>
+              <input type="date" class="field-input" id="p-dob" value="1985-06-15" disabled />
+            </div>
+            <div class="field-group">
+              <label>Gender</label>
+              <select class="field-input" id="p-gender" disabled>
+                <option value="male" selected>Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Eligibility Info -->
+        <div class="info-card">
+          <h3 class="card-title">Eligibility Information</h3>
+          <div class="field-grid">
+            <div class="field-group">
+              <label>Category</label>
+              <select class="field-input" id="p-category" disabled>
+                <option value="sc" selected>SC (Scheduled Caste)</option>
+                <option value="st">ST (Scheduled Tribe)</option>
+                <option value="obc">OBC</option>
+                <option value="gen">General</option>
+              </select>
+            </div>
+            <div class="field-group">
+              <label>Annual Income</label>
+              <input type="text" class="field-input" id="p-income" value="₹2,40,000" disabled />
+            </div>
+            <div class="field-group">
+              <label>Business Type</label>
+              <input type="text" class="field-input" id="p-biz" value="Tailoring / Garments" disabled />
+            </div>
+            <div class="field-group">
+              <label>Business Stage</label>
+              <select class="field-input" id="p-stage" disabled>
+                <option value="idea">Idea Stage</option>
+                <option value="startup" selected>Startup</option>
+                <option value="growth">Growth</option>
+                <option value="established">Established</option>
+              </select>
+            </div>
+            <div class="field-group">
+              <label>Aadhaar Number</label>
+              <input type="text" class="field-input" id="p-aadhaar" value="XXXX XXXX 4521" disabled />
+            </div>
+            <div class="field-group">
+              <label>PAN</label>
+              <input type="text" class="field-input" id="p-pan" value="ABCPK1234D" disabled />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="profile-actions" id="profile-actions" style="display:none">
+        <button class="btn-outline" id="profile-cancel-btn">Cancel</button>
+        <button class="btn-primary" id="profile-save-btn">Save Changes</button>
+      </div>
+    </div>
+  </main>
+
+  <!-- PAGE: MY DOCS -->
+  <main id="page-docs" class="page hidden">
+    <div class="container page-content">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">My Documents</h1>
+          <p class="page-sub">Manage and track your uploaded documents</p>
+        </div>
+        <button class="btn-primary" id="upload-doc-btn">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2v9M5 5l3-3 3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 13h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          Upload Document
+        </button>
+      </div>
+
+      <!-- Summary bar -->
+      <div class="docs-summary">
+        <div class="doc-stat-card">
+          <span class="doc-stat-num" id="docs-total">5</span>
+          <span class="doc-stat-label">Total Documents</span>
+        </div>
+        <div class="doc-stat-card">
+          <span class="doc-stat-num verified" id="docs-verified">2</span>
+          <span class="doc-stat-label">Verified</span>
+        </div>
+        <div class="doc-stat-card">
+          <span class="doc-stat-num review" id="docs-review">1</span>
+          <span class="doc-stat-label">Under Review</span>
+        </div>
+        <div class="doc-stat-card">
+          <span class="doc-stat-num missing" id="docs-missing">2</span>
+          <span class="doc-stat-label">Missing</span>
+        </div>
+      </div>
+
+      <!-- Document list -->
+      <div class="docs-card">
+        <div class="docs-table-header">
+          <span>Document</span>
+          <span>Type</span>
+          <span>Uploaded</span>
+          <span>Status</span>
+          <span>Actions</span>
+        </div>
+        <div class="docs-table-body" id="docs-list">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+
+      <!-- Upload area (shown when clicking Upload) -->
+      <div id="upload-zone" class="upload-zone hidden">
+        <div class="upload-zone-inner">
+          <svg width="36" height="36" viewBox="0 0 36 36" fill="none"><path d="M18 6v16M12 12l6-6 6 6" stroke="#F97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 28h24" stroke="#F97316" stroke-width="2" stroke-linecap="round"/></svg>
+          <p class="upload-label">Drag & drop files here</p>
+          <p class="upload-sub">or <label for="file-input" class="upload-browse">browse files</label></p>
+          <input type="file" id="file-input" accept=".pdf,.jpg,.jpeg,.png" multiple style="display:none" />
+          <p class="upload-note">PDF, JPG, PNG up to 10 MB</p>
+          <button class="btn-outline" id="upload-zone-close">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- PAGE: FINANCE CALCULATOR -->
+  <main id="page-calc" class="page hidden">
+    <div class="container page-content">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Finance Calculator</h1>
+          <p class="page-sub">Estimate your EMI and plan your loan repayment</p>
+        </div>
+      </div>
+
+      <div class="calc-layout">
+        <!-- Inputs -->
+        <div class="calc-card">
+          <h3 class="card-title">Loan Details</h3>
+          <div class="calc-field">
+            <div class="calc-label-row">
+              <label>Loan Amount</label>
+              <span class="calc-val" id="c-amount-display">₹1,00,000</span>
+            </div>
+            <input type="range" class="calc-range" id="c-amount" min="10000" max="1000000" step="5000" value="100000" />
+            <div class="calc-range-labels"><span>₹10K</span><span>₹10L</span></div>
+          </div>
+          <div class="calc-field">
+            <div class="calc-label-row">
+              <label>Interest Rate</label>
+              <span class="calc-val" id="c-rate-display">6%</span>
+            </div>
+            <input type="range" class="calc-range" id="c-rate" min="3" max="20" step="0.5" value="6" />
+            <div class="calc-range-labels"><span>3%</span><span>20%</span></div>
+          </div>
+          <div class="calc-field">
+            <div class="calc-label-row">
+              <label>Loan Tenure</label>
+              <span class="calc-val" id="c-tenure-display">3 years</span>
+            </div>
+            <input type="range" class="calc-range" id="c-tenure" min="1" max="7" step="1" value="3" />
+            <div class="calc-range-labels"><span>1 yr</span><span>7 yrs</span></div>
+          </div>
+          <div class="calc-field">
+            <div class="calc-label-row">
+              <label>Monthly Income</label>
+              <span class="calc-val" id="c-income-display">₹20,000</span>
+            </div>
+            <input type="range" class="calc-range" id="c-income" min="5000" max="200000" step="1000" value="20000" />
+            <div class="calc-range-labels"><span>₹5K</span><span>₹2L</span></div>
+          </div>
+          <div class="calc-field">
+            <div class="calc-label-row">
+              <label>Down Payment</label>
+              <span class="calc-val" id="c-down-display">₹10,000</span>
+            </div>
+            <input type="range" class="calc-range" id="c-down" min="0" max="500000" step="5000" value="10000" />
+            <div class="calc-range-labels"><span>₹0</span><span>₹5L</span></div>
+          </div>
+
+          <!-- Quick-select presets -->
+          <div class="calc-presets">
+            <span class="calc-preset-label">Quick presets:</span>
+            <button class="preset-pill" data-amount="50000" data-rate="6" data-tenure="3">NSFDC ₹50K</button>
+            <button class="preset-pill" data-amount="500000" data-rate="8" data-tenure="5">SCA ₹5L</button>
+            <button class="preset-pill" data-amount="1000000" data-rate="9" data-tenure="7">Stand-Up ₹10L</button>
+          </div>
+        </div>
+
+        <!-- Results -->
+        <div class="calc-results">
+          <div class="calc-emi-hero">
+            <p class="emi-label">Estimated Monthly EMI</p>
+            <p class="emi-amount" id="calc-emi">₹3,042</p>
+          </div>
+          <div class="calc-breakdown">
+            <div class="breakdown-row">
+              <span>Loan Amount</span>
+              <span id="r-amount">₹1,00,000</span>
+            </div>
+            <div class="breakdown-row">
+              <span>Down Payment</span>
+              <span id="r-down">₹10,000</span>
+            </div>
+            <div class="breakdown-row">
+              <span>Principal</span>
+              <span id="r-principal">₹90,000</span>
+            </div>
+            <div class="breakdown-row">
+              <span>Interest Rate</span>
+              <span id="r-rate">6% p.a.</span>
+            </div>
+            <div class="breakdown-row">
+              <span>Tenure</span>
+              <span id="r-tenure">3 years (36 months)</span>
+            </div>
+            <div class="breakdown-row">
+              <span>Total Interest</span>
+              <span id="r-interest">₹9,512</span>
+            </div>
+            <div class="breakdown-divider"></div>
+            <div class="breakdown-row bold">
+              <span>Total Repayment</span>
+              <span id="r-total">₹99,512</span>
+            </div>
+          </div>
+          <div id="calc-affordability" class="calc-affordability good">
+            <span>✅</span>
+            <span id="calc-afford-text">EMI is within 40% of monthly income. This loan appears manageable.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <span class="footer-logo-icon">🌾</span>
+        <span class="footer-name">Farmer INT System</span>
+      </div>
+      <p class="footer-note">An independent prototype. Always verify scheme eligibility through official government portals.</p>
+      <p class="footer-copy">© 2026 Farmer INT System</p>
+    </div>
+  </footer>
+
+</div><!-- /#app -->
+
+<script src="js/main.js"></script>
+</body>
+</html>

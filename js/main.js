@@ -1,643 +1,637 @@
-/* ── SchemeRoute — main.js ── */
+/* ══════════════════════════════════════════════════
+   Farmer INT System — main.js
+══════════════════════════════════════════════════ */
 
-/* Mobile nav toggle */
+/* ── Mock data ── */
+const MOCK_USER = {
+  name: 'Ramesh Kumar',
+  email: 'ramesh.kumar@example.com',
+  initials: 'RK',
+};
+
+const MOCK_DOCS = [
+  { id: 1, name: 'Aadhaar Card',            sub: 'XXXX XXXX 4521',          type: 'Identity',   date: '12 Aug 2026', status: 'verified' },
+  { id: 2, name: 'Caste Certificate',        sub: 'SC Category',             type: 'Eligibility', date: '14 Aug 2026', status: 'verified' },
+  { id: 3, name: 'Income Certificate',       sub: 'Annual income ₹2.4L',    type: 'Financial',  date: '18 Aug 2026', status: 'review'   },
+  { id: 4, name: 'Bank Statement (6 months)', sub: 'Last 6 months required', type: 'Financial',  date: '—',           status: 'missing'  },
+  { id: 5, name: 'Project Report',           sub: 'Business plan document',  type: 'Business',   date: '—',           status: 'missing'  },
+];
+
+const SEARCH_INDEX = [
+  { icon: '🌾', name: 'NSFDC Micro Credit Finance', sub: 'Loans up to ₹1 lakh at 6% for SC/ST', category: 'Scheme', page: 'home' },
+  { icon: '📋', name: 'Rajasthan SCA Term Loan',    sub: 'Up to ₹5 lakh for SC entrepreneurs',   category: 'Scheme', page: 'home' },
+  { icon: '🏦', name: 'Stand-Up India',             sub: '₹10L–₹1Cr for SC/ST/Women',           category: 'Scheme', page: 'home' },
+  { icon: '👤', name: 'My Profile',                 sub: 'View and edit personal information',   category: 'Page',   page: 'profile' },
+  { icon: '📄', name: 'My Documents',               sub: 'Upload and manage your documents',     category: 'Page',   page: 'docs' },
+  { icon: '🧮', name: 'Finance Calculator',         sub: 'Estimate EMI and loan repayment',      category: 'Page',   page: 'calc' },
+  { icon: '📊', name: 'Impact Statistics',          sub: '40+ schemes, ₹10K Cr disbursed',       category: 'Info',   page: 'home' },
+  { icon: '📋', name: 'Aadhaar Card',               sub: 'Identity document — Verified',          category: 'Document', page: 'docs' },
+  { icon: '📋', name: 'Caste Certificate',          sub: 'Eligibility document — Verified',       category: 'Document', page: 'docs' },
+  { icon: '📋', name: 'Income Certificate',         sub: 'Financial document — Under Review',     category: 'Document', page: 'docs' },
+];
+
+
+/* ══════════════════════════════════════════════════
+   1. AUTH
+══════════════════════════════════════════════════ */
 (function () {
-  const toggle = document.getElementById('nav-toggle');
-  const links  = document.getElementById('nav-links');
-  if (!toggle || !links) return;
+  const overlay  = document.getElementById('auth-overlay');
+  const app      = document.getElementById('app');
+  const formSI   = document.getElementById('form-signin');
+  const formSU   = document.getElementById('form-signup');
+  const goSignup = document.getElementById('go-signup');
+  const goSignin = document.getElementById('go-signin');
+  const btnSI    = document.getElementById('btn-signin');
+  const btnSU    = document.getElementById('btn-signup');
 
-  toggle.addEventListener('click', () => {
-    const open = links.classList.toggle('open');
-    toggle.setAttribute('aria-expanded', open);
-    toggle.querySelectorAll('span').forEach((s, i) => {
+  /* Switch between Sign In / Sign Up */
+  function showForm(form) {
+    formSI.classList.remove('active');
+    formSU.classList.remove('active');
+    form.classList.add('active');
+    clearErrors();
+  }
+  goSignup && goSignup.addEventListener('click', (e) => { e.preventDefault(); showForm(formSU); });
+  goSignin && goSignin.addEventListener('click', (e) => { e.preventDefault(); showForm(formSI); });
+
+  /* Clear all error messages */
+  function clearErrors() {
+    document.querySelectorAll('.form-error').forEach(el => { el.textContent = ''; });
+    document.querySelectorAll('.form-input').forEach(el => el.classList.remove('error'));
+  }
+
+  /* Show field error */
+  function setError(inputId, errId, msg) {
+    const input = document.getElementById(inputId);
+    const err   = document.getElementById(errId);
+    if (input) input.classList.add('error');
+    if (err) err.textContent = msg;
+    return false;
+  }
+
+  /* Validate email */
+  function isEmail(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
+
+  /* Launch main app */
+  function launchApp(name) {
+    overlay.style.display = 'none';
+    app.classList.remove('hidden');
+    // Update avatar and nav
+    const initials = name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
+    const navAvatar = document.getElementById('nav-avatar');
+    if (navAvatar) navAvatar.textContent = initials;
+    MOCK_USER.name = name;
+    MOCK_USER.initials = initials;
+    updateProfileDisplay();
+    renderDocs();
+    calculateEMI();
+  }
+
+  /* Sign In */
+  btnSI && btnSI.addEventListener('click', () => {
+    clearErrors();
+    const email = document.getElementById('si-email').value.trim();
+    const pw    = document.getElementById('si-password').value;
+    let ok = true;
+    if (!email)          ok = setError('si-email',    'si-email-err', 'Email is required.');
+    else if (!isEmail(email)) ok = setError('si-email', 'si-email-err', 'Enter a valid email address.');
+    if (!pw)             ok = setError('si-password', 'si-pw-err',    'Password is required.');
+    else if (pw.length < 6) ok = setError('si-password', 'si-pw-err', 'Password must be at least 6 characters.');
+    if (!ok) return;
+    const name = email.split('@')[0].split('.').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+    launchApp(name);
+  });
+
+  /* Sign Up */
+  btnSU && btnSU.addEventListener('click', () => {
+    clearErrors();
+    const name    = document.getElementById('su-name').value.trim();
+    const email   = document.getElementById('su-email').value.trim();
+    const pw      = document.getElementById('su-password').value;
+    const confirm = document.getElementById('su-confirm').value;
+    const terms   = document.getElementById('su-terms').checked;
+    let ok = true;
+    if (!name)          ok = setError('su-name',    'su-name-err',    'Full name is required.');
+    if (!email)         ok = setError('su-email',   'su-email-err',   'Email is required.') && ok;
+    else if (!isEmail(email)) ok = setError('su-email', 'su-email-err', 'Enter a valid email address.') && ok;
+    if (!pw)            ok = setError('su-password','su-pw-err',      'Password is required.') && ok;
+    else if (pw.length < 8) ok = setError('su-password','su-pw-err', 'Password must be at least 8 characters.') && ok;
+    if (!confirm)       ok = setError('su-confirm', 'su-confirm-err', 'Please confirm your password.') && ok;
+    else if (pw !== confirm) ok = setError('su-confirm','su-confirm-err', 'Passwords do not match.') && ok;
+    if (!terms) {
+      const err = document.getElementById('su-terms-err');
+      if (err) err.textContent = 'You must agree to the Terms of Service.';
+      ok = false;
+    }
+    if (!ok) return;
+    launchApp(name);
+  });
+
+  /* Enter key support */
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Enter') return;
+    if (formSI.classList.contains('active') && overlay.style.display !== 'none') btnSI.click();
+    if (formSU.classList.contains('active') && overlay.style.display !== 'none') btnSU.click();
+  });
+
+  /* Password visibility toggles */
+  document.querySelectorAll('.pw-toggle').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const input = document.getElementById(btn.dataset.target);
+      if (!input) return;
+      input.type = input.type === 'password' ? 'text' : 'password';
+      btn.style.opacity = input.type === 'text' ? '1' : '.5';
+    });
+  });
+})();
+
+
+/* ══════════════════════════════════════════════════
+   2. APP ROUTING (page switching)
+══════════════════════════════════════════════════ */
+(function () {
+  window.navigateTo = function (pageName) {
+    // Hide all pages
+    document.querySelectorAll('.page').forEach(p => {
+      p.classList.remove('active');
+      p.style.display = '';
+    });
+    // Show target
+    const target = document.getElementById('page-' + pageName);
+    if (target) { target.classList.add('active'); target.style.display = ''; }
+
+    // Update nav links
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.classList.toggle('active', link.dataset.page === pageName);
+    });
+
+    // Scroll to top
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    // Close mobile nav if open
+    const navLinks = document.getElementById('nav-links');
+    if (navLinks) navLinks.classList.remove('open');
+  };
+
+  // Nav link clicks
+  document.addEventListener('click', (e) => {
+    const link = e.target.closest('[data-page]');
+    if (!link || !document.getElementById('app') || document.getElementById('app').classList.contains('hidden')) return;
+    const page = link.dataset.page;
+    if (!page) return;
+    e.preventDefault();
+    navigateTo(page);
+  });
+
+  // Button page-go shortcuts
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-page-go]');
+    if (!btn) return;
+    e.preventDefault();
+    navigateTo(btn.dataset.pageGo);
+  });
+})();
+
+
+/* ══════════════════════════════════════════════════
+   3. MOBILE NAV TOGGLE
+══════════════════════════════════════════════════ */
+(function () {
+  const mobileBtn = document.getElementById('nav-mobile-btn');
+  const navLinks  = document.getElementById('nav-links');
+  if (!mobileBtn || !navLinks) return;
+
+  mobileBtn.addEventListener('click', () => {
+    const open = navLinks.classList.toggle('open');
+    mobileBtn.setAttribute('aria-expanded', open);
+    const spans = mobileBtn.querySelectorAll('span');
+    spans.forEach((s, i) => {
       s.style.transform = open
-        ? (i === 0 ? 'translateY(7px) rotate(45deg)'
-          : i === 1 ? 'scaleX(0)' : 'translateY(-7px) rotate(-45deg)')
+        ? (i === 0 ? 'translateY(7px) rotate(45deg)' : i === 1 ? 'scaleX(0)' : 'translateY(-7px) rotate(-45deg)')
         : '';
       s.style.opacity = (open && i === 1) ? '0' : '';
     });
   });
 
-  /* Close on link click */
-  links.querySelectorAll('a').forEach(a => {
-    a.addEventListener('click', () => {
-      links.classList.remove('open');
-      toggle.setAttribute('aria-expanded', 'false');
-      toggle.querySelectorAll('span').forEach(s => {
-        s.style.transform = '';
-        s.style.opacity   = '';
-      });
-    });
+  // Close on outside click
+  document.addEventListener('click', (e) => {
+    if (!navLinks.contains(e.target) && !mobileBtn.contains(e.target)) {
+      navLinks.classList.remove('open');
+      mobileBtn.setAttribute('aria-expanded', 'false');
+      mobileBtn.querySelectorAll('span').forEach(s => { s.style.transform = ''; s.style.opacity = ''; });
+    }
   });
 })();
 
-/* Scroll-reveal */
+
+/* ══════════════════════════════════════════════════
+   4. SCROLL REVEAL
+══════════════════════════════════════════════════ */
 (function () {
   const els = document.querySelectorAll('.reveal');
   if (!els.length) return;
-
   const io = new IntersectionObserver((entries) => {
     entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.classList.add('visible');
-        io.unobserve(e.target);
-      }
+      if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
     });
-  }, { threshold: 0.12 });
-
+  }, { threshold: 0.1 });
   els.forEach(el => io.observe(el));
 })();
 
-/* Animate gap bars when section scrolls in */
+
+/* ══════════════════════════════════════════════════
+   5. PROFILE PAGE
+══════════════════════════════════════════════════ */
+function updateProfileDisplay() {
+  const nameEl   = document.getElementById('profile-display-name');
+  const emailEl  = document.getElementById('profile-display-email');
+  const avatarEl = document.getElementById('profile-avatar-display');
+  const navAv    = document.getElementById('nav-avatar');
+
+  const nameVal  = document.getElementById('p-name')  ? document.getElementById('p-name').value : MOCK_USER.name;
+  const emailVal = document.getElementById('p-email') ? document.getElementById('p-email').value : MOCK_USER.email;
+  const initials = nameVal.split(' ').filter(Boolean).map(w => w[0]).join('').toUpperCase().slice(0, 2);
+
+  if (nameEl)   nameEl.textContent  = nameVal;
+  if (emailEl)  emailEl.textContent = emailVal;
+  if (avatarEl) avatarEl.textContent = initials;
+  if (navAv)    navAv.textContent    = initials;
+}
+
 (function () {
-  const fills = document.querySelectorAll('.gap-fill[data-width]');
-  if (!fills.length) return;
+  const editBtn    = document.getElementById('profile-edit-btn');
+  const saveBtn    = document.getElementById('profile-save-btn');
+  const cancelBtn  = document.getElementById('profile-cancel-btn');
+  const saveRow    = document.getElementById('profile-save-row');
+  const allInputs  = () => document.querySelectorAll('#page-profile .field-input');
 
-  fills.forEach(f => { f.style.width = '0%'; });
+  let originalValues = {};
 
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.querySelectorAll('.gap-fill[data-width]').forEach(f => {
-          requestAnimationFrame(() => { f.style.width = f.dataset.width; });
-        });
-        io.unobserve(e.target);
-      }
+  function setEditable(on) {
+    allInputs().forEach(inp => { inp.disabled = !on; });
+    if (saveRow) saveRow.classList.toggle('hidden', !on);
+    if (editBtn) editBtn.style.display = on ? 'none' : '';
+  }
+
+  editBtn && editBtn.addEventListener('click', () => {
+    // Snapshot current values
+    allInputs().forEach(inp => { originalValues[inp.id] = inp.value; });
+    setEditable(true);
+  });
+
+  cancelBtn && cancelBtn.addEventListener('click', () => {
+    // Restore snapshots
+    allInputs().forEach(inp => {
+      if (originalValues[inp.id] !== undefined) inp.value = originalValues[inp.id];
     });
-  }, { threshold: 0.3 });
+    setEditable(false);
+  });
 
-  const section = document.querySelector('.gap-vis');
-  if (section) io.observe(section);
-})();
-
-/* Active nav highlight on scroll */
-(function () {
-  const sections = document.querySelectorAll('section[id], div[id]');
-  const links    = document.querySelectorAll('.nav-links a[href^="#"]');
-  if (!sections.length || !links.length) return;
-
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        links.forEach(l => l.classList.remove('active-link'));
-        const active = document.querySelector(`.nav-links a[href="#${e.target.id}"]`);
-        if (active) active.classList.add('active-link');
-      }
-    });
-  }, { rootMargin: '-40% 0px -55% 0px' });
-
-  sections.forEach(s => io.observe(s));
-})();
-
-/* ── CHATBOT ── */
-(function () {
-  const btn    = document.getElementById('chatbot-btn');
-  const panel  = document.getElementById('chatbot-panel');
-  const input  = document.getElementById('chatbot-input');
-  const send   = document.getElementById('chatbot-send');
-  const msgs   = document.getElementById('chatbot-messages');
-  if (!btn || !panel) return;
-
-  /* Canned responses for the demo */
-  const responses = [
-    "I can check your eligibility across 40+ Central and state-level schemes. Could you tell me your state and business sector?",
-    "Based on your profile, you may qualify for NSFDC Micro Credit Finance — loans up to ₹1 lakh at 6% interest for SC/ST entrepreneurs. Want me to run a full eligibility check?",
-    "For a tailoring business in Rajasthan, the Rajasthan SCA Term Loan is also a strong option — up to ₹5 lakh at 8% interest. Shall I calculate your EMI for both schemes?",
-    "Your estimated monthly EMI would be around ₹1,100–₹1,600 depending on the tenure you choose (3–5 years). I can generate a full financial summary if you'd like.",
-    "To apply for NSFDC Micro Credit Finance you'll need: Aadhaar, caste certificate, income proof, and a basic project report. I can generate your document checklist right now.",
-    "Great! I've prepared your personalized document checklist. Head to the Documents section in your dashboard to see the full list with direct links to official sources."
-  ];
-  let responseIndex = 0;
-
-  function scrollToBottom () {
-    msgs.scrollTop = msgs.scrollHeight;
-  }
-
-  function addMessage (text, who) {
-    const msg  = document.createElement('div');
-    msg.className = `chat-msg ${who}`;
-
-    const bubble = document.createElement('div');
-    bubble.className = 'chat-bubble';
-    bubble.innerHTML = text;
-
-    const time = document.createElement('div');
-    time.className = 'chat-time';
-    time.textContent = 'Just now';
-
-    msg.appendChild(bubble);
-    msg.appendChild(time);
-    msgs.appendChild(msg);
-    scrollToBottom();
-  }
-
-  function showTyping () {
-    const typing = document.createElement('div');
-    typing.className = 'chat-msg bot';
-    typing.id = 'typing-indicator';
-
-    const bubble = document.createElement('div');
-    bubble.className = 'chat-bubble chat-typing';
-    bubble.innerHTML = '<span></span><span></span><span></span>';
-
-    typing.appendChild(bubble);
-    msgs.appendChild(typing);
-    scrollToBottom();
-    return typing;
-  }
-
-  function sendMessage () {
-    const text = input.value.trim();
-    if (!text) return;
-
-    addMessage(text, 'user');
-    input.value = '';
-
-    const typing = showTyping();
-
-    setTimeout(() => {
-      typing.remove();
-      const reply = responses[responseIndex % responses.length];
-      responseIndex++;
-      addMessage(reply, 'bot');
-    }, 900 + Math.random() * 400);
-  }
-
-  /* Toggle panel */
-  function toggleChat () {
-    const open = panel.classList.toggle('open');
-    btn.classList.toggle('open', open);
-    panel.setAttribute('aria-hidden', !open);
-    if (open) {
-      scrollToBottom();
-      setTimeout(() => input.focus(), 220);
-    }
-  }
-
-  btn.addEventListener('click', toggleChat);
-  btn.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') toggleChat(); });
-
-  send.addEventListener('click', sendMessage);
-  input.addEventListener('keydown', e => { if (e.key === 'Enter') sendMessage(); });
-
-  /* Close when clicking outside */
-  document.addEventListener('click', e => {
-    if (panel.classList.contains('open') && !panel.contains(e.target) && !btn.contains(e.target)) {
-      panel.classList.remove('open');
-      btn.classList.remove('open');
-      panel.setAttribute('aria-hidden', 'true');
+  saveBtn && saveBtn.addEventListener('click', () => {
+    updateProfileDisplay();
+    setEditable(false);
+    // Brief success feedback
+    if (saveBtn) {
+      const old = saveBtn.textContent;
+      saveBtn.textContent = '✓ Saved';
+      saveBtn.style.background = '#16A34A';
+      setTimeout(() => { saveBtn.textContent = old; saveBtn.style.background = ''; }, 2000);
     }
   });
 })();
 
-/* ── SCHEMEROUTE DASHBOARD INTERACTIVE LOGIC ── */
-(function () {
-  /* 1. Dashboard Tab Navigation */
-  const navItems = document.querySelectorAll('.ui-nav-item[data-tab]');
-  const panels = document.querySelectorAll('.ui-tab-panel');
 
-  function switchTab(tabId) {
-    navItems.forEach(item => {
-      const isMatch = item.dataset.tab === tabId;
-      item.classList.toggle('active', isMatch);
-      item.setAttribute('aria-selected', isMatch ? 'true' : 'false');
-    });
+/* ══════════════════════════════════════════════════
+   6. MY DOCS PAGE
+══════════════════════════════════════════════════ */
+let docs = MOCK_DOCS.map(d => ({ ...d }));
 
-    panels.forEach(panel => {
-      panel.classList.toggle('active', panel.id === `tab-${tabId}`);
-    });
-  }
+function updateDocStats() {
+  const total    = docs.length;
+  const verified = docs.filter(d => d.status === 'verified').length;
+  const review   = docs.filter(d => d.status === 'review').length;
+  const missing  = docs.filter(d => d.status === 'missing').length;
+  const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+  set('stat-total', total);
+  set('stat-verified', verified);
+  set('stat-review', review);
+  set('stat-missing', missing);
+}
 
-  navItems.forEach(item => {
-    item.addEventListener('click', () => {
-      if (item.dataset.tab) {
-        switchTab(item.dataset.tab);
-      }
-    });
-    item.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        if (item.dataset.tab) switchTab(item.dataset.tab);
+function renderDocs() {
+  const tbody = document.getElementById('docs-table-body');
+  if (!tbody) return;
+  tbody.innerHTML = '';
+
+  docs.forEach(doc => {
+    const row = document.createElement('div');
+    row.className = 'doc-row';
+    row.dataset.id = doc.id;
+
+    const statusLabel = { verified: '✓ Verified', review: '⏳ Under Review', missing: '⚠ Missing' }[doc.status];
+
+    row.innerHTML = `
+      <div>
+        <div class="doc-name">${doc.name}</div>
+        <div class="doc-name-sub">${doc.sub}</div>
+      </div>
+      <div class="doc-type">${doc.type}</div>
+      <div class="doc-date">${doc.date}</div>
+      <div><span class="doc-status-badge ${doc.status}">${statusLabel}</span></div>
+      <div class="doc-actions">
+        <button class="doc-action-btn" data-action="view" data-id="${doc.id}" title="View" aria-label="View ${doc.name}">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7s2-4.5 6-4.5S13 7 13 7s-2 4.5-6 4.5S1 7 1 7z" stroke="currentColor" stroke-width="1.3"/><circle cx="7" cy="7" r="1.75" stroke="currentColor" stroke-width="1.3"/></svg>
+        </button>
+        <button class="doc-action-btn" data-action="download" data-id="${doc.id}" title="Download" aria-label="Download ${doc.name}">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1v8M4 6l3 3 3-3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M1 11h12" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        </button>
+        <button class="doc-action-btn delete" data-action="delete" data-id="${doc.id}" title="Delete" aria-label="Delete ${doc.name}">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 4h10M5 4V2.5h4V4M5.5 6.5v4M8.5 6.5v4M3 4l.7 7.5h6.6L11 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    `;
+    tbody.appendChild(row);
+  });
+
+  updateDocStats();
+
+  // Action handlers
+  tbody.querySelectorAll('.doc-action-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const action = btn.dataset.action;
+      const id     = parseInt(btn.dataset.id);
+      const doc    = docs.find(d => d.id === id);
+      if (!doc) return;
+
+      if (action === 'view') {
+        alert(`Viewing: ${doc.name}\nType: ${doc.type}\nStatus: ${doc.status}\nUploaded: ${doc.date}`);
+      } else if (action === 'download') {
+        if (doc.status === 'missing') {
+          alert('This document has not been uploaded yet.');
+        } else {
+          alert(`Downloading: ${doc.name}\n(In a real app this would trigger a file download)`);
+        }
+      } else if (action === 'delete') {
+        if (confirm(`Delete "${doc.name}"? This cannot be undone.`)) {
+          docs = docs.filter(d => d.id !== id);
+          renderDocs();
+        }
       }
     });
   });
+}
 
-  /* 2. My Profile: View & Edit Interactions */
-  const profileForm = document.getElementById('profile-form');
-  const profileEditToggle = document.getElementById('profile-edit-toggle');
-  const profileEditBtnText = document.getElementById('profile-edit-btn-text');
-  const profileCancelBtn = document.getElementById('profile-cancel-btn');
-  const profileAlert = document.getElementById('profile-alert');
-  const viewProfileName = document.getElementById('view-profile-name');
+(function () {
+  const uploadBtn   = document.getElementById('upload-doc-btn');
+  const uploadZone  = document.getElementById('upload-zone');
+  const zoneClose   = document.getElementById('upload-zone-close');
+  const fileInput   = document.getElementById('file-input');
 
-  if (profileEditToggle && profileForm) {
-    function setEditMode(isEdit) {
-      if (isEdit) {
-        profileForm.classList.remove('profile-view-mode');
-        profileForm.classList.add('profile-edit-mode');
-        if (profileEditBtnText) profileEditBtnText.textContent = 'Cancel Edit';
-      } else {
-        profileForm.classList.add('profile-view-mode');
-        profileForm.classList.remove('profile-edit-mode');
-        if (profileEditBtnText) profileEditBtnText.textContent = 'Edit Profile';
-      }
-    }
+  uploadBtn && uploadBtn.addEventListener('click', () => {
+    uploadZone && uploadZone.classList.toggle('hidden');
+  });
+  zoneClose && zoneClose.addEventListener('click', () => {
+    uploadZone && uploadZone.classList.add('hidden');
+  });
 
-    profileEditToggle.addEventListener('click', () => {
-      const isCurrentlyEdit = profileForm.classList.contains('profile-edit-mode');
-      setEditMode(!isCurrentlyEdit);
-    });
+  /* Drag and drop */
+  uploadZone && uploadZone.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    uploadZone.style.borderColor = '#EA580C';
+  });
+  uploadZone && uploadZone.addEventListener('dragleave', () => {
+    uploadZone.style.borderColor = '';
+  });
+  uploadZone && uploadZone.addEventListener('drop', (e) => {
+    e.preventDefault();
+    uploadZone.style.borderColor = '';
+    handleFiles(e.dataTransfer.files);
+  });
 
-    if (profileCancelBtn) {
-      profileCancelBtn.addEventListener('click', () => {
-        setEditMode(false);
-      });
-    }
+  fileInput && fileInput.addEventListener('change', () => {
+    handleFiles(fileInput.files);
+    fileInput.value = '';
+  });
 
-    profileForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const formData = new FormData(profileForm);
-
-      // Update bound elements
-      formData.forEach((val, key) => {
-        const boundEl = profileForm.querySelector(`[data-bind="${key}"]`);
-        if (boundEl) {
-          if (key === 'phone') {
-            boundEl.innerHTML = `${val} <span class="badge-mini-verified">Verified</span>`;
-          } else {
-            boundEl.textContent = val;
-          }
-        }
-      });
-
-      const fullName = formData.get('fullname');
-      if (fullName && viewProfileName) {
-        viewProfileName.textContent = fullName;
-        const avatar = document.querySelector('.profile-avatar');
-        if (avatar) {
-          const initials = fullName.split(' ').filter(Boolean).map(n => n[0]).join('').substring(0, 2).toUpperCase();
-          if (initials) avatar.textContent = initials;
-        }
-      }
-
-      setEditMode(false);
-
-      if (profileAlert) {
-        profileAlert.style.display = 'flex';
-        setTimeout(() => {
-          profileAlert.style.display = 'none';
-        }, 4000);
-      }
-    });
-  }
-
-  /* 3. Financial Calculator: Interactive EMI & Breakdown */
-  const calcAmount = document.getElementById('calc-amount');
-  const calcTenure = document.getElementById('calc-tenure');
-  const calcRate = document.getElementById('calc-rate');
-  const calcMargin = document.getElementById('calc-margin');
-
-  const calcAmountDisplay = document.getElementById('calc-amount-display');
-  const calcTenureDisplay = document.getElementById('calc-tenure-display');
-  const calcRateDisplay = document.getElementById('calc-rate-display');
-  const calcMarginDisplay = document.getElementById('calc-margin-display');
-
-  const calcResEmi = document.getElementById('calc-res-emi');
-  const calcResTotalCost = document.getElementById('calc-res-total-cost');
-  const calcResDownpayment = document.getElementById('calc-res-downpayment');
-  const calcResPrincipal = document.getElementById('calc-res-principal');
-  const calcResInterest = document.getElementById('calc-res-interest');
-  const calcResTotalRepay = document.getElementById('calc-res-total-repay');
-  const calcResMinprofit = document.getElementById('calc-res-minprofit');
-
-  const pills = document.querySelectorAll('.calc-pill');
-
-  function formatInr(val) {
-    return '₹' + Math.round(val).toLocaleString('en-IN');
-  }
-
-  function updateCalculator() {
-    if (!calcAmount || !calcTenure || !calcRate || !calcMargin) return;
-
-    const totalCost = parseFloat(calcAmount.value) || 100000;
-    const years = parseFloat(calcTenure.value) || 3;
-    const rateAnnual = parseFloat(calcRate.value) || 6;
-    const marginPercent = parseFloat(calcMargin.value) || 10;
-
-    const downpayment = (totalCost * marginPercent) / 100;
-    const principal = Math.max(0, totalCost - downpayment);
-
-    // EMI formula: P * r * (1+r)^n / ((1+r)^n - 1)
-    const n = years * 12;
-    const r = rateAnnual / (12 * 100);
-
-    let emi = 0;
-    if (r === 0) {
-      emi = principal / n;
-    } else {
-      emi = (principal * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
-    }
-
-    const totalRepay = emi * n;
-    const totalInterest = Math.max(0, totalRepay - principal);
-    const minProfit = emi * 2;
-
-    // Update displays
-    if (calcAmountDisplay) calcAmountDisplay.textContent = formatInr(totalCost);
-    if (calcTenureDisplay) calcTenureDisplay.textContent = `${years} Year${years > 1 ? 's' : ''} (${n} mos)`;
-    if (calcRateDisplay) calcRateDisplay.textContent = `${rateAnnual.toFixed(1)}% p.a.`;
-    if (calcMarginDisplay) calcMarginDisplay.textContent = `${marginPercent}% (${formatInr(downpayment)})`;
-
-    if (calcResEmi) calcResEmi.textContent = formatInr(emi);
-    if (calcResTotalCost) calcResTotalCost.textContent = formatInr(totalCost);
-    if (calcResDownpayment) calcResDownpayment.textContent = formatInr(downpayment);
-    if (calcResPrincipal) calcResPrincipal.textContent = formatInr(principal);
-    if (calcResInterest) calcResInterest.textContent = formatInr(totalInterest);
-    if (calcResTotalRepay) calcResTotalRepay.textContent = formatInr(totalRepay);
-    if (calcResMinprofit) calcResMinprofit.textContent = Math.round(minProfit).toLocaleString('en-IN');
-  }
-
-  if (calcAmount && calcTenure && calcRate && calcMargin) {
-    [calcAmount, calcTenure, calcRate, calcMargin].forEach(input => {
-      input.addEventListener('input', () => {
-        if (input === calcAmount) {
-          pills.forEach(p => {
-            p.classList.toggle('active', parseInt(p.dataset.amount, 10) === parseInt(calcAmount.value, 10));
-          });
-        }
-        updateCalculator();
-      });
-    });
-
-    pills.forEach(pill => {
-      pill.addEventListener('click', () => {
-        pills.forEach(p => p.classList.remove('active'));
-        pill.classList.add('active');
-        calcAmount.value = pill.dataset.amount;
-        updateCalculator();
-      });
-    });
-
-    updateCalculator();
-  }
-
-  /* 4. Documents: Management, Upload & Preview Modal */
-  const docModalOverlay = document.getElementById('doc-modal-overlay');
-  const docModalClose = document.getElementById('doc-modal-close');
-  const docModalCloseBtn = document.getElementById('doc-modal-close-btn');
-  const docModalDocname = document.getElementById('doc-modal-docname');
-  const docModalFilename = document.getElementById('doc-modal-filename');
-  const docModalFilesize = document.getElementById('doc-modal-filesize');
-  const docModalFiledate = document.getElementById('doc-modal-filedate');
-  const docModalFilestatus = document.getElementById('doc-modal-filestatus');
-
-  function openDocModal(name, filename, size, date, status) {
-    if (!docModalOverlay) return;
-    if (docModalDocname) docModalDocname.textContent = name || 'Document';
-    if (docModalFilename) docModalFilename.textContent = filename || 'file.pdf';
-    if (docModalFilesize) docModalFilesize.textContent = size || '-';
-    if (docModalFiledate) docModalFiledate.textContent = date || '-';
-    if (docModalFilestatus) {
-      const isVerified = (status || '').toLowerCase().includes('verified');
-      docModalFilestatus.innerHTML = `<span class="doc-badge ${isVerified ? 'verified' : 'review'}">${status}</span>`;
-    }
-    docModalOverlay.style.display = 'flex';
-    docModalOverlay.setAttribute('aria-hidden', 'false');
-  }
-
-  function closeDocModal() {
-    if (!docModalOverlay) return;
-    docModalOverlay.style.display = 'none';
-    docModalOverlay.setAttribute('aria-hidden', 'true');
-  }
-
-  if (docModalClose) docModalClose.addEventListener('click', closeDocModal);
-  if (docModalCloseBtn) docModalCloseBtn.addEventListener('click', closeDocModal);
-  if (docModalOverlay) {
-    docModalOverlay.addEventListener('click', (e) => {
-      if (e.target === docModalOverlay) closeDocModal();
-    });
-  }
-
-  // Bind view buttons
-  function bindDocViewButtons() {
-    document.querySelectorAll('.doc-btn-view').forEach(btn => {
-      btn.onclick = () => {
-        openDocModal(
-          btn.dataset.name,
-          btn.dataset.file,
-          btn.dataset.size,
-          btn.dataset.date,
-          btn.dataset.status
-        );
+  function handleFiles(files) {
+    if (!files || !files.length) return;
+    Array.from(files).forEach(file => {
+      const newDoc = {
+        id:     Date.now() + Math.random(),
+        name:   file.name.replace(/\.[^.]+$/, ''),
+        sub:    `${(file.size / 1024).toFixed(0)} KB`,
+        type:   'Uploaded',
+        date:   new Date().toLocaleDateString('en-IN', { day:'2-digit', month:'short', year:'numeric' }),
+        status: 'review',
       };
+      docs.push(newDoc);
     });
+    renderDocs();
+    uploadZone && uploadZone.classList.add('hidden');
   }
-  bindDocViewButtons();
+})();
 
-  // Document Upload Handling
-  const docFileInput = document.getElementById('doc-file-input');
-  const uploadDocSelect = document.getElementById('upload-doc-select');
-  const docFeedback = document.getElementById('doc-upload-feedback');
-  const docsUploadedCount = document.getElementById('docs-uploaded-count');
-  const docsMissingCount = document.getElementById('docs-missing-count');
-  const docsProgFill = document.getElementById('docs-prog-fill');
-  const dropzone = document.getElementById('docs-dropzone');
 
-  function handleFileUpload(fileName, docType) {
-    const type = docType || (uploadDocSelect ? uploadDocSelect.value : 'Document');
-    const cleanName = fileName || `${type.toLowerCase().replace(/[^a-z0-9]/g, '_')}_file.pdf`;
+/* ══════════════════════════════════════════════════
+   7. FINANCE CALCULATOR
+══════════════════════════════════════════════════ */
+function formatINR(n) {
+  if (n >= 10000000) return '₹' + (n/10000000).toFixed(1) + 'Cr';
+  if (n >= 100000)   return '₹' + (n/100000).toFixed(1) + 'L';
+  if (n >= 1000)     return '₹' + (n/1000).toFixed(0) + 'K';
+  return '₹' + n.toLocaleString('en-IN');
+}
+function formatINRFull(n) {
+  return '₹' + Math.round(n).toLocaleString('en-IN');
+}
 
-    // Locate matching item in list
-    let targetItem = null;
-    if (type.includes('Bank')) targetItem = document.querySelector('[data-id="doc-bank"]');
-    else if (type.includes('Business')) targetItem = document.querySelector('[data-id="doc-biz"]');
-    else if (type.includes('Aadhaar')) targetItem = document.querySelector('[data-id="doc-aadhaar"]');
-    else if (type.includes('Caste')) targetItem = document.querySelector('[data-id="doc-caste"]');
-    else if (type.includes('Income')) targetItem = document.querySelector('[data-id="doc-income"]');
+function calculateEMI() {
+  const amountSlider = document.getElementById('c-amount');
+  const downSlider   = document.getElementById('c-down');
+  const rateSlider   = document.getElementById('c-rate');
+  const tenureSlider = document.getElementById('c-tenure');
+  const incomeSlider = document.getElementById('c-income');
+  if (!amountSlider) return;
 
-    if (targetItem) {
-      targetItem.classList.remove('missing-item');
-      const iconWrap = targetItem.querySelector('.doc-icon-wrap');
-      if (iconWrap) {
-        iconWrap.className = 'doc-icon-wrap review';
-        iconWrap.innerHTML = `<svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z"/><path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z"/></svg>`;
-      }
-      const details = targetItem.querySelector('.doc-details');
-      if (details) {
-        details.textContent = `File: ${cleanName} · 1.4 MB · Uploaded on Just now`;
-      }
-      const statusCol = targetItem.querySelector('.doc-status-col');
-      if (statusCol) {
-        statusCol.innerHTML = `<span class="doc-badge review">Under Review</span>`;
-      }
-      const actionsCol = targetItem.querySelector('.doc-actions-col');
-      if (actionsCol) {
-        actionsCol.innerHTML = `<button type="button" class="doc-btn-view" data-name="${type}" data-file="${cleanName}" data-size="1.4 MB" data-date="Today" data-status="Under Review">View</button>`;
-      }
-      bindDocViewButtons();
-    }
+  const amount  = parseFloat(amountSlider.value);
+  const down    = parseFloat(downSlider.value);
+  const rate    = parseFloat(rateSlider.value);
+  const tenure  = parseFloat(tenureSlider.value);
+  const income  = parseFloat(incomeSlider.value);
 
-    // Update missing count & progress
-    const remainingMissing = document.querySelectorAll('.doc-item.missing-item').length;
-    const totalDocs = 5;
-    const uploaded = totalDocs - remainingMissing;
+  const principal   = Math.max(0, amount - down);
+  const monthlyRate = rate / 100 / 12;
+  const months      = tenure * 12;
 
-    if (docsUploadedCount) docsUploadedCount.textContent = uploaded;
-    if (docsMissingCount) {
-      if (remainingMissing > 0) {
-        docsMissingCount.textContent = `${remainingMissing} Missing Document${remainingMissing > 1 ? 's' : ''}`;
-      } else {
-        docsMissingCount.textContent = `All Documents Uploaded`;
-        docsMissingCount.style.background = 'rgba(26,107,58,.12)';
-        docsMissingCount.style.color = '#1a6b3a';
-      }
-    }
-    if (docsProgFill) {
-      docsProgFill.style.width = `${(uploaded / totalDocs) * 100}%`;
-    }
+  let emi = 0;
+  if (monthlyRate === 0) {
+    emi = principal / months;
+  } else {
+    emi = principal * monthlyRate * Math.pow(1 + monthlyRate, months) / (Math.pow(1 + monthlyRate, months) - 1);
+  }
+  const totalPayment = emi * months;
+  const totalInterest = totalPayment - principal;
+  const emiPct = income > 0 ? (emi / income) * 100 : 0;
 
-    if (docFeedback) {
-      docFeedback.className = 'doc-upload-feedback success';
-      docFeedback.style.display = 'block';
-      docFeedback.innerHTML = `✓ <strong>${cleanName}</strong> uploaded successfully for <em>${type}</em>. Status updated to Under Review.`;
-      setTimeout(() => {
-        docFeedback.style.display = 'none';
-      }, 5000);
+  // Display updates
+  const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+
+  set('c-amount-disp',  formatINRFull(amount));
+  set('c-down-disp',    formatINRFull(down));
+  set('c-rate-disp',    rate.toFixed(1) + '%');
+  set('c-tenure-disp',  tenure + ' year' + (tenure > 1 ? 's' : ''));
+  set('c-income-disp',  formatINRFull(income));
+
+  set('calc-emi',    formatINRFull(emi));
+  set('r-loan',      formatINRFull(amount));
+  set('r-down',      formatINRFull(down));
+  set('r-principal', formatINRFull(principal));
+  set('r-rate',      rate.toFixed(1) + '% p.a.');
+  set('r-tenure',    tenure + ' year' + (tenure > 1 ? 's' : '') + ' (' + months + ' months)');
+  set('r-interest',  formatINRFull(totalInterest));
+  set('r-total',     formatINRFull(totalPayment));
+
+  // EMI note
+  const emiNote = document.querySelector('.emi-hero-note');
+  if (emiNote) emiNote.textContent = `Based on ${formatINRFull(principal)} principal over ${tenure} year${tenure > 1 ? 's' : ''}`;
+
+  // Affordability
+  const affordPct  = document.getElementById('afford-pct');
+  const affordFill = document.getElementById('afford-fill');
+  const affordNote = document.getElementById('afford-note');
+  if (affordPct)  affordPct.textContent  = emiPct.toFixed(1) + '%';
+  if (affordFill) {
+    affordFill.style.width = Math.min(emiPct, 100) + '%';
+    affordFill.className   = 'afford-fill' + (emiPct > 50 ? ' danger' : emiPct > 40 ? ' warn' : '');
+  }
+  if (affordNote) {
+    if (income === 0) {
+      affordNote.textContent = '— Set a monthly income to see affordability.';
+    } else if (emiPct <= 40) {
+      affordNote.textContent = `✅ EMI is ${emiPct.toFixed(1)}% of monthly income — this loan appears manageable.`;
+    } else if (emiPct <= 60) {
+      affordNote.textContent = `⚠️ EMI is ${emiPct.toFixed(1)}% of monthly income — this may strain your budget.`;
+    } else {
+      affordNote.textContent = `❌ EMI is ${emiPct.toFixed(1)}% of monthly income — consider a smaller loan or longer tenure.`;
     }
   }
+}
 
-  if (docFileInput) {
-    docFileInput.addEventListener('change', (e) => {
-      if (e.target.files && e.target.files[0]) {
-        handleFileUpload(e.target.files[0].name, uploadDocSelect ? uploadDocSelect.value : null);
-        docFileInput.value = '';
-      }
-    });
-  }
+(function () {
+  const sliders = ['c-amount', 'c-down', 'c-rate', 'c-tenure', 'c-income'];
+  sliders.forEach(id => {
+    const el = document.getElementById(id);
+    el && el.addEventListener('input', calculateEMI);
+  });
 
-  // Upload button triggers inside items
-  document.querySelectorAll('.doc-btn-upload-trigger').forEach(trigger => {
-    trigger.addEventListener('click', () => {
-      const targetDoc = trigger.dataset.target;
-      if (uploadDocSelect && targetDoc) {
-        uploadDocSelect.value = targetDoc;
-      }
-      if (docFileInput) docFileInput.click();
+  // Preset pills
+  document.querySelectorAll('.preset-pill').forEach(pill => {
+    pill.addEventListener('click', () => {
+      document.querySelectorAll('.preset-pill').forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      const s = (id, val) => { const el = document.getElementById(id); if (el) { el.value = val; } };
+      s('c-amount', pill.dataset.amount || 100000);
+      s('c-rate',   pill.dataset.rate   || 6);
+      s('c-tenure', pill.dataset.tenure || 3);
+      s('c-down',   pill.dataset.down   || 10000);
+      calculateEMI();
     });
   });
 
-  // Drag and Drop
-  if (dropzone) {
-    ['dragenter', 'dragover'].forEach(eventName => {
-      dropzone.addEventListener(eventName, (e) => {
-        e.preventDefault();
-        dropzone.classList.add('dragover');
-      });
-    });
-    ['dragleave', 'drop'].forEach(eventName => {
-      dropzone.addEventListener(eventName, (e) => {
-        e.preventDefault();
-        dropzone.classList.remove('dragover');
-      });
-    });
-    dropzone.addEventListener('drop', (e) => {
-      if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-        handleFileUpload(e.dataTransfer.files[0].name, uploadDocSelect ? uploadDocSelect.value : null);
-      }
-    });
-  }
-
-  /* 5. AI Advisor: Interactive Conversations */
-  const advisorWindow = document.getElementById('advisor-chat-window');
-  const advisorInput = document.getElementById('dash-advisor-input');
-  const advisorSend = document.getElementById('dash-advisor-send');
-  const promptChips = document.querySelectorAll('.prompt-chip');
-
-  const advisorKnowledgeBase = [
-    {
-      keywords: ['document', 'prepare', 'paperwork', 'need'],
-      reply: 'Generally, small business loan applications require 4 core documents: <strong>1) Aadhaar card</strong> for ID & location, <strong>2) Caste Certificate</strong> (for SC/ST concession/eligibility), <strong>3) Income Certificate</strong> or basic self-declaration, and <strong>4) Bank Passbook / statement</strong> (last 6 months). A trade permit or electricity bill for your shop is also helpful.'
-    },
-    {
-      keywords: ['emi', 'interest', 'calculate', 'tenure'],
-      reply: 'EMI is calculated using a reducing-balance formula based on three factors: loan principal, annual interest rate, and repayment duration (tenure). Lower interest rates and longer tenures keep your monthly installment smaller and easier to service from regular business earnings.'
-    },
-    {
-      keywords: ['caste', 'sc', 'st', 'certificate'],
-      reply: 'SC/ST certificates should be issued by an authorized state authority (such as a Tehsildar or Sub-Divisional Magistrate). Ensure the name on your caste certificate matches your Aadhaar and bank records exactly to avoid loan processing delays.'
-    },
-    {
-      keywords: ['income', 'certificate', 'how to get'],
-      reply: 'An income certificate can be obtained from your local revenue office (e-Mitra in Rajasthan, Tehsil office, or your state citizen services portal). For micro-enterprises with informal accounts, a sworn affidavit or self-declaration of annual household income is accepted for several schemes.'
-    },
-    {
-      keywords: ['subsidy', 'margin', 'contribution'],
-      reply: 'Margin money or own contribution is the portion you invest yourself (typically 5%–10% of total project cost). Certain social welfare schemes offer capital subsidies that reduce the principal loan amount, lowering your overall repayment burden.'
-    }
-  ];
-
-  function getAdvisorResponse(query) {
-    const q = query.toLowerCase();
-    for (const item of advisorKnowledgeBase) {
-      if (item.keywords.some(k => q.includes(k))) {
-        return item.reply;
-      }
-    }
-    return 'That is an important question. For small businesses, eligibility depends primarily on your social category, residential location, and verifiable enterprise activity. You can prepare your basic documents in the Documents tab or simulate installments in Financial Calc to stay application-ready!';
-  }
-
-  function appendAdvisorMessage(text, role) {
-    if (!advisorWindow) return;
-    const msg = document.createElement('div');
-    msg.className = `chat-msg ${role}`;
-
-    const bubble = document.createElement('div');
-    bubble.className = 'chat-bubble';
-    bubble.innerHTML = text;
-
-    const time = document.createElement('div');
-    time.className = 'chat-time';
-    time.textContent = 'Just now';
-
-    msg.appendChild(bubble);
-    msg.appendChild(time);
-    advisorWindow.appendChild(msg);
-    advisorWindow.scrollTop = advisorWindow.scrollHeight;
-    return msg;
-  }
-
-  function sendAdvisorMessage(text) {
-    const q = (text || (advisorInput ? advisorInput.value : '')).trim();
-    if (!q) return;
-
-    appendAdvisorMessage(q, 'user');
-    if (advisorInput) advisorInput.value = '';
-
-    // Show typing
-    const typing = document.createElement('div');
-    typing.className = 'chat-msg bot';
-    typing.innerHTML = '<div class="chat-bubble chat-typing"><span></span><span></span><span></span></div>';
-    advisorWindow.appendChild(typing);
-    advisorWindow.scrollTop = advisorWindow.scrollHeight;
-
-    setTimeout(() => {
-      typing.remove();
-      const reply = getAdvisorResponse(q);
-      appendAdvisorMessage(reply, 'bot');
-    }, 700 + Math.random() * 300);
-  }
-
-  if (advisorSend && advisorInput) {
-    advisorSend.addEventListener('click', () => sendAdvisorMessage());
-    advisorInput.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') sendAdvisorMessage();
-    });
-  }
-
-  promptChips.forEach(chip => {
-    chip.addEventListener('click', () => {
-      sendAdvisorMessage(chip.dataset.prompt);
+  // Track manual changes to clear preset active state
+  sliders.forEach(id => {
+    const el = document.getElementById(id);
+    el && el.addEventListener('input', () => {
+      // Don't clear active on every input — only clear if values mismatch
     });
   });
 })();
+
+
+/* ══════════════════════════════════════════════════
+   8. SEARCH
+══════════════════════════════════════════════════ */
+(function () {
+  const searchBtn     = document.getElementById('nav-search-btn');
+  const overlay       = document.getElementById('search-overlay');
+  const overlayBg     = document.getElementById('search-bg');
+  const closeBtn      = document.getElementById('search-close-btn');
+  const input         = document.getElementById('search-input');
+  const resultsEl     = document.getElementById('search-results');
+  if (!searchBtn || !overlay) return;
+
+  function openSearch() {
+    overlay.classList.remove('hidden');
+    setTimeout(() => input && input.focus(), 50);
+  }
+  function closeSearch() {
+    overlay.classList.add('hidden');
+    if (input) input.value = '';
+    if (resultsEl) resultsEl.innerHTML = '<p class="search-empty-state">Start typing to search…</p>';
+  }
+
+  searchBtn.addEventListener('click', openSearch);
+  closeBtn && closeBtn.addEventListener('click', closeSearch);
+  overlayBg && overlayBg.addEventListener('click', closeSearch);
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !overlay.classList.contains('hidden')) closeSearch();
+    if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+      e.preventDefault();
+      overlay.classList.contains('hidden') ? openSearch() : closeSearch();
+    }
+  });
+
+  input && input.addEventListener('input', () => {
+    const q = input.value.trim().toLowerCase();
+    if (!q) {
+      resultsEl.innerHTML = '<p class="search-empty-state">Start typing to search…</p>';
+      return;
+    }
+    const matches = SEARCH_INDEX.filter(item =>
+      item.name.toLowerCase().includes(q) || item.sub.toLowerCase().includes(q) || item.category.toLowerCase().includes(q)
+    );
+    if (!matches.length) {
+      resultsEl.innerHTML = '<p class="search-no-results">No results found for "<strong>' + q + '</strong>"</p>';
+      return;
+    }
+    resultsEl.innerHTML = matches.map(m => `
+      <div class="search-result-item" data-page="${m.page}">
+        <div class="search-result-icon">${m.icon}</div>
+        <div class="search-result-text">
+          <div class="search-result-name">${m.name}</div>
+          <div class="search-result-sub">${m.sub}</div>
+        </div>
+        <span class="search-result-category">${m.category}</span>
+      </div>
+    `).join('');
+
+    resultsEl.querySelectorAll('.search-result-item').forEach(item => {
+      item.addEventListener('click', () => {
+        const page = item.dataset.page;
+        if (page) navigateTo(page);
+        closeSearch();
+      });
+    });
+  });
+})();
+
+
+/* ══════════════════════════════════════════════════
+   9. ACTIVE NAV HIGHLIGHT
+══════════════════════════════════════════════════ */
+// Handled by navigateTo() — no extra scroll listener needed for SPA.
+
+
+/* ══════════════════════════════════════════════════
+   10. INITIAL STATE
+══════════════════════════════════════════════════ */
+// Set page-home as the default active page on load (kept hidden until login)
+document.addEventListener('DOMContentLoaded', () => {
+  // All pages except home start hidden
+  document.querySelectorAll('.page').forEach(p => {
+    if (p.id !== 'page-home') p.classList.remove('active');
+  });
+  const home = document.getElementById('page-home');
+  if (home) home.classList.add('active');
+});

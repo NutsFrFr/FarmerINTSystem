@@ -3,958 +3,686 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="SchemeRoute matches marginalized entrepreneurs to government funding schemes — and walks them through eligibility, financials, and documents, step by step." />
-  <meta name="theme-color" content="#21295C" />
-
-  <!-- Open Graph -->
-  <meta property="og:title"       content="SchemeRoute — Find the right scheme. Apply with confidence." />
-  <meta property="og:description" content="AI-powered scheme discovery and business advisory for marginalized entrepreneurs." />
-  <meta property="og:type"        content="website" />
-
-  <title>SchemeRoute — AI-Powered Scheme Discovery</title>
-
-  <!-- Fonts -->
+  <title>Farmer INT System — AI-Powered Scheme Discovery</title>
+  <meta name="description" content="Find and apply for government schemes tailored to farmers and rural entrepreneurs across India." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap" />
-
-  <!-- Styles -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
 
-<!-- ── NAV ── -->
-<nav aria-label="Main navigation">
-  <a class="brand" href="#" aria-label="SchemeRoute home">
-    <div class="brand-mark" aria-hidden="true">
-      <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="8" cy="8" r="6" stroke="#fff" stroke-width="1.5"/>
-        <path d="M5 8h6M8 5l3 3-3 3" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
+<!-- ═══════════════════════════════════════════
+     AUTH OVERLAY
+═══════════════════════════════════════════ -->
+<div id="auth-overlay">
+  <div class="auth-left">
+    <div class="auth-left-content">
+      <div class="auth-brand-mark">
+        <span class="auth-logo-leaf">🌾</span>
+        <span class="auth-brand-name">Farmer INT System</span>
+      </div>
+      <h2 class="auth-left-headline">Discover schemes.<br>Grow your livelihood.</h2>
+      <p class="auth-left-sub">AI-powered discovery of 40+ government support programmes for farmers and rural entrepreneurs across India.</p>
+      <div class="auth-trust-chips">
+        <span class="trust-chip">✓ 40+ Schemes Indexed</span>
+        <span class="trust-chip">✓ Free to Use</span>
+        <span class="trust-chip">✓ No Signup Fees</span>
+      </div>
     </div>
-    <span class="brand-name">SchemeRoute</span>
-  </a>
+  </div>
+  <div class="auth-right">
+    <!-- Sign In -->
+    <div id="form-signin" class="auth-form active">
+      <h2 class="auth-form-title">Welcome back</h2>
+      <p class="auth-form-sub">Sign in to your account to continue</p>
 
-  <ul class="nav-links" id="nav-links" role="list">
-    <li><a href="#how">How it works</a></li>
-    <li><a href="#features">Features</a></li>
-    <li><a href="#tech">Tech</a></li>
-    <li><a href="#compare" class="nav-cta">See the impact →</a></li>
-  </ul>
-
-  <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="nav-links">
-    <span></span><span></span><span></span>
-  </button>
-</nav>
-
-<!-- ── HERO ── -->
-<section class="hero" id="hero">
-  <div class="hero-inner">
-    <div class="hero-tag">
-      <span class="hero-tag-dot" aria-hidden="true"></span>
-      <span class="hero-tag-text">AI for Social Inclusion</span>
+      <div class="form-group">
+        <label class="form-label" for="si-email">Email address</label>
+        <input class="form-input" type="email" id="si-email" placeholder="you@example.com" autocomplete="email" />
+        <span class="form-error" id="si-email-err"></span>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="si-password">Password</label>
+        <div class="input-wrapper">
+          <input class="form-input" type="password" id="si-password" placeholder="••••••••" autocomplete="current-password" />
+          <button class="pw-toggle" type="button" data-target="si-password" aria-label="Toggle password visibility">
+            <svg class="eye-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M1 8s2.5-5 7-5 7 5 7 5-2.5 5-7 5-7-5-7-5z" stroke="currentColor" stroke-width="1.4"/><circle cx="8" cy="8" r="2" stroke="currentColor" stroke-width="1.4"/></svg>
+          </button>
+        </div>
+        <span class="form-error" id="si-pw-err"></span>
+      </div>
+      <div class="form-row-between">
+        <label class="checkbox-label">
+          <input type="checkbox" id="si-remember" />
+          <span>Remember me</span>
+        </label>
+        <a href="#" class="link-orange">Forgot password?</a>
+      </div>
+      <button class="btn-auth" id="btn-signin">Sign In</button>
+      <p class="auth-switch-text">Don't have an account? <a href="#" class="link-orange" id="go-signup">Sign up</a></p>
     </div>
 
-    <h1>Find the right scheme.<br><span class="accent">Apply with confidence.</span></h1>
+    <!-- Sign Up -->
+    <div id="form-signup" class="auth-form">
+      <h2 class="auth-form-title">Create account</h2>
+      <p class="auth-form-sub">Join the Farmer INT System — free forever</p>
 
-    <p class="hero-sub">
-      SchemeRoute matches marginalized entrepreneurs to government funding schemes —
-      and walks them through eligibility, financials, and documents, step by step.
-    </p>
+      <div class="form-group">
+        <label class="form-label" for="su-name">Full name</label>
+        <input class="form-input" type="text" id="su-name" placeholder="Ramesh Kumar" autocomplete="name" />
+        <span class="form-error" id="su-name-err"></span>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="su-email">Email address</label>
+        <input class="form-input" type="email" id="su-email" placeholder="you@example.com" autocomplete="email" />
+        <span class="form-error" id="su-email-err"></span>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="su-password">Password</label>
+        <div class="input-wrapper">
+          <input class="form-input" type="password" id="su-password" placeholder="Min. 8 characters" autocomplete="new-password" />
+          <button class="pw-toggle" type="button" data-target="su-password" aria-label="Toggle password visibility">
+            <svg class="eye-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M1 8s2.5-5 7-5 7 5 7 5-2.5 5-7 5-7-5-7-5z" stroke="currentColor" stroke-width="1.4"/><circle cx="8" cy="8" r="2" stroke="currentColor" stroke-width="1.4"/></svg>
+          </button>
+        </div>
+        <span class="form-error" id="su-pw-err"></span>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="su-confirm">Confirm password</label>
+        <div class="input-wrapper">
+          <input class="form-input" type="password" id="su-confirm" placeholder="Re-enter password" autocomplete="new-password" />
+          <button class="pw-toggle" type="button" data-target="su-confirm" aria-label="Toggle password visibility">
+            <svg class="eye-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M1 8s2.5-5 7-5 7 5 7 5-2.5 5-7 5-7-5-7-5z" stroke="currentColor" stroke-width="1.4"/><circle cx="8" cy="8" r="2" stroke="currentColor" stroke-width="1.4"/></svg>
+          </button>
+        </div>
+        <span class="form-error" id="su-confirm-err"></span>
+      </div>
+      <div class="form-group">
+        <label class="checkbox-label">
+          <input type="checkbox" id="su-terms" />
+          <span>I agree to the <a href="#" class="link-orange">Terms of Service</a> and <a href="#" class="link-orange">Privacy Policy</a></span>
+        </label>
+        <span class="form-error" id="su-terms-err"></span>
+      </div>
+      <button class="btn-auth" id="btn-signup">Create Account</button>
+      <p class="auth-switch-text">Already have an account? <a href="#" class="link-orange" id="go-signin">Sign in</a></p>
+    </div>
+  </div>
+</div>
 
-    <div class="hero-actions">
-      <a href="#how" class="btn-primary">
-        See how it works
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-          <path d="M2 7h10M7 2l5 5-5 5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
+<!-- ═══════════════════════════════════════════
+     MAIN APP (shown after login)
+═══════════════════════════════════════════ -->
+<div id="app" class="hidden">
+
+  <!-- TOP NAV -->
+  <header id="topnav">
+    <div class="nav-container">
+      <a href="#" class="nav-brand" data-page="home">
+        <span class="nav-logo">🌾</span>
+        <span class="nav-brand-text">Farmer INT</span>
       </a>
-      <a href="#features" class="btn-ghost">Explore features</a>
-    </div>
 
-    <!-- Interactive Dashboard UI -->
-    <div class="hero-ui" id="dashboard" role="region" aria-label="SchemeRoute Interactive Dashboard">
-      <div class="ui-bar">
-        <div class="ui-dots">
+      <nav class="nav-links" id="nav-links">
+        <a href="#" class="nav-link" data-page="home">
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M1 7.5L7.5 2 14 7.5V13a1 1 0 0 1-1 1H9.5v-4h-4v4H2a1 1 0 0 1-1-1V7.5z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+          Home
+        </a>
+        <a href="#" class="nav-link" data-page="profile">
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="7.5" cy="5" r="3" stroke="currentColor" stroke-width="1.3"/><path d="M1.5 13.5c0-3.314 2.686-5 6-5s6 1.686 6 5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+          Profile
+        </a>
+        <a href="#" class="nav-link" data-page="docs">
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M3 2h7l3 3v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1z" stroke="currentColor" stroke-width="1.3"/><path d="M10 2v3h3" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M5 7h5M5 10h3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+          My Docs
+        </a>
+        <a href="#" class="nav-link" data-page="calc">
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><rect x="2" y="2" width="11" height="11" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M5 5h5M5 7.5h5M5 10h3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+          Finance Calculator
+        </a>
+      </nav>
+
+      <div class="nav-actions">
+        <button class="nav-search-btn" id="nav-search-btn" aria-label="Search">
+          <svg width="17" height="17" viewBox="0 0 17 17" fill="none"><circle cx="7.5" cy="7.5" r="5.5" stroke="currentColor" stroke-width="1.5"/><path d="M12 12l3.5 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </button>
+        <div class="nav-avatar" id="nav-avatar" title="Profile">RK</div>
+        <button class="nav-mobile-btn" id="nav-mobile-btn" aria-label="Open menu" aria-expanded="false">
           <span></span><span></span><span></span>
-        </div>
-        <div class="ui-url">schemeroute.app/dashboard</div>
-      </div>
-      <div class="ui-body">
-        <div class="ui-sidebar" role="tablist" aria-label="Dashboard navigation">
-          <div class="ui-sidebar-logo">
-            <div class="ui-sidebar-logo-mark">
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                <path d="M2 7h10M7 2l5 5-5 5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </div>
-            <span class="ui-sidebar-logo-name">SchemeRoute</span>
-          </div>
-          <div class="ui-nav-item active" data-tab="schemes" role="tab" id="nav-schemes" aria-selected="true" tabindex="0">
-            <div class="ui-nav-icon">
-              <svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor">
-                <path d="M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5v-3zm8 0A1.5 1.5 0 0 1 10.5 1h3A1.5 1.5 0 0 1 15 2.5v3A1.5 1.5 0 0 1 13.5 7h-3A1.5 1.5 0 0 1 9 5.5v-3zm-8 8A1.5 1.5 0 0 1 2.5 9h3A1.5 1.5 0 0 1 7 10.5v3A1.5 1.5 0 0 1 5.5 15h-3A1.5 1.5 0 0 1 1 13.5v-3zm8 0A1.5 1.5 0 0 1 10.5 9h3a1.5 1.5 0 0 1 1.5 1.5v3a1.5 1.5 0 0 1-1.5 1.5h-3A1.5 1.5 0 0 1 9 13.5v-3z"/>
-              </svg>
-            </div>Matched Schemes
-          </div>
-          <div class="ui-nav-item" data-tab="profile" role="tab" id="nav-profile" aria-selected="false" tabindex="0">
-            <div class="ui-nav-icon">
-              <svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor">
-                <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
-              </svg>
-            </div>My Profile
-          </div>
-          <div class="ui-nav-item" data-tab="calc" role="tab" id="nav-calc" aria-selected="false" tabindex="0">
-            <div class="ui-nav-icon">
-              <svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor">
-                <path d="M12 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h8zM4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4z"/><path d="M4 2.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1-.5-.5v-2zm2 5.5H5v1h1V8zm0 2.5H5v1h1v-1zm0 2.5H5v1h1v-1zm2.5-5H7.5v1h1V8zm0 2.5H7.5v1h1v-1zm0 2.5H7.5v1h1v-1zm2.5-5H10v1h1V8zm0 2.5H10v1h1v-1zm0 2.5H10v1h1v-1z"/>
-              </svg>
-            </div>Financial Calc
-          </div>
-          <div class="ui-nav-item" data-tab="docs" role="tab" id="nav-docs" aria-selected="false" tabindex="0">
-            <div class="ui-nav-icon">
-              <svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor">
-                <path d="M4 0h5.293A1 1 0 0 1 10 .293L13.707 4a1 1 0 0 1 .293.707V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2zm5.5 1.5v2a1 1 0 0 0 1 1h2l-3-3zM4 1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V5h-2.5A1.5 1.5 0 0 1 9 3.5V1H4z"/>
-              </svg>
-            </div>Documents
-          </div>
-          <div class="ui-nav-item" data-tab="advisor" role="tab" id="nav-advisor" aria-selected="false" tabindex="0">
-            <div class="ui-nav-icon">
-              <svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor">
-                <path d="M6 12.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5zm-1.5-1a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5zm-.25-2.25A4.5 4.5 0 1 1 11.75 9.25C11.1 9.9 10.7 10.5 10.5 11h-5c-.2-.5-.6-1.1-1.25-1.75zM8 1a3.5 3.5 0 0 0-2.6 5.83c.47.53.8 1.05 1.03 1.67h3.14c.23-.62.56-1.14 1.03-1.67A3.5 3.5 0 0 0 8 1z"/>
-              </svg>
-            </div>AI Advisor
-          </div>
-        </div>
-        <div class="ui-main">
-          <!-- ── TAB 1: Matched Schemes (Original & Preserved) ── -->
-          <div class="ui-tab-panel active" id="tab-schemes" role="tabpanel" aria-labelledby="nav-schemes">
-            <div class="ui-main-head">Matched Schemes — Rajasthan · Handicrafts Sector</div>
-            <div class="ui-scheme-card">
-              <div class="ui-bar-pill"><div class="ui-bar-fill hi" style="width:91%"></div></div>
-              <div class="ui-scheme-info">
-                <div class="ui-scheme-name">NSFDC — Micro Credit Finance</div>
-                <div class="ui-scheme-meta">Up to ₹1 lakh · 6% interest · SC/ST eligible</div>
-              </div>
-              <div class="ui-match-badge hi">91% match</div>
-            </div>
-            <div class="ui-scheme-card">
-              <div class="ui-bar-pill"><div class="ui-bar-fill mid" style="width:78%"></div></div>
-              <div class="ui-scheme-info">
-                <div class="ui-scheme-name">Rajasthan SCA — Term Loan</div>
-                <div class="ui-scheme-meta">Up to ₹5 lakh · 8% interest · State scheme</div>
-              </div>
-              <div class="ui-match-badge mid">78% match</div>
-            </div>
-            <div class="ui-scheme-card" style="opacity:.55">
-              <div class="ui-bar-pill"><div class="ui-bar-fill lo" style="width:44%"></div></div>
-              <div class="ui-scheme-info">
-                <div class="ui-scheme-name">Stand-Up India Scheme</div>
-                <div class="ui-scheme-meta">Income limit not met · See similar schemes</div>
-              </div>
-              <div class="ui-match-badge lo">44% match</div>
-            </div>
-          </div>
-
-          <!-- ── TAB 2: My Profile ── -->
-          <div class="ui-tab-panel" id="tab-profile" role="tabpanel" aria-labelledby="nav-profile">
-            <!-- Profile Banner -->
-            <div class="profile-header-card">
-              <div class="profile-avatar-wrap">
-                <div class="profile-avatar">RK</div>
-                <div class="profile-meta">
-                  <div class="profile-name" id="view-profile-name">Ramesh Kumar</div>
-                  <div class="profile-sub">
-                    <span class="profile-id-badge">ID: SR-2026-8941</span>
-                    <span class="profile-status-badge">Active · 100% Complete</span>
-                  </div>
-                </div>
-              </div>
-              <button type="button" class="profile-edit-btn" id="profile-edit-toggle">
-                <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor">
-                  <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
-                </svg>
-                <span id="profile-edit-btn-text">Edit Profile</span>
-              </button>
-            </div>
-
-            <div id="profile-alert" class="profile-alert" style="display:none;">
-              <span class="alert-icon">✓</span> Profile information updated successfully.
-            </div>
-
-            <!-- Profile View / Edit Form -->
-            <form id="profile-form" class="profile-view-mode">
-              <!-- Card 1: Personal & Contact Information -->
-              <div class="dash-card">
-                <div class="dash-card-header">
-                  <span class="dash-card-title">Personal Information</span>
-                  <span class="dash-card-tag">Identity &amp; Contact</span>
-                </div>
-                <div class="dash-card-grid">
-                  <div class="dash-field">
-                    <label class="dash-label" for="inp-fullname">Full Name</label>
-                    <div class="field-val" data-bind="fullname">Ramesh Kumar</div>
-                    <input class="dash-input edit-only" type="text" id="inp-fullname" name="fullname" value="Ramesh Kumar" required />
-                  </div>
-                  <div class="dash-field">
-                    <label class="dash-label" for="inp-phone">Mobile Number</label>
-                    <div class="field-val" data-bind="phone">+91 98765 43210 <span class="badge-mini-verified">Verified</span></div>
-                    <input class="dash-input edit-only" type="tel" id="inp-phone" name="phone" value="+91 98765 43210" required />
-                  </div>
-                  <div class="dash-field">
-                    <label class="dash-label" for="inp-email">Email Address</label>
-                    <div class="field-val" data-bind="email">ramesh.kumar@example.com</div>
-                    <input class="dash-input edit-only" type="email" id="inp-email" name="email" value="ramesh.kumar@example.com" />
-                  </div>
-                  <div class="dash-field">
-                    <label class="dash-label" for="inp-location">State &amp; District</label>
-                    <div class="field-val" data-bind="location">Rajasthan · Jaipur</div>
-                    <input class="dash-input edit-only" type="text" id="inp-location" name="location" value="Rajasthan · Jaipur" required />
-                  </div>
-                  <div class="dash-field">
-                    <label class="dash-label" for="inp-area">Residence Area</label>
-                    <div class="field-val" data-bind="area">Semi-Urban</div>
-                    <select class="dash-input edit-only" id="inp-area" name="area">
-                      <option value="Rural">Rural</option>
-                      <option value="Semi-Urban" selected>Semi-Urban</option>
-                      <option value="Urban">Urban</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Card 2: Basic Eligibility Information -->
-              <div class="dash-card">
-                <div class="dash-card-header">
-                  <span class="dash-card-title">Eligibility Information</span>
-                  <span class="dash-card-tag">Criteria Evaluation</span>
-                </div>
-                <div class="dash-card-grid">
-                  <div class="dash-field">
-                    <label class="dash-label" for="inp-category">Social Category</label>
-                    <div class="field-val" data-bind="category">Scheduled Caste (SC)</div>
-                    <select class="dash-input edit-only" id="inp-category" name="category">
-                      <option value="Scheduled Caste (SC)" selected>Scheduled Caste (SC)</option>
-                      <option value="Scheduled Tribe (ST)">Scheduled Tribe (ST)</option>
-                      <option value="OBC">OBC</option>
-                      <option value="General / Other">General / Other</option>
-                    </select>
-                  </div>
-                  <div class="dash-field">
-                    <label class="dash-label" for="inp-age">Age</label>
-                    <div class="field-val" data-bind="age">34 Years</div>
-                    <input class="dash-input edit-only" type="number" id="inp-age" name="age" value="34" min="18" max="75" />
-                  </div>
-                  <div class="dash-field">
-                    <label class="dash-label" for="inp-income">Annual Household Income</label>
-                    <div class="field-val" data-bind="income">₹1,80,000 / year</div>
-                    <input class="dash-input edit-only" type="text" id="inp-income" name="income" value="₹1,80,000 / year" />
-                  </div>
-                  <div class="dash-field">
-                    <label class="dash-label" for="inp-gender">Gender</label>
-                    <div class="field-val" data-bind="gender">Male</div>
-                    <select class="dash-input edit-only" id="inp-gender" name="gender">
-                      <option value="Male" selected>Male</option>
-                      <option value="Female">Female</option>
-                      <option value="Other">Other</option>
-                    </select>
-                  </div>
-                  <div class="dash-field">
-                    <label class="dash-label" for="inp-land">Landholding Status</label>
-                    <div class="field-val" data-bind="land">Non-agricultural / Micro Asset</div>
-                    <select class="dash-input edit-only" id="inp-land" name="land">
-                      <option value="Non-agricultural / Micro Asset" selected>Non-agricultural / Micro Asset</option>
-                      <option value="Marginal Landholder (&lt;1 Hectare)">Marginal Landholder (&lt;1 Hectare)</option>
-                      <option value="Small Landholder (1–2 Hectares)">Small Landholder (1–2 Hectares)</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Card 3: Enterprise & Funding Details -->
-              <div class="dash-card">
-                <div class="dash-card-header">
-                  <span class="dash-card-title">Enterprise Details</span>
-                  <span class="dash-card-tag">Business Profile</span>
-                </div>
-                <div class="dash-card-grid">
-                  <div class="dash-field">
-                    <label class="dash-label" for="inp-bizname">Enterprise Name</label>
-                    <div class="field-val" data-bind="bizname">Kumar Leather Crafts &amp; Tailoring</div>
-                    <input class="dash-input edit-only" type="text" id="inp-bizname" name="bizname" value="Kumar Leather Crafts &amp; Tailoring" />
-                  </div>
-                  <div class="dash-field">
-                    <label class="dash-label" for="inp-sector">Business Sector</label>
-                    <div class="field-val" data-bind="sector">Handicrafts &amp; Textiles</div>
-                    <select class="dash-input edit-only" id="inp-sector" name="sector">
-                      <option value="Handicrafts &amp; Textiles" selected>Handicrafts &amp; Textiles</option>
-                      <option value="Food Processing">Food Processing</option>
-                      <option value="Retail &amp; Small Trade">Retail &amp; Small Trade</option>
-                      <option value="Services &amp; Repair">Services &amp; Repair</option>
-                      <option value="Agri-Allied">Agri-Allied</option>
-                    </select>
-                  </div>
-                  <div class="dash-field">
-                    <label class="dash-label" for="inp-stage">Enterprise Stage</label>
-                    <div class="field-val" data-bind="stage">Existing Business (3 Years Operational)</div>
-                    <select class="dash-input edit-only" id="inp-stage" name="stage">
-                      <option value="New / Aspiring Entrepreneur">New / Aspiring Entrepreneur</option>
-                      <option value="Existing Business (3 Years Operational)" selected>Existing Business (3 Years Operational)</option>
-                      <option value="Expansion / Scaling Stage">Expansion / Scaling Stage</option>
-                    </select>
-                  </div>
-                  <div class="dash-field">
-                    <label class="dash-label" for="inp-capital">Required Funding Amount</label>
-                    <div class="field-val" data-bind="capital">₹1,50,000</div>
-                    <input class="dash-input edit-only" type="text" id="inp-capital" name="capital" value="₹1,50,000" />
-                  </div>
-                  <div class="dash-field">
-                    <label class="dash-label" for="inp-credit">Prior Institutional Loan</label>
-                    <div class="field-val" data-bind="credit">None (First-time borrower)</div>
-                    <select class="dash-input edit-only" id="inp-credit" name="credit">
-                      <option value="None (First-time borrower)" selected>None (First-time borrower)</option>
-                      <option value="Repaid prior micro-loan">Repaid prior micro-loan</option>
-                      <option value="Active bank loan">Active bank loan</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Edit Mode Action Footer -->
-              <div class="profile-actions-bar edit-only">
-                <button type="submit" class="dash-btn-primary">Save Changes</button>
-                <button type="button" class="dash-btn-secondary" id="profile-cancel-btn">Cancel</button>
-              </div>
-            </form>
-          </div>
-
-          <!-- ── TAB 3: Financial Calc ── -->
-          <div class="ui-tab-panel" id="tab-calc" role="tabpanel" aria-labelledby="nav-calc">
-            <div class="ui-main-head">Financial Calculator</div>
-            <p class="ui-calc-sub">Estimate your monthly installment (EMI), contribution share, and total repayment in plain language.</p>
-
-            <div class="calc-grid">
-              <!-- Left Input Controls -->
-              <div class="calc-inputs-card">
-                <!-- Loan Amount -->
-                <div class="calc-field">
-                  <div class="calc-field-top">
-                    <label class="calc-label" for="calc-amount">Required Loan Amount</label>
-                    <div class="calc-field-display" id="calc-amount-display">₹1,00,000</div>
-                  </div>
-                  <input type="range" class="calc-range" id="calc-amount" min="10000" max="1000000" step="5000" value="100000" />
-                  <div class="calc-quick-pills">
-                    <button type="button" class="calc-pill" data-amount="50000">₹50K</button>
-                    <button type="button" class="calc-pill active" data-amount="100000">₹1 Lakh</button>
-                    <button type="button" class="calc-pill" data-amount="200000">₹2 Lakh</button>
-                    <button type="button" class="calc-pill" data-amount="500000">₹5 Lakh</button>
-                  </div>
-                </div>
-
-                <!-- Tenure -->
-                <div class="calc-field">
-                  <div class="calc-field-top">
-                    <label class="calc-label" for="calc-tenure">Repayment Period (Tenure)</label>
-                    <div class="calc-field-display" id="calc-tenure-display">3 Years (36 mos)</div>
-                  </div>
-                  <input type="range" class="calc-range" id="calc-tenure" min="1" max="7" step="1" value="3" />
-                  <div class="calc-ticks">
-                    <span>1 Yr</span>
-                    <span>2 Yrs</span>
-                    <span>3 Yrs</span>
-                    <span>5 Yrs</span>
-                    <span>7 Yrs</span>
-                  </div>
-                </div>
-
-                <!-- Interest Rate -->
-                <div class="calc-field">
-                  <div class="calc-field-top">
-                    <label class="calc-label" for="calc-rate">Annual Interest Rate (% p.a.)</label>
-                    <div class="calc-field-display" id="calc-rate-display">6.0% p.a.</div>
-                  </div>
-                  <input type="range" class="calc-range" id="calc-rate" min="3" max="15" step="0.5" value="6" />
-                </div>
-
-                <!-- Margin / Contribution -->
-                <div class="calc-field">
-                  <div class="calc-field-top">
-                    <label class="calc-label" for="calc-margin">Your Contribution Share</label>
-                    <div class="calc-field-display" id="calc-margin-display">10% (₹10,000)</div>
-                  </div>
-                  <input type="range" class="calc-range" id="calc-margin" min="0" max="25" step="5" value="10" />
-                  <div class="calc-helper">Margin money: the portion of total capital you invest yourself.</div>
-                </div>
-              </div>
-
-              <!-- Right Results Card -->
-              <div class="calc-results-card">
-                <div class="calc-result-hero">
-                  <div class="calc-hero-label">Estimated Monthly Installment (EMI)</div>
-                  <div class="calc-hero-val" id="calc-res-emi">₹2,738</div>
-                  <div class="calc-hero-note">Fixed amount payable each month</div>
-                </div>
-
-                <div class="calc-breakdown-list">
-                  <div class="calc-breakdown-row">
-                    <span class="calc-row-lbl">Total Project Requirement</span>
-                    <span class="calc-row-val" id="calc-res-total-cost">₹1,00,000</span>
-                  </div>
-                  <div class="calc-breakdown-row">
-                    <span class="calc-row-lbl">Your Own Contribution</span>
-                    <span class="calc-row-val" id="calc-res-downpayment">₹10,000</span>
-                  </div>
-                  <div class="calc-breakdown-row">
-                    <span class="calc-row-lbl">Net Borrowed Loan Amount</span>
-                    <span class="calc-row-val" id="calc-res-principal">₹90,000</span>
-                  </div>
-                  <div class="calc-breakdown-row">
-                    <span class="calc-row-lbl">Total Interest Payable</span>
-                    <span class="calc-row-val accent-row" id="calc-res-interest">₹8,568</span>
-                  </div>
-                  <div class="calc-breakdown-row total-row">
-                    <span class="calc-row-lbl">Total Repayment Amount</span>
-                    <span class="calc-row-val" id="calc-res-total-repay">₹98,568</span>
-                  </div>
-                </div>
-
-                <div class="calc-tip-box">
-                  <div class="calc-tip-title">Affordability Guide</div>
-                  <p class="calc-tip-desc">Ensure your estimated net monthly profit comfortably covers this monthly installment (approx. ₹<span id="calc-res-minprofit">5,476</span>/mo).</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- ── TAB 4: Documents ── -->
-          <div class="ui-tab-panel" id="tab-docs" role="tabpanel" aria-labelledby="nav-docs">
-            <div class="ui-main-head">Document Management</div>
-            <p class="ui-calc-sub">Track required paperwork, verify uploaded certificates, and complete missing documents.</p>
-
-            <!-- Summary Status Bar -->
-            <div class="docs-summary-bar">
-              <div class="docs-summary-info">
-                <div class="docs-stat-title"><span id="docs-uploaded-count">3</span> of 5 Documents Uploaded</div>
-                <div class="docs-stat-sub"><span class="docs-missing-tag" id="docs-missing-count">2 Missing Documents</span> Require your action before submission</div>
-              </div>
-              <div class="docs-prog-bar">
-                <div class="docs-prog-fill" id="docs-prog-fill" style="width: 60%;"></div>
-              </div>
-            </div>
-
-            <!-- Upload Area -->
-            <div class="docs-upload-zone" id="docs-dropzone">
-              <div class="upload-icon-circle">
-                <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
-                  <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
-                  <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V10.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z"/>
-                </svg>
-              </div>
-              <div class="upload-text-group">
-                <div class="upload-headline">Click or drag documents here to upload</div>
-                <div class="upload-subtext">Supported formats: PDF, JPG, PNG (Max 5MB per file)</div>
-              </div>
-              <div class="upload-actions">
-                <select class="upload-doc-select" id="upload-doc-select" aria-label="Select document type to upload">
-                  <option value="Bank Passbook / Statement">Bank Account Passbook / Statement</option>
-                  <option value="Business Address Proof">Business Address / Shop Proof</option>
-                  <option value="Aadhaar Card">Aadhaar Card (Update)</option>
-                  <option value="Caste Certificate">Caste Certificate (Update)</option>
-                  <option value="Income Certificate">Income Proof (Update)</option>
-                </select>
-                <label for="doc-file-input" class="dash-btn-primary upload-btn-label">Browse Files</label>
-                <input type="file" id="doc-file-input" class="visually-hidden" accept=".pdf,.jpg,.jpeg,.png" />
-              </div>
-            </div>
-
-            <div id="doc-upload-feedback" class="doc-upload-feedback" style="display:none;"></div>
-
-            <!-- Documents List -->
-            <div class="docs-list" id="docs-list-container">
-              <!-- Item 1 -->
-              <div class="doc-item" data-id="doc-aadhaar">
-                <div class="doc-icon-wrap verified">
-                  <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor">
-                    <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022z"/>
-                  </svg>
-                </div>
-                <div class="doc-info">
-                  <div class="doc-name">Aadhaar Card (Identity Proof)</div>
-                  <div class="doc-details">File: aadhaar_card_rk.pdf · 1.2 MB · Uploaded on 12 Aug 2026</div>
-                </div>
-                <div class="doc-status-col">
-                  <span class="doc-badge verified">Verified</span>
-                </div>
-                <div class="doc-actions-col">
-                  <button type="button" class="doc-btn-view" data-name="Aadhaar Card (Identity Proof)" data-file="aadhaar_card_rk.pdf" data-size="1.2 MB" data-date="12 Aug 2026" data-status="Verified">View</button>
-                </div>
-              </div>
-
-              <!-- Item 2 -->
-              <div class="doc-item" data-id="doc-caste">
-                <div class="doc-icon-wrap verified">
-                  <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor">
-                    <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022z"/>
-                  </svg>
-                </div>
-                <div class="doc-info">
-                  <div class="doc-name">Caste Certificate (Community Proof)</div>
-                  <div class="doc-details">File: sc_certificate_rk.pdf · 850 KB · Uploaded on 14 Aug 2026</div>
-                </div>
-                <div class="doc-status-col">
-                  <span class="doc-badge verified">Verified</span>
-                </div>
-                <div class="doc-actions-col">
-                  <button type="button" class="doc-btn-view" data-name="Caste Certificate (Community Proof)" data-file="sc_certificate_rk.pdf" data-size="850 KB" data-date="14 Aug 2026" data-status="Verified">View</button>
-                </div>
-              </div>
-
-              <!-- Item 3 -->
-              <div class="doc-item" data-id="doc-income">
-                <div class="doc-icon-wrap review">
-                  <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor">
-                    <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z"/><path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z"/>
-                  </svg>
-                </div>
-                <div class="doc-info">
-                  <div class="doc-name">Income Certificate / Self-Declaration</div>
-                  <div class="doc-details">File: income_declaration_2026.jpg · 2.1 MB · Uploaded on 18 Sep 2026</div>
-                </div>
-                <div class="doc-status-col">
-                  <span class="doc-badge review">Under Review</span>
-                </div>
-                <div class="doc-actions-col">
-                  <button type="button" class="doc-btn-view" data-name="Income Certificate / Self-Declaration" data-file="income_declaration_2026.jpg" data-size="2.1 MB" data-date="18 Sep 2026" data-status="Under Review">View</button>
-                </div>
-              </div>
-
-              <!-- Item 4 -->
-              <div class="doc-item missing-item" data-id="doc-bank">
-                <div class="doc-icon-wrap missing">
-                  <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor">
-                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/><path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z"/>
-                  </svg>
-                </div>
-                <div class="doc-info">
-                  <div class="doc-name">Bank Account Passbook / Statement</div>
-                  <div class="doc-details">Required for loan processing (Last 6 months account summary)</div>
-                </div>
-                <div class="doc-status-col">
-                  <span class="doc-badge missing">Missing</span>
-                </div>
-                <div class="doc-actions-col">
-                  <button type="button" class="doc-btn-upload-trigger" data-target="Bank Passbook / Statement">Upload Now</button>
-                </div>
-              </div>
-
-              <!-- Item 5 -->
-              <div class="doc-item missing-item" data-id="doc-biz">
-                <div class="doc-icon-wrap missing">
-                  <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor">
-                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/><path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z"/>
-                  </svg>
-                </div>
-                <div class="doc-info">
-                  <div class="doc-name">Business Address Proof / Shop Proof</div>
-                  <div class="doc-details">Electricity bill or local panchayat/municipality trade permit</div>
-                </div>
-                <div class="doc-status-col">
-                  <span class="doc-badge missing">Missing</span>
-                </div>
-                <div class="doc-actions-col">
-                  <button type="button" class="doc-btn-upload-trigger" data-target="Business Address Proof">Upload Now</button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- ── TAB 5: AI Advisor ── -->
-          <div class="ui-tab-panel" id="tab-advisor" role="tabpanel" aria-labelledby="nav-advisor">
-            <div class="advisor-head">
-              <div class="advisor-head-info">
-                <div class="advisor-avatar" aria-hidden="true">
-                  <svg width="18" height="18" viewBox="0 0 16 16" fill="none">
-                    <circle cx="8" cy="8" r="6" stroke="#fff" stroke-width="1.5"/>
-                    <path d="M5 8h6M8 5l3 3-3 3" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                </div>
-                <div>
-                  <div class="advisor-title">SchemeRoute AI Advisor</div>
-                  <div class="advisor-status"><span class="advisor-status-dot"></span>Online · Plain-language guidance on eligibility &amp; paperwork</div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Suggested Prompts -->
-            <div class="advisor-prompts-bar">
-              <span class="prompts-label">Suggested Questions:</span>
-              <div class="prompts-chips">
-                <button type="button" class="prompt-chip" data-prompt="What documents do I need to prepare?">What documents do I need to prepare?</button>
-                <button type="button" class="prompt-chip" data-prompt="How is the loan interest and EMI calculated?">How is loan interest and EMI calculated?</button>
-                <button type="button" class="prompt-chip" data-prompt="What are the caste certificate requirements for SC/ST?">Caste certificate requirements?</button>
-                <button type="button" class="prompt-chip" data-prompt="How do I get an income certificate for my business?">How to get an income certificate?</button>
-              </div>
-            </div>
-
-            <!-- Chat Window -->
-            <div class="advisor-chat-window" id="advisor-chat-window">
-              <div class="chat-msg bot">
-                <div class="chat-bubble">
-                  Hello! I am your <strong>SchemeRoute AI Advisor</strong>. I explain eligibility criteria, guide you on paperwork, and help you understand loan calculations in simple, straightforward language. How can I help you today?
-                </div>
-                <div class="chat-time">Just now</div>
-              </div>
-              <div class="chat-msg user">
-                <div class="chat-bubble">
-                  I don't have a formal business registration yet. Can I still apply for a small loan?
-                </div>
-                <div class="chat-time">Just now</div>
-              </div>
-              <div class="chat-msg bot">
-                <div class="chat-bubble">
-                  Yes! For micro and small enterprise loans under ₹1–2 lakh, formal company registration is often not mandatory. A local panchayat/municipal trade permit, electricity bill for your workshop, or Udyam Registration (which is free and online) is typically sufficient.
-                </div>
-                <div class="chat-time">Just now</div>
-              </div>
-            </div>
-
-            <!-- Input Row -->
-            <div class="advisor-input-row">
-              <input type="text" class="advisor-input" id="dash-advisor-input" placeholder="Ask about eligibility criteria, required paperwork, or loan terms…" aria-label="Ask AI Advisor" />
-              <button type="button" class="advisor-send-btn" id="dash-advisor-send" aria-label="Send question">
-                <svg width="15" height="15" viewBox="0 0 16 16" fill="none">
-                  <path d="M14 2L2 8l5 2 2 5 5-13z" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </button>
-            </div>
-          </div>
-        </div>
+        </button>
       </div>
     </div>
+  </header>
 
-    <!-- Document Preview Modal -->
-    <div class="doc-modal-overlay" id="doc-modal-overlay" aria-hidden="true" style="display:none;">
-      <div class="doc-modal" role="dialog" aria-modal="true" aria-labelledby="doc-modal-title">
-        <div class="doc-modal-header">
-          <div class="doc-modal-title" id="doc-modal-title">Document Details</div>
-          <button type="button" class="doc-modal-close" id="doc-modal-close" aria-label="Close modal">&times;</button>
-        </div>
-        <div class="doc-modal-body">
-          <div class="doc-preview-box">
-            <svg width="36" height="36" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2">
-              <path d="M4 1h5.5l4 4V15H4V1z"/>
-              <path d="M9.5 1v4H13.5"/>
-              <path d="M6 7h4M6 9.5h4M6 12h2"/>
-            </svg>
-            <div class="doc-preview-filename" id="doc-modal-filename">aadhaar_card_rk.pdf</div>
-          </div>
-          <div class="doc-modal-grid">
-            <div class="modal-detail-row"><span class="md-lbl">Document Name:</span><span class="md-val" id="doc-modal-docname">-</span></div>
-            <div class="modal-detail-row"><span class="md-lbl">File Size:</span><span class="md-val" id="doc-modal-filesize">-</span></div>
-            <div class="modal-detail-row"><span class="md-lbl">Uploaded Date:</span><span class="md-val" id="doc-modal-filedate">-</span></div>
-            <div class="modal-detail-row"><span class="md-lbl">Verification Status:</span><span class="md-val" id="doc-modal-filestatus">-</span></div>
-          </div>
-        </div>
-        <div class="doc-modal-footer">
-          <button type="button" class="dash-btn-secondary" id="doc-modal-close-btn">Close</button>
-        </div>
+  <!-- SEARCH OVERLAY -->
+  <div id="search-overlay" class="search-overlay hidden" role="dialog" aria-label="Search" aria-modal="true">
+    <div class="search-overlay-bg" id="search-bg"></div>
+    <div class="search-overlay-box">
+      <div class="search-input-row">
+        <svg class="search-ico" width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="8" cy="8" r="5.5" stroke="#9CA3AF" stroke-width="1.6"/><path d="M12.5 12.5l3.5 3.5" stroke="#9CA3AF" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <input type="text" id="search-input" class="search-text-input" placeholder="Search schemes, features, documents…" autocomplete="off" spellcheck="false" />
+        <button class="search-close-btn" id="search-close-btn" aria-label="Close search">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 2l10 10M12 2L2 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+      <div id="search-results" class="search-results">
+        <p class="search-empty-state">Start typing to search…</p>
       </div>
     </div>
   </div>
-</section>
 
-<!-- ── HOW IT WORKS ── -->
-<section class="sec how" id="how">
-  <div class="sec-inner">
-    <p class="eyebrow">How it works</p>
-    <h2>From profile to application-ready<br>in three steps</h2>
+  <!-- ══ PAGE: HOME ══ -->
+  <main id="page-home" class="page active">
 
-    <div class="steps">
-      <div class="step reveal">
-        <div class="step-circle" aria-hidden="true">1</div>
+    <!-- Hero -->
+    <section class="home-hero">
+      <div class="container">
+        <div class="hero-inner">
+          <div class="hero-text">
+            <div class="hero-badge">🌾 AI-Powered Scheme Discovery</div>
+            <h1 class="hero-heading">Find the right scheme.<br>Apply with confidence.</h1>
+            <p class="hero-sub">Discover government support programmes tailored to your farm, sector, and eligibility — all in one place.</p>
+            <div class="hero-actions">
+              <button class="btn-primary" data-page-go="profile">Get Started</button>
+              <button class="btn-secondary" data-page-go="calc">Calculate Finance</button>
+            </div>
+          </div>
+          <div class="hero-card-preview">
+            <div class="preview-card">
+              <div class="preview-badge high">91% Match</div>
+              <div class="preview-name">NSFDC Micro Credit Finance</div>
+              <div class="preview-detail">Up to ₹1 lakh · 6% interest</div>
+            </div>
+            <div class="preview-card secondary">
+              <div class="preview-badge med">78% Match</div>
+              <div class="preview-name">Rajasthan SCA Term Loan</div>
+              <div class="preview-detail">Up to ₹5 lakh · 8% interest</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Matched Schemes -->
+    <section class="section">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">Matched Schemes</h2>
+            <p class="section-desc">Based on your profile and eligibility</p>
+          </div>
+          <button class="btn-outline-sm">View All Schemes</button>
+        </div>
+        <div class="schemes-grid" id="schemes-grid">
+          <div class="scheme-card reveal">
+            <div class="scheme-card-head">
+              <span class="match-badge high">91% Match</span>
+              <span class="scheme-type-tag loan">Loan</span>
+            </div>
+            <h3 class="scheme-name">NSFDC Micro Credit Finance</h3>
+            <p class="scheme-desc">Loans up to ₹1 lakh at 6% interest for SC/ST entrepreneurs in agri and allied sectors.</p>
+            <div class="scheme-tags">
+              <span class="scheme-tag">🏛 National</span>
+              <span class="scheme-tag">💰 Up to ₹1 lakh</span>
+              <span class="scheme-tag">📋 SC/ST</span>
+            </div>
+            <div class="scheme-card-actions">
+              <button class="btn-card-primary">Apply Now</button>
+              <button class="btn-card-ghost">Learn More</button>
+            </div>
+          </div>
+
+          <div class="scheme-card reveal">
+            <div class="scheme-card-head">
+              <span class="match-badge med">78% Match</span>
+              <span class="scheme-type-tag subsidy">Subsidy</span>
+            </div>
+            <h3 class="scheme-name">Rajasthan SCA Term Loan</h3>
+            <p class="scheme-desc">State-level term loan for SC entrepreneurs up to ₹5 lakh at 8% for agri-linked ventures.</p>
+            <div class="scheme-tags">
+              <span class="scheme-tag">📍 Rajasthan</span>
+              <span class="scheme-tag">💰 Up to ₹5 lakh</span>
+              <span class="scheme-tag">📋 SC</span>
+            </div>
+            <div class="scheme-card-actions">
+              <button class="btn-card-primary">Apply Now</button>
+              <button class="btn-card-ghost">Learn More</button>
+            </div>
+          </div>
+
+          <div class="scheme-card reveal">
+            <div class="scheme-card-head">
+              <span class="match-badge low">44% Match</span>
+              <span class="scheme-type-tag grant">Grant</span>
+            </div>
+            <h3 class="scheme-name">Stand-Up India</h3>
+            <p class="scheme-desc">Bank loans ₹10 lakh–₹1 crore for SC/ST and women setting up greenfield enterprises.</p>
+            <div class="scheme-tags">
+              <span class="scheme-tag">🏛 National</span>
+              <span class="scheme-tag">💰 ₹10L–₹1Cr</span>
+              <span class="scheme-tag">📋 SC/ST/Women</span>
+            </div>
+            <div class="scheme-card-actions">
+              <button class="btn-card-primary">Apply Now</button>
+              <button class="btn-card-ghost">Learn More</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stats -->
+    <section class="section section-tinted">
+      <div class="container">
+        <div class="stats-header">
+          <h2 class="section-title">Impact at a Glance</h2>
+          <p class="section-desc">Stand-Up India 2024-25 data</p>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-card reveal">
+            <div class="stat-icon">📊</div>
+            <div class="stat-num">40+</div>
+            <div class="stat-label">Schemes Indexed</div>
+          </div>
+          <div class="stat-card reveal">
+            <div class="stat-icon">💸</div>
+            <div class="stat-num">₹10K Cr</div>
+            <div class="stat-label">Disbursed (Stand-Up India)</div>
+          </div>
+          <div class="stat-card reveal">
+            <div class="stat-icon">🏦</div>
+            <div class="stat-num">2.3L+</div>
+            <div class="stat-label">Accounts Sanctioned</div>
+          </div>
+          <div class="stat-card reveal">
+            <div class="stat-icon">👩‍🌾</div>
+            <div class="stat-num">48%</div>
+            <div class="stat-label">Women Beneficiaries</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="section">
+      <div class="container">
+        <h2 class="section-title text-center">How It Works</h2>
+        <p class="section-desc text-center">Four simple steps to find and apply for the right scheme</p>
+        <div class="steps-grid">
+          <div class="step-card reveal">
+            <div class="step-num-badge">01</div>
+            <div class="step-icon-wrap">👤</div>
+            <h3 class="step-title">Build Your Profile</h3>
+            <p class="step-desc">Enter your personal details, caste category, state, and business type.</p>
+          </div>
+          <div class="step-card reveal">
+            <div class="step-num-badge">02</div>
+            <div class="step-icon-wrap">🔍</div>
+            <h3 class="step-title">Get Matched</h3>
+            <p class="step-desc">Our AI scans 40+ schemes and ranks them by your eligibility score.</p>
+          </div>
+          <div class="step-card reveal">
+            <div class="step-num-badge">03</div>
+            <div class="step-icon-wrap">📄</div>
+            <h3 class="step-title">Upload Documents</h3>
+            <p class="step-desc">Upload required documents directly to your secure dashboard.</p>
+          </div>
+          <div class="step-card reveal">
+            <div class="step-num-badge">04</div>
+            <div class="step-icon-wrap">✅</div>
+            <h3 class="step-title">Apply with Confidence</h3>
+            <p class="step-desc">Track application status and receive scheme approval updates.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Banner -->
+    <section class="section">
+      <div class="container">
+        <div class="cta-banner reveal">
+          <div class="cta-banner-text">
+            <h2>Ready to find your scheme?</h2>
+            <p>Complete your profile and let our AI match you to the right opportunities.</p>
+          </div>
+          <div class="cta-banner-actions">
+            <button class="btn-primary" data-page-go="profile">Complete Profile</button>
+            <button class="btn-outline-white" data-page-go="docs">Upload Documents</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main><!-- /#page-home -->
+
+  <!-- ══ PAGE: PROFILE ══ -->
+  <main id="page-profile" class="page hidden">
+    <div class="container page-inner">
+
+      <div class="page-header">
         <div>
-          <div class="step-title">Build your profile</div>
-          <div class="step-desc">Enter your location, sector, SC/ST status, income, and business details. SchemeRoute uses GPS or manual entry — no paperwork needed to get started.</div>
+          <h1 class="page-title">My Profile</h1>
+          <p class="page-subtitle">Manage your personal information and eligibility details</p>
+        </div>
+        <button class="btn-primary" id="profile-edit-btn">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M10 2l2 2L4 12H2v-2L10 2z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+          Edit Profile
+        </button>
+      </div>
+
+      <!-- Profile hero card -->
+      <div class="profile-hero">
+        <div class="profile-avatar-group">
+          <div class="profile-avatar" id="profile-avatar-display">RK</div>
+          <button class="avatar-btn" id="avatar-change-btn">Change Photo</button>
+        </div>
+        <div class="profile-summary">
+          <h2 class="profile-display-name" id="profile-display-name">Ramesh Kumar</h2>
+          <p class="profile-display-email" id="profile-display-email">ramesh.kumar@example.com</p>
+          <div class="profile-chips">
+            <span class="profile-chip verified">✓ Verified Farmer</span>
+            <span class="profile-chip">📍 Jaipur, Rajasthan</span>
+            <span class="profile-chip">🏷 SC Category</span>
+          </div>
         </div>
       </div>
-      <div class="step reveal">
-        <div class="step-circle" aria-hidden="true">2</div>
+
+      <!-- Personal + Eligibility cards -->
+      <div class="profile-grid">
+        <div class="info-card">
+          <h3 class="card-section-title">Personal Information</h3>
+          <div class="field-grid">
+            <div class="field-group">
+              <label class="field-label">Full Name</label>
+              <input class="field-input" type="text" id="p-name" value="Ramesh Kumar" disabled />
+            </div>
+            <div class="field-group">
+              <label class="field-label">Email Address</label>
+              <input class="field-input" type="email" id="p-email" value="ramesh.kumar@example.com" disabled />
+            </div>
+            <div class="field-group">
+              <label class="field-label">Phone Number</label>
+              <input class="field-input" type="tel" id="p-phone" value="+91 98765 43210" disabled />
+            </div>
+            <div class="field-group">
+              <label class="field-label">Location</label>
+              <input class="field-input" type="text" id="p-location" value="Jaipur, Rajasthan" disabled />
+            </div>
+            <div class="field-group">
+              <label class="field-label">Date of Birth</label>
+              <input class="field-input" type="date" id="p-dob" value="1985-06-15" disabled />
+            </div>
+            <div class="field-group">
+              <label class="field-label">Gender</label>
+              <select class="field-input" id="p-gender" disabled>
+                <option value="male" selected>Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other / Prefer not to say</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-card">
+          <h3 class="card-section-title">Eligibility Information</h3>
+          <div class="field-grid">
+            <div class="field-group">
+              <label class="field-label">Caste Category</label>
+              <select class="field-input" id="p-category" disabled>
+                <option value="sc" selected>SC (Scheduled Caste)</option>
+                <option value="st">ST (Scheduled Tribe)</option>
+                <option value="obc">OBC</option>
+                <option value="gen">General</option>
+              </select>
+            </div>
+            <div class="field-group">
+              <label class="field-label">Annual Income</label>
+              <input class="field-input" type="text" id="p-income" value="₹2,40,000" disabled />
+            </div>
+            <div class="field-group">
+              <label class="field-label">Business Type</label>
+              <input class="field-input" type="text" id="p-biz" value="Tailoring / Garments" disabled />
+            </div>
+            <div class="field-group">
+              <label class="field-label">Business Stage</label>
+              <select class="field-input" id="p-stage" disabled>
+                <option value="idea">Idea Stage</option>
+                <option value="startup" selected>Startup</option>
+                <option value="growth">Growth Stage</option>
+                <option value="established">Established</option>
+              </select>
+            </div>
+            <div class="field-group">
+              <label class="field-label">Aadhaar Number</label>
+              <input class="field-input" type="text" id="p-aadhaar" value="XXXX XXXX 4521" disabled />
+            </div>
+            <div class="field-group">
+              <label class="field-label">PAN Number</label>
+              <input class="field-input" type="text" id="p-pan" value="ABCPK1234D" disabled />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Edit actions (hidden by default) -->
+      <div class="profile-save-row hidden" id="profile-save-row">
+        <button class="btn-outline-sm" id="profile-cancel-btn">Cancel</button>
+        <button class="btn-primary" id="profile-save-btn">Save Changes</button>
+      </div>
+
+    </div>
+  </main><!-- /#page-profile -->
+
+  <!-- ══ PAGE: MY DOCS ══ -->
+  <main id="page-docs" class="page hidden">
+    <div class="container page-inner">
+
+      <div class="page-header">
         <div>
-          <div class="step-title">Get matched schemes</div>
-          <div class="step-desc">The rule engine compares your profile against every eligible scheme — showing you a match percentage, the reasons behind it, and alternatives if you don't qualify.</div>
+          <h1 class="page-title">My Documents</h1>
+          <p class="page-subtitle">Upload, manage, and track your scheme application documents</p>
+        </div>
+        <button class="btn-primary" id="upload-doc-btn">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1v8M4 4l3-3 3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M1 12h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          Upload Document
+        </button>
+      </div>
+
+      <!-- Summary stats -->
+      <div class="docs-stats-row">
+        <div class="doc-stat">
+          <span class="doc-stat-num" id="stat-total">5</span>
+          <span class="doc-stat-label">Total</span>
+        </div>
+        <div class="doc-stat-divider"></div>
+        <div class="doc-stat">
+          <span class="doc-stat-num verified" id="stat-verified">2</span>
+          <span class="doc-stat-label">Verified</span>
+        </div>
+        <div class="doc-stat-divider"></div>
+        <div class="doc-stat">
+          <span class="doc-stat-num review" id="stat-review">1</span>
+          <span class="doc-stat-label">Under Review</span>
+        </div>
+        <div class="doc-stat-divider"></div>
+        <div class="doc-stat">
+          <span class="doc-stat-num missing" id="stat-missing">2</span>
+          <span class="doc-stat-label">Missing</span>
         </div>
       </div>
-      <div class="step reveal">
-        <div class="step-circle" aria-hidden="true">3</div>
+
+      <!-- Upload zone (shown when Upload is clicked) -->
+      <div id="upload-zone" class="upload-zone hidden">
+        <svg width="40" height="40" viewBox="0 0 40 40" fill="none"><path d="M20 6v20M14 12l6-6 6 6" stroke="#F97316" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 32h28" stroke="#F97316" stroke-width="2.2" stroke-linecap="round"/></svg>
+        <p class="upload-zone-title">Drag and drop your files here</p>
+        <p class="upload-zone-sub">or <label for="file-input" class="upload-browse-link">browse files</label></p>
+        <input type="file" id="file-input" accept=".pdf,.jpg,.jpeg,.png" multiple style="display:none" />
+        <p class="upload-zone-note">Supported: PDF, JPG, PNG · Max size: 10 MB per file</p>
+        <button class="btn-outline-sm" id="upload-zone-close">Cancel</button>
+      </div>
+
+      <!-- Document list -->
+      <div class="docs-table-card">
+        <div class="docs-table-head">
+          <span class="col-name">Document</span>
+          <span class="col-type">Type</span>
+          <span class="col-date">Uploaded</span>
+          <span class="col-status">Status</span>
+          <span class="col-actions">Actions</span>
+        </div>
+        <div class="docs-table-body" id="docs-table-body">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+
+    </div>
+  </main><!-- /#page-docs -->
+
+  <!-- ══ PAGE: FINANCE CALCULATOR ══ -->
+  <main id="page-calc" class="page hidden">
+    <div class="container page-inner">
+
+      <div class="page-header">
         <div>
-          <div class="step-title">Apply with a plan</div>
-          <div class="step-desc">Get your EMI calculations, a personalized document checklist, and AI-powered guidance — all linked to the official application portal.</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ── FEATURES ── -->
-<section class="sec features" id="features">
-  <div class="sec-inner">
-    <p class="eyebrow">Platform features</p>
-    <h2>Everything in one place</h2>
-    <p class="lead">Six capabilities that cover every gap between an entrepreneur and their first loan.</p>
-
-    <div class="feat-grid">
-      <div class="feat reveal">
-        <div class="feat-icon-wrap" aria-hidden="true">📍</div>
-        <div class="feat-title">Location Discovery</div>
-        <p class="feat-body">Auto-detects your state and district via GPS, then pulls all eligible SCA and Central schemes for your area. Manual entry if GPS is off.</p>
-      </div>
-      <div class="feat reveal">
-        <div class="feat-icon-wrap" aria-hidden="true">🎯</div>
-        <div class="feat-title">Adaptive Scheme Finder</div>
-        <p class="feat-body">Scores your profile against each scheme's actual eligibility criteria — age, SC status, income, sector, project cost — and tells you exactly why you qualify or don't.</p>
-      </div>
-      <div class="feat reveal">
-        <div class="feat-icon-wrap" aria-hidden="true">🧮</div>
-        <div class="feat-title">Financial Calculator</div>
-        <p class="feat-body">Calculates loan amounts, your contribution share, interest, monthly EMI, and total repayment — per scheme, not as a generic estimate.</p>
-      </div>
-      <div class="feat reveal">
-        <div class="feat-icon-wrap" aria-hidden="true">📋</div>
-        <div class="feat-title">Document Handler</div>
-        <p class="feat-body">Generates a personalized document checklist for your selected scheme. Detects what's missing and links to every official source.</p>
-      </div>
-      <div class="feat reveal">
-        <div class="feat-icon-wrap" aria-hidden="true">🤖</div>
-        <div class="feat-title">AI Advisor</div>
-        <p class="feat-body">Llama 3.2 3B answers your questions and explains eligibility in plain language — but never makes eligibility calls or crunches numbers itself.</p>
-      </div>
-      <div class="feat reveal">
-        <div class="feat-icon-wrap" aria-hidden="true">🗄️</div>
-        <div class="feat-title">Live Scheme Database</div>
-        <p class="feat-body">JSON-based scheme store with state-level localization. New schemes and updates go live without touching the codebase — built to stay current.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ── TECH ── -->
-<section class="sec tech" id="tech">
-  <div class="sec-inner">
-    <p class="eyebrow">Under the hood</p>
-    <h2>Built to be trusted</h2>
-    <p class="lead">Three isolated decision layers keep AI in its lane — explaining, not deciding.</p>
-
-    <div class="tech-layout">
-      <div class="reveal">
-        <div class="tech-stack-title">Technical Stack</div>
-        <div class="stack-row"><span class="stack-layer">Frontend</span><span class="stack-val">React</span></div>
-        <div class="stack-row"><span class="stack-layer">Backend</span><span class="stack-val">Python + FastAPI</span></div>
-        <div class="stack-row"><span class="stack-layer">Database</span><span class="stack-val">MongoDB (JSON Schemas)</span></div>
-        <div class="stack-row"><span class="stack-layer">AI Model</span><span class="stack-val">Llama 3.2 3B</span></div>
-        <div class="stack-row"><span class="stack-layer">Location</span><span class="stack-val">Nominatim (OpenStreetMap)</span></div>
-
-        <div class="layer-chips">
-          <div class="layer-chip">
-            <div class="layer-chip-label">Layer 1</div>
-            <div class="layer-chip-name">Rule Engine</div>
-            <div class="layer-chip-desc">Objective, auditable eligibility. No AI involved.</div>
-          </div>
-          <div class="layer-chip">
-            <div class="layer-chip-label">Layer 2</div>
-            <div class="layer-chip-name">Financial Engine</div>
-            <div class="layer-chip-desc">Deterministic calculations per scheme rules.</div>
-          </div>
-          <div class="layer-chip">
-            <div class="layer-chip-label">Layer 3</div>
-            <div class="layer-chip-name">AI Advisor</div>
-            <div class="layer-chip-desc">Explains only. Never determines eligibility.</div>
-          </div>
+          <h1 class="page-title">Finance Calculator</h1>
+          <p class="page-subtitle">Estimate EMI, plan repayment, and assess loan affordability</p>
         </div>
       </div>
 
-      <div class="reveal">
-        <div class="tech-stack-title">9-Step Data Pipeline</div>
-        <ol class="pipeline">
-          <li><div class="pipe-n">1</div><div class="pipe-text"><strong>Profile collection</strong> — SC status, income, sector, project cost</div></li>
-          <li><div class="pipe-n">2</div><div class="pipe-text"><strong>Location resolution</strong> — GPS → Nominatim → state + district</div></li>
-          <li><div class="pipe-n">3</div><div class="pipe-text"><strong>Scheme retrieval</strong> — MongoDB query by location + sector + category</div></li>
-          <li><div class="pipe-n">4</div><div class="pipe-text"><strong>Rule engine evaluation</strong> — eligibility scored against JSON criteria</div></li>
-          <li><div class="pipe-n">5</div><div class="pipe-text"><strong>Match score + reasons</strong> — percentage, eligibility or rejection rationale</div></li>
-          <li><div class="pipe-n">6</div><div class="pipe-text"><strong>Financial engine</strong> — EMI, contribution, total repayment per scheme</div></li>
-          <li><div class="pipe-n">7</div><div class="pipe-text"><strong>Document checklist</strong> — scheme-specific, with missed-doc detection</div></li>
-          <li><div class="pipe-n">8</div><div class="pipe-text"><strong>AI advisory layer</strong> — Llama 3.2 3B explains and guides</div></li>
-          <li><div class="pipe-n">9</div><div class="pipe-text"><strong>Application guidance</strong> — links to official portals and next steps</div></li>
-        </ol>
+      <!-- Quick scheme presets -->
+      <div class="preset-row">
+        <span class="preset-row-label">Quick presets:</span>
+        <button class="preset-pill active" data-amount="100000" data-rate="6" data-tenure="3" data-down="10000">NSFDC ₹1L @ 6%</button>
+        <button class="preset-pill" data-amount="500000" data-rate="8" data-tenure="5" data-down="50000">Rajasthan SCA ₹5L</button>
+        <button class="preset-pill" data-amount="1000000" data-rate="9" data-tenure="7" data-down="100000">Stand-Up India ₹10L</button>
       </div>
-    </div>
-  </div>
-</section>
 
-<!-- ── STATS ── -->
-<section class="sec stats" id="stats">
-  <div class="sec-inner">
-    <p class="eyebrow">The opportunity</p>
-    <h2>The schemes exist.<br>The reach doesn't.</h2>
-    <p class="lead">Stand-Up India alone sanctioned ₹58,392 Cr across 2.58 lakh accounts in 2024–25. Yet the marginalised share remained disproportionately small.</p>
+      <div class="calc-layout">
+        <!-- Inputs panel -->
+        <div class="calc-inputs-card">
+          <h3 class="card-section-title">Loan Parameters</h3>
 
-    <div class="stat-grid">
-      <div class="stat-box reveal">
-        <div class="stat-num">2,58,524</div>
-        <div class="stat-lbl">Total accounts sanctioned under Stand-Up India</div>
-      </div>
-      <div class="stat-box reveal">
-        <div class="stat-num">48,548</div>
-        <div class="stat-lbl">Marginalised accounts — 18.8% of total</div>
-      </div>
-      <div class="stat-box reveal">
-        <div class="stat-num">₹58,392 Cr</div>
-        <div class="stat-lbl">Total amount sanctioned</div>
-      </div>
-      <div class="stat-box reveal">
-        <div class="stat-num">₹10,246 Cr</div>
-        <div class="stat-lbl">Amount reaching marginalised entrepreneurs</div>
-      </div>
-    </div>
+          <div class="calc-field">
+            <div class="calc-label-row">
+              <label class="calc-field-label">Loan Amount</label>
+              <span class="calc-field-val" id="c-amount-disp">₹1,00,000</span>
+            </div>
+            <input type="range" class="calc-slider" id="c-amount" min="10000" max="1000000" step="5000" value="100000" />
+            <div class="slider-ends"><span>₹10K</span><span>₹10L</span></div>
+          </div>
 
-    <p class="stat-source">Source: Dept. of Financial Services, Ministry of Finance — Annual Report 2024–25</p>
-  </div>
-</section>
+          <div class="calc-field">
+            <div class="calc-label-row">
+              <label class="calc-field-label">Down Payment</label>
+              <span class="calc-field-val" id="c-down-disp">₹10,000</span>
+            </div>
+            <input type="range" class="calc-slider" id="c-down" min="0" max="500000" step="5000" value="10000" />
+            <div class="slider-ends"><span>₹0</span><span>₹5L</span></div>
+          </div>
 
-<!-- ── BEFORE / AFTER ── -->
-<section class="sec compare" id="compare">
-  <div class="sec-inner">
-    <p class="eyebrow">Before &amp; after</p>
-    <h2>Every friction point, solved</h2>
-    <p class="lead">What used to take weeks of manual searching now happens in one guided session.</p>
+          <div class="calc-field">
+            <div class="calc-label-row">
+              <label class="calc-field-label">Annual Interest Rate</label>
+              <span class="calc-field-val" id="c-rate-disp">6.0%</span>
+            </div>
+            <input type="range" class="calc-slider" id="c-rate" min="3" max="20" step="0.5" value="6" />
+            <div class="slider-ends"><span>3%</span><span>20%</span></div>
+          </div>
 
-    <div class="compare-table-wrap reveal">
-      <table class="compare-table">
-        <thead>
-          <tr>
-            <th scope="col">Without SchemeRoute</th>
-            <th scope="col">With SchemeRoute</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Search across multiple government portals manually</td>
-            <td><span class="tick" aria-hidden="true">✓</span>Personalized scheme list based on your exact profile</td>
-          </tr>
-          <tr>
-            <td>Eligibility rules written in bureaucratic language</td>
-            <td><span class="tick" aria-hidden="true">✓</span>Plain-language explanation of why you qualify — or don't</td>
-          </tr>
-          <tr>
-            <td>Financial calculations done by hand or not at all</td>
-            <td><span class="tick" aria-hidden="true">✓</span>EMI, contribution, and repayment calculated per scheme, instantly</td>
-          </tr>
-          <tr>
-            <td>Guessing which documents are required</td>
-            <td><span class="tick" aria-hidden="true">✓</span>Personalized checklist with missed-document detection</td>
-          </tr>
-          <tr>
-            <td>No clear next step after finding a scheme</td>
-            <td><span class="tick" aria-hidden="true">✓</span>Guided application flow linked to the official portal</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</section>
+          <div class="calc-field">
+            <div class="calc-label-row">
+              <label class="calc-field-label">Loan Tenure</label>
+              <span class="calc-field-val" id="c-tenure-disp">3 years</span>
+            </div>
+            <input type="range" class="calc-slider" id="c-tenure" min="1" max="7" step="1" value="3" />
+            <div class="slider-ends"><span>1 year</span><span>7 years</span></div>
+          </div>
 
-<!-- ── CTA ── -->
-<section class="cta">
-  <h2>Built for the people<br>schemes are meant to reach</h2>
-  <p class="lead">SchemeRoute is designed to work for someone who has never applied for government funding — and turn that first application into a confident one.</p>
-  <div class="cta-actions">
-    <a href="#how" class="btn-primary">
-      See how it works
-      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-        <path d="M2 7h10M7 2l5 5-5 5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-    </a>
-    <a href="#tech" class="btn-ghost">View the architecture</a>
-  </div>
-</section>
-
-<!-- ── FOOTER ── -->
-<footer>
-  <div class="footer-inner">
-    <div>
-      <div class="footer-brand-row">
-        <div class="footer-brand-mark" aria-hidden="true">
-          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-            <path d="M1 6h10M6 1l5 5-5 5" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
+          <div class="calc-field">
+            <div class="calc-label-row">
+              <label class="calc-field-label">Monthly Income</label>
+              <span class="calc-field-val" id="c-income-disp">₹20,000</span>
+            </div>
+            <input type="range" class="calc-slider" id="c-income" min="5000" max="200000" step="1000" value="20000" />
+            <div class="slider-ends"><span>₹5K</span><span>₹2L</span></div>
+          </div>
         </div>
-        <span class="footer-brand-name">SchemeRoute</span>
-      </div>
-      <div class="footer-tagline">AI-Powered Scheme Discovery &amp; Business Advisory</div>
-    </div>
-    <div class="footer-right">
-      <div>© 2026 SchemeRoute</div>
-    </div>
-  </div>
-</footer>
 
-<!-- ── CHATBOT ── -->
-<div class="chatbot-btn" id="chatbot-btn" aria-label="Open AI Advisor" role="button" tabindex="0">
-  <svg class="chat-icon-open" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-  </svg>
-  <svg class="chat-icon-close" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-    <path d="M18 6L6 18M6 6l12 12" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-  </svg>
-</div>
+        <!-- Results panel -->
+        <div class="calc-results-panel">
+          <div class="emi-hero-card">
+            <p class="emi-hero-label">Estimated Monthly EMI</p>
+            <p class="emi-hero-amount" id="calc-emi">₹3,042</p>
+            <p class="emi-hero-note">Based on ₹90,000 principal over 3 years</p>
+          </div>
 
-<div class="chatbot-panel" id="chatbot-panel" role="dialog" aria-label="AI Advisor" aria-hidden="true">
-  <div class="chatbot-head">
-    <div class="chatbot-head-info">
-      <div class="chatbot-avatar" aria-hidden="true">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-          <circle cx="8" cy="8" r="6" stroke="#fff" stroke-width="1.5"/>
-          <path d="M5 8h6M8 5l3 3-3 3" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </div>
-      <div>
-        <div class="chatbot-head-name">SchemeRoute Advisor</div>
-        <div class="chatbot-head-status"><span class="chatbot-status-dot"></span>Online</div>
-      </div>
-    </div>
-  </div>
+          <div class="breakdown-card">
+            <h3 class="card-section-title">Repayment Breakdown</h3>
+            <div class="breakdown-table">
+              <div class="breakdown-row">
+                <span>Loan Amount</span>
+                <span id="r-loan">₹1,00,000</span>
+              </div>
+              <div class="breakdown-row">
+                <span>Down Payment</span>
+                <span id="r-down">₹10,000</span>
+              </div>
+              <div class="breakdown-row">
+                <span>Principal (after down payment)</span>
+                <span id="r-principal">₹90,000</span>
+              </div>
+              <div class="breakdown-row">
+                <span>Interest Rate</span>
+                <span id="r-rate">6.0% p.a.</span>
+              </div>
+              <div class="breakdown-row">
+                <span>Tenure</span>
+                <span id="r-tenure">3 years (36 months)</span>
+              </div>
+              <div class="breakdown-row">
+                <span>Total Interest Payable</span>
+                <span id="r-interest">₹9,512</span>
+              </div>
+              <div class="breakdown-divider"></div>
+              <div class="breakdown-row total-row">
+                <span>Total Repayment</span>
+                <span id="r-total">₹99,512</span>
+              </div>
+            </div>
 
-  <div class="chatbot-messages" id="chatbot-messages">
-    <div class="chat-msg bot">
-      <div class="chat-bubble">
-        Hi! I'm your SchemeRoute Advisor. Tell me about your business — I can help you find schemes you're eligible for.
+            <div class="affordability-bar" id="affordability-bar">
+              <div class="afford-label-row">
+                <span>EMI vs Monthly Income</span>
+                <span id="afford-pct">15.2%</span>
+              </div>
+              <div class="afford-track">
+                <div class="afford-fill" id="afford-fill" style="width:15.2%"></div>
+                <div class="afford-limit" title="40% limit"></div>
+              </div>
+              <p class="afford-note" id="afford-note">✅ EMI is within 40% of income — this loan appears manageable.</p>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="chat-time">Just now</div>
-    </div>
-    <div class="chat-msg user">
-      <div class="chat-bubble">
-        I run a small tailoring business in Rajasthan. I'm from the SC community. Can I get a loan?
-      </div>
-      <div class="chat-time">Just now</div>
-    </div>
-    <div class="chat-msg bot">
-      <div class="chat-bubble">
-        Great profile — you're likely eligible for <strong>2–3 schemes</strong>. NSFDC Micro Credit Finance is a strong match for SC entrepreneurs in Rajasthan's textile sector. Loans up to ₹1 lakh at 6% interest.<br><br>Want me to check your full eligibility and calculate your EMI?
-      </div>
-      <div class="chat-time">Just now</div>
-    </div>
-  </div>
 
-  <div class="chatbot-input-row">
-    <input class="chatbot-input" id="chatbot-input" type="text" placeholder="Ask about schemes, eligibility…" aria-label="Type your message" />
-    <button class="chatbot-send" id="chatbot-send" aria-label="Send message">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-        <path d="M14 2L2 8l5 2 2 5 5-13z" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-    </button>
-  </div>
-</div>
+    </div>
+  </main><!-- /#page-calc -->
 
-<!-- Scripts -->
-<script src="js/main.js" defer></script>
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <span class="footer-logo">🌾</span>
+        <span class="footer-brand-text">Farmer INT System</span>
+      </div>
+      <p class="footer-note">An independent prototype. Always verify scheme eligibility, benefits, and application steps through official government portals.</p>
+      <p class="footer-copy">© 2026 Farmer INT System · Not affiliated with any government body.</p>
+    </div>
+  </footer>
+
+</div><!-- /#app -->
+
+<script src="js/main.js"></script>
 </body>
 </html>
