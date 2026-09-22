@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Farmer INT System — AI-Powered Scheme Discovery</title>
+  <meta name="description" content="Find and apply for government schemes tailored to farmers and rural entrepreneurs across India." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════
+     AUTH OVERLAY
+═══════════════════════════════════════════ -->
+<div id="auth-overlay">
+  <div class="auth-left">
+    <div class="auth-left-content">
+      <div class="auth-brand-mark">
+        <span class="auth-logo-leaf">🌾</span>
+        <span class="auth-brand-name">Farmer INT System</span>
+      </div>
+      <h2 class="auth-left-headline">Discover schemes.<br>Grow your livelihood.</h2>
+      <p class="auth-left-sub">AI-powered discovery of 40+ government support programmes for farmers and rural entrepreneurs across India.</p>
+      <div class="auth-trust-chips">
+        <span class="trust-chip">✓ 40+ Schemes Indexed</span>
+        <span class="trust-chip">✓ Free to Use</span>
+        <span class="trust-chip">✓ No Signup Fees</span>
+      </div>
+    </div>
+  </div>
+  <div class="auth-right">
+    <!-- Sign In -->
+    <div id="form-signin" class="auth-form active">
+      <h2 class="auth-form-title">Welcome back</h2>
+      <p class="auth-form-sub">Sign in to your account to continue</p>
+
+      <div class="form-group">
+        <label class="form-label" for="si-email">Email address</label>
+        <input class="form-input" type="email" id="si-email" placeholder="you@example.com" autocomplete="email" />
+        <span class="form-error" id="si-email-err"></span>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="si-password">Password</label>
+        <div class="input-wrapper">
+          <input class="form-input" type="password" id="si-password" placeholder="••••••••" autocomplete="current-password" />
+          <button class="pw-toggle" type="button" data-target="si-password" aria-label="Toggle password visibility">
+            <svg class="eye-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M1 8s2.5-5 7-5 7 5 7 5-2.5 5-7 5-7-5-7-5z" stroke="currentColor" stroke-width="1.4"/><circle cx="8" cy="8" r="2" stroke="currentColor" stroke-width="1.4"/></svg>
+          </button>
+        </div>
+        <span class="form-error" id="si-pw-err"></span>
+      </div>
+      <div class="form-row-between">
+        <label class="checkbox-label">
+          <input type="checkbox" id="si-remember" />
+          <span>Remember me</span>
+        </label>
+        <a href="#" class="link-orange">Forgot password?</a>
+      </div>
+      <button class="btn-auth" id="btn-signin">Sign In</button>
+      <p class="auth-switch-text">Don't have an account? <a href="#" class="link-orange" id="go-signup">Sign up</a></p>
+    </div>
+
+    <!-- Sign Up -->
+    <div id="form-signup" class="auth-form">
+      <h2 class="auth-form-title">Create account</h2>
+      <p class="auth-form-sub">Join the Farmer INT System — free forever</p>
+
+      <div class="form-group">
+        <label class="form-label" for="su-name">Full name</label>
+        <input class="form-input" type="text" id="su-name" placeholder="Ramesh Kumar" autocomplete="name" />
+        <span class="form-error" id="su-name-err"></span>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="su-email">Email address</label>
+        <input class="form-input" type="email" id="su-email" placeholder="you@example.com" autocomplete="email" />
+        <span class="form-error" id="su-email-err"></span>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="su-password">Password</label>
+        <div class="input-wrapper">
+          <input class="form-input" type="password" id="su-password" placeholder="Min. 8 characters" autocomplete="new-password" />
+          <button class="pw-toggle" type="button" data-target="su-password" aria-label="Toggle password visibility">
+            <svg class="eye-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M1 8s2.5-5 7-5 7 5 7 5-2.5 5-7 5-7-5-7-5z" stroke="currentColor" stroke-width="1.4"/><circle cx="8" cy="8" r="2" stroke="currentColor" stroke-width="1.4"/></svg>
+          </button>
+        </div>
+        <span class="form-error" id="su-pw-err"></span>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="su-confirm">Confirm password</label>
+        <div class="input-wrapper">
+          <input class="form-input" type="password" id="su-confirm" placeholder="Re-enter password" autocomplete="new-password" />
+          <button class="pw-toggle" type="button" data-target="su-confirm" aria-label="Toggle password visibility">
+            <svg class="eye-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M1 8s2.5-5 7-5 7 5 7 5-2.5 5-7 5-7-5-7-5z" stroke="currentColor" stroke-width="1.4"/><circle cx="8" cy="8" r="2" stroke="currentColor" stroke-width="1.4"/></svg>
+          </button>
+        </div>
+        <span class="form-error" id="su-confirm-err"></span>
+      </div>
+      <div class="form-group">
+        <label class="checkbox-label">
+          <input type="checkbox" id="su-terms" />
+          <span>I agree to the <a href="#" class="link-orange">Terms of Service</a> and <a href="#" class="link-orange">Privacy Policy</a></span>
+        </label>
+        <span class="form-error" id="su-terms-err"></span>
+      </div>
+      <button class="btn-auth" id="btn-signup">Create Account</button>
+      <p class="auth-switch-text">Already have an account? <a href="#" class="link-orange" id="go-signin">Sign in</a></p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     MAIN APP (shown after login)
+═══════════════════════════════════════════ -->
+<div id="app" class="hidden">
+
+  <!-- TOP NAV -->
+  <header id="topnav">
+    <div class="nav-container">
+      <a href="#" class="nav-brand" data-page="home">
+        <span class="nav-logo">🌾</span>
+        <span class="nav-brand-text">Farmer INT</span>
+      </a>
+
+      <nav class="nav-links" id="nav-links">
+        <a href="#" class="nav-link" data-page="home">
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M1 7.5L7.5 2 14 7.5V13a1 1 0 0 1-1 1H9.5v-4h-4v4H2a1 1 0 0 1-1-1V7.5z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+          Home
+        </a>
+        <a href="#" class="nav-link" data-page="profile">
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="7.5" cy="5" r="3" stroke="currentColor" stroke-width="1.3"/><path d="M1.5 13.5c0-3.314 2.686-5 6-5s6 1.686 6 5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+          Profile
+        </a>
+        <a href="#" class="nav-link" data-page="docs">
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M3 2h7l3 3v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1z" stroke="currentColor" stroke-width="1.3"/><path d="M10 2v3h3" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M5 7h5M5 10h3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+          My Docs
+        </a>
+        <a href="#" class="nav-link" data-page="calc">
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><rect x="2" y="2" width="11" height="11" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M5 5h5M5 7.5h5M5 10h3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+          Finance Calculator
+        </a>
+      </nav>
+
+      <div class="nav-actions">
+        <button class="nav-search-btn" id="nav-search-btn" aria-label="Search">
+          <svg width="17" height="17" viewBox="0 0 17 17" fill="none"><circle cx="7.5" cy="7.5" r="5.5" stroke="currentColor" stroke-width="1.5"/><path d="M12 12l3.5 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </button>
+        <div class="nav-avatar" id="nav-avatar" title="Profile">RK</div>
+        <button class="nav-mobile-btn" id="nav-mobile-btn" aria-label="Open menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- SEARCH OVERLAY -->
+  <div id="search-overlay" class="search-overlay hidden" role="dialog" aria-label="Search" aria-modal="true">
+    <div class="search-overlay-bg" id="search-bg"></div>
+    <div class="search-overlay-box">
+      <div class="search-input-row">
+        <svg class="search-ico" width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="8" cy="8" r="5.5" stroke="#9CA3AF" stroke-width="1.6"/><path d="M12.5 12.5l3.5 3.5" stroke="#9CA3AF" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <input type="text" id="search-input" class="search-text-input" placeholder="Search schemes, features, documents…" autocomplete="off" spellcheck="false" />
+        <button class="search-close-btn" id="search-close-btn" aria-label="Close search">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 2l10 10M12 2L2 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+      <div id="search-results" class="search-results">
+        <p class="search-empty-state">Start typing to search…</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ PAGE: HOME ══ -->
+  <main id="page-home" class="page active">
+
+    <!-- Hero -->
+    <section class="home-hero">
+      <div class="container">
+        <div class="hero-inner">
+          <div class="hero-text">
+            <div class="hero-badge">🌾 AI-Powered Scheme Discovery</div>
+            <h1 class="hero-heading">Find the right scheme.<br>Apply with confidence.</h1>
+            <p class="hero-sub">Discover government support programmes tailored to your farm, sector, and eligibility — all in one place.</p>
+            <div class="hero-actions">
+              <button class="btn-primary" data-page-go="profile">Get Started</button>
+              <button class="btn-secondary" data-page-go="calc">Calculate Finance</button>
+            </div>
+          </div>
+          <div class="hero-card-preview">
+            <div class="preview-card">
+              <div class="preview-badge high">91% Match</div>
+              <div class="preview-name">NSFDC Micro Credit Finance</div>
+              <div class="preview-detail">Up to ₹1 lakh · 6% interest</div>
+            </div>
+            <div class="preview-card secondary">
+              <div class="preview-badge med">78% Match</div>
+              <div class="preview-name">Rajasthan SCA Term Loan</div>
+              <div class="preview-detail">Up to ₹5 lakh · 8% interest</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Matched Schemes -->
+    <section class="section">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">Matched Schemes</h2>
+            <p class="section-desc">Based on your profile and eligibility</p>
+          </div>
+          <button class="btn-outline-sm">View All Schemes</button>
+        </div>
+        <div class="schemes-grid" id="schemes-grid">
+          <div class="scheme-card reveal">
+            <div class="scheme-card-head">
+              <span class="match-badge high">91% Match</span>
+              <span class="scheme-type-tag loan">Loan</span>
+            </div>
+            <h3 class="scheme-name">NSFDC Micro Credit Finance</h3>
+            <p class="scheme-desc">Loans up to ₹1 lakh at 6% interest for SC/ST entrepreneurs in agri and allied sectors.</p>
+            <div class="scheme-tags">
+              <span class="scheme-tag">🏛 National</span>
+              <span class="scheme-tag">💰 Up to ₹1 lakh</span>
+              <span class="scheme-tag">📋 SC/ST</span>
+            </div>
+            <div class="scheme-card-actions">
+              <button class="btn-card-primary">Apply Now</button>
+              <button class="btn-card-ghost">Learn More</button>
+            </div>
+          </div>
+
+          <div class="scheme-card reveal">
+            <div class="scheme-card-head">
+              <span class="match-badge med">78% Match</span>
+              <span class="scheme-type-tag subsidy">Subsidy</span>
+            </div>
+            <h3 class="scheme-name">Rajasthan SCA Term Loan</h3>
+            <p class="scheme-desc">State-level term loan for SC entrepreneurs up to ₹5 lakh at 8% for agri-linked ventures.</p>
+            <div class="scheme-tags">
+              <span class="scheme-tag">📍 Rajasthan</span>
+              <span class="scheme-tag">💰 Up to ₹5 lakh</span>
+              <span class="scheme-tag">📋 SC</span>
+            </div>
+            <div class="scheme-card-actions">
+              <button class="btn-card-primary">Apply Now</button>
+              <button class="btn-card-ghost">Learn More</button>
+            </div>
+          </div>
+
+          <div class="scheme-card reveal">
+            <div class="scheme-card-head">
+              <span class="match-badge low">44% Match</span>
+              <span class="scheme-type-tag grant">Grant</span>
+            </div>
+            <h3 class="scheme-name">Stand-Up India</h3>
+            <p class="scheme-desc">Bank loans ₹10 lakh–₹1 crore for SC/ST and women setting up greenfield enterprises.</p>
+            <div class="scheme-tags">
+              <span class="scheme-tag">🏛 National</span>
+              <span class="scheme-tag">💰 ₹10L–₹1Cr</span>
+              <span class="scheme-tag">📋 SC/ST/Women</span>
+            </div>
+            <div class="scheme-card-actions">
+              <button class="btn-card-primary">Apply Now</button>
+              <button class="btn-card-ghost">Learn More</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stats -->
+    <section class="section section-tinted">
+      <div class="container">
+        <div class="stats-header">
+          <h2 class="section-title">Impact at a Glance</h2>
+          <p class="section-desc">Stand-Up India 2024-25 data</p>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-card reveal">
+            <div class="stat-icon">📊</div>
+            <div class="stat-num">40+</div>
+            <div class="stat-label">Schemes Indexed</div>
+          </div>
+          <div class="stat-card reveal">
+            <div class="stat-icon">💸</div>
+            <div class="stat-num">₹10K Cr</div>
+            <div class="stat-label">Disbursed (Stand-Up India)</div>
+          </div>
+          <div class="stat-card reveal">
+            <div class="stat-icon">🏦</div>
+            <div class="stat-num">2.3L+</div>
+            <div class="stat-label">Accounts Sanctioned</div>
+          </div>
+          <div class="stat-card reveal">
+            <div class="stat-icon">👩‍🌾</div>
+            <div class="stat-num">48%</div>
+            <div class="stat-label">Women Beneficiaries</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="section">
+      <div class="container">
+        <h2 class="section-title text-center">How It Works</h2>
+        <p class="section-desc text-center">Four simple steps to find and apply for the right scheme</p>
+        <div class="steps-grid">
+          <div class="step-card reveal">
+            <div class="step-num-badge">01</div>
+            <div class="step-icon-wrap">👤</div>
+            <h3 class="step-title">Build Your Profile</h3>
+            <p class="step-desc">Enter your personal details, caste category, state, and business type.</p>
+          </div>
+          <div class="step-card reveal">
+            <div class="step-num-badge">02</div>
+            <div class="step-icon-wrap">🔍</div>
+            <h3 class="step-title">Get Matched</h3>
+            <p class="step-desc">Our AI scans 40+ schemes and ranks them by your eligibility score.</p>
+          </div>
+          <div class="step-card reveal">
+            <div class="step-num-badge">03</div>
+            <div class="step-icon-wrap">📄</div>
+            <h3 class="step-title">Upload Documents</h3>
+            <p class="step-desc">Upload required documents directly to your secure dashboard.</p>
+          </div>
+          <div class="step-card reveal">
+            <div class="step-num-badge">04</div>
+            <div class="step-icon-wrap">✅</div>
+            <h3 class="step-title">Apply with Confidence</h3>
+            <p class="step-desc">Track application status and receive scheme approval updates.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Banner -->
+    <section class="section">
+      <div class="container">
+        <div class="cta-banner reveal">
+          <div class="cta-banner-text">
+            <h2>Ready to find your scheme?</h2>
+            <p>Complete your profile and let our AI match you to the right opportunities.</p>
+          </div>
+          <div class="cta-banner-actions">
+            <button class="btn-primary" data-page-go="profile">Complete Profile</button>
+            <button class="btn-outline-white" data-page-go="docs">Upload Documents</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main><!-- /#page-home -->
+
+  <!-- ══ PAGE: PROFILE ══ -->
+  <main id="page-profile" class="page hidden">
+    <div class="container page-inner">
+
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">My Profile</h1>
+          <p class="page-subtitle">Manage your personal information and eligibility details</p>
+        </div>
+        <button class="btn-primary" id="profile-edit-btn">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M10 2l2 2L4 12H2v-2L10 2z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+          Edit Profile
+        </button>
+      </div>
+
+      <!-- Profile hero card -->
+      <div class="profile-hero">
+        <div class="profile-avatar-group">
+          <div class="profile-avatar" id="profile-avatar-display">RK</div>
+          <button class="avatar-btn" id="avatar-change-btn">Change Photo</button>
+        </div>
+        <div class="profile-summary">
+          <h2 class="profile-display-name" id="profile-display-name">Ramesh Kumar</h2>
+          <p class="profile-display-email" id="profile-display-email">ramesh.kumar@example.com</p>
+          <div class="profile-chips">
+            <span class="profile-chip verified">✓ Verified Farmer</span>
+            <span class="profile-chip">📍 Jaipur, Rajasthan</span>
+            <span class="profile-chip">🏷 SC Category</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Personal + Eligibility cards -->
+      <div class="profile-grid">
+        <div class="info-card">
+          <h3 class="card-section-title">Personal Information</h3>
+          <div class="field-grid">
+            <div class="field-group">
+              <label class="field-label">Full Name</label>
+              <input class="field-input" type="text" id="p-name" value="Ramesh Kumar" disabled />
+            </div>
+            <div class="field-group">
+              <label class="field-label">Email Address</label>
+              <input class="field-input" type="email" id="p-email" value="ramesh.kumar@example.com" disabled />
+            </div>
+            <div class="field-group">
+              <label class="field-label">Phone Number</label>
+              <input class="field-input" type="tel" id="p-phone" value="+91 98765 43210" disabled />
+            </div>
+            <div class="field-group">
+              <label class="field-label">Location</label>
+              <input class="field-input" type="text" id="p-location" value="Jaipur, Rajasthan" disabled />
+            </div>
+            <div class="field-group">
+              <label class="field-label">Date of Birth</label>
+              <input class="field-input" type="date" id="p-dob" value="1985-06-15" disabled />
+            </div>
+            <div class="field-group">
+              <label class="field-label">Gender</label>
+              <select class="field-input" id="p-gender" disabled>
+                <option value="male" selected>Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other / Prefer not to say</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-card">
+          <h3 class="card-section-title">Eligibility Information</h3>
+          <div class="field-grid">
+            <div class="field-group">
+              <label class="field-label">Caste Category</label>
+              <select class="field-input" id="p-category" disabled>
+                <option value="sc" selected>SC (Scheduled Caste)</option>
+                <option value="st">ST (Scheduled Tribe)</option>
+                <option value="obc">OBC</option>
+                <option value="gen">General</option>
+              </select>
+            </div>
+            <div class="field-group">
+              <label class="field-label">Annual Income</label>
+              <input class="field-input" type="text" id="p-income" value="₹2,40,000" disabled />
+            </div>
+            <div class="field-group">
+              <label class="field-label">Business Type</label>
+              <input class="field-input" type="text" id="p-biz" value="Tailoring / Garments" disabled />
+            </div>
+            <div class="field-group">
+              <label class="field-label">Business Stage</label>
+              <select class="field-input" id="p-stage" disabled>
+                <option value="idea">Idea Stage</option>
+                <option value="startup" selected>Startup</option>
+                <option value="growth">Growth Stage</option>
+                <option value="established">Established</option>
+              </select>
+            </div>
+            <div class="field-group">
+              <label class="field-label">Aadhaar Number</label>
+              <input class="field-input" type="text" id="p-aadhaar" value="XXXX XXXX 4521" disabled />
+            </div>
+            <div class="field-group">
+              <label class="field-label">PAN Number</label>
+              <input class="field-input" type="text" id="p-pan" value="ABCPK1234D" disabled />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Edit actions (hidden by default) -->
+      <div class="profile-save-row hidden" id="profile-save-row">
+        <button class="btn-outline-sm" id="profile-cancel-btn">Cancel</button>
+        <button class="btn-primary" id="profile-save-btn">Save Changes</button>
+      </div>
+
+    </div>
+  </main><!-- /#page-profile -->
+
+  <!-- ══ PAGE: MY DOCS ══ -->
+  <main id="page-docs" class="page hidden">
+    <div class="container page-inner">
+
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">My Documents</h1>
+          <p class="page-subtitle">Upload, manage, and track your scheme application documents</p>
+        </div>
+        <button class="btn-primary" id="upload-doc-btn">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1v8M4 4l3-3 3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M1 12h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          Upload Document
+        </button>
+      </div>
+
+      <!-- Summary stats -->
+      <div class="docs-stats-row">
+        <div class="doc-stat">
+          <span class="doc-stat-num" id="stat-total">5</span>
+          <span class="doc-stat-label">Total</span>
+        </div>
+        <div class="doc-stat-divider"></div>
+        <div class="doc-stat">
+          <span class="doc-stat-num verified" id="stat-verified">2</span>
+          <span class="doc-stat-label">Verified</span>
+        </div>
+        <div class="doc-stat-divider"></div>
+        <div class="doc-stat">
+          <span class="doc-stat-num review" id="stat-review">1</span>
+          <span class="doc-stat-label">Under Review</span>
+        </div>
+        <div class="doc-stat-divider"></div>
+        <div class="doc-stat">
+          <span class="doc-stat-num missing" id="stat-missing">2</span>
+          <span class="doc-stat-label">Missing</span>
+        </div>
+      </div>
+
+      <!-- Upload zone (shown when Upload is clicked) -->
+      <div id="upload-zone" class="upload-zone hidden">
+        <svg width="40" height="40" viewBox="0 0 40 40" fill="none"><path d="M20 6v20M14 12l6-6 6 6" stroke="#F97316" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 32h28" stroke="#F97316" stroke-width="2.2" stroke-linecap="round"/></svg>
+        <p class="upload-zone-title">Drag and drop your files here</p>
+        <p class="upload-zone-sub">or <label for="file-input" class="upload-browse-link">browse files</label></p>
+        <input type="file" id="file-input" accept=".pdf,.jpg,.jpeg,.png" multiple style="display:none" />
+        <p class="upload-zone-note">Supported: PDF, JPG, PNG · Max size: 10 MB per file</p>
+        <button class="btn-outline-sm" id="upload-zone-close">Cancel</button>
+      </div>
+
+      <!-- Document list -->
+      <div class="docs-table-card">
+        <div class="docs-table-head">
+          <span class="col-name">Document</span>
+          <span class="col-type">Type</span>
+          <span class="col-date">Uploaded</span>
+          <span class="col-status">Status</span>
+          <span class="col-actions">Actions</span>
+        </div>
+        <div class="docs-table-body" id="docs-table-body">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+
+    </div>
+  </main><!-- /#page-docs -->
+
+  <!-- ══ PAGE: FINANCE CALCULATOR ══ -->
+  <main id="page-calc" class="page hidden">
+    <div class="container page-inner">
+
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Finance Calculator</h1>
+          <p class="page-subtitle">Estimate EMI, plan repayment, and assess loan affordability</p>
+        </div>
+      </div>
+
+      <!-- Quick scheme presets -->
+      <div class="preset-row">
+        <span class="preset-row-label">Quick presets:</span>
+        <button class="preset-pill active" data-amount="100000" data-rate="6" data-tenure="3" data-down="10000">NSFDC ₹1L @ 6%</button>
+        <button class="preset-pill" data-amount="500000" data-rate="8" data-tenure="5" data-down="50000">Rajasthan SCA ₹5L</button>
+        <button class="preset-pill" data-amount="1000000" data-rate="9" data-tenure="7" data-down="100000">Stand-Up India ₹10L</button>
+      </div>
+
+      <div class="calc-layout">
+        <!-- Inputs panel -->
+        <div class="calc-inputs-card">
+          <h3 class="card-section-title">Loan Parameters</h3>
+
+          <div class="calc-field">
+            <div class="calc-label-row">
+              <label class="calc-field-label">Loan Amount</label>
+              <span class="calc-field-val" id="c-amount-disp">₹1,00,000</span>
+            </div>
+            <input type="range" class="calc-slider" id="c-amount" min="10000" max="1000000" step="5000" value="100000" />
+            <div class="slider-ends"><span>₹10K</span><span>₹10L</span></div>
+          </div>
+
+          <div class="calc-field">
+            <div class="calc-label-row">
+              <label class="calc-field-label">Down Payment</label>
+              <span class="calc-field-val" id="c-down-disp">₹10,000</span>
+            </div>
+            <input type="range" class="calc-slider" id="c-down" min="0" max="500000" step="5000" value="10000" />
+            <div class="slider-ends"><span>₹0</span><span>₹5L</span></div>
+          </div>
+
+          <div class="calc-field">
+            <div class="calc-label-row">
+              <label class="calc-field-label">Annual Interest Rate</label>
+              <span class="calc-field-val" id="c-rate-disp">6.0%</span>
+            </div>
+            <input type="range" class="calc-slider" id="c-rate" min="3" max="20" step="0.5" value="6" />
+            <div class="slider-ends"><span>3%</span><span>20%</span></div>
+          </div>
+
+          <div class="calc-field">
+            <div class="calc-label-row">
+              <label class="calc-field-label">Loan Tenure</label>
+              <span class="calc-field-val" id="c-tenure-disp">3 years</span>
+            </div>
+            <input type="range" class="calc-slider" id="c-tenure" min="1" max="7" step="1" value="3" />
+            <div class="slider-ends"><span>1 year</span><span>7 years</span></div>
+          </div>
+
+          <div class="calc-field">
+            <div class="calc-label-row">
+              <label class="calc-field-label">Monthly Income</label>
+              <span class="calc-field-val" id="c-income-disp">₹20,000</span>
+            </div>
+            <input type="range" class="calc-slider" id="c-income" min="5000" max="200000" step="1000" value="20000" />
+            <div class="slider-ends"><span>₹5K</span><span>₹2L</span></div>
+          </div>
+        </div>
+
+        <!-- Results panel -->
+        <div class="calc-results-panel">
+          <div class="emi-hero-card">
+            <p class="emi-hero-label">Estimated Monthly EMI</p>
+            <p class="emi-hero-amount" id="calc-emi">₹3,042</p>
+            <p class="emi-hero-note">Based on ₹90,000 principal over 3 years</p>
+          </div>
+
+          <div class="breakdown-card">
+            <h3 class="card-section-title">Repayment Breakdown</h3>
+            <div class="breakdown-table">
+              <div class="breakdown-row">
+                <span>Loan Amount</span>
+                <span id="r-loan">₹1,00,000</span>
+              </div>
+              <div class="breakdown-row">
+                <span>Down Payment</span>
+                <span id="r-down">₹10,000</span>
+              </div>
+              <div class="breakdown-row">
+                <span>Principal (after down payment)</span>
+                <span id="r-principal">₹90,000</span>
+              </div>
+              <div class="breakdown-row">
+                <span>Interest Rate</span>
+                <span id="r-rate">6.0% p.a.</span>
+              </div>
+              <div class="breakdown-row">
+                <span>Tenure</span>
+                <span id="r-tenure">3 years (36 months)</span>
+              </div>
+              <div class="breakdown-row">
+                <span>Total Interest Payable</span>
+                <span id="r-interest">₹9,512</span>
+              </div>
+              <div class="breakdown-divider"></div>
+              <div class="breakdown-row total-row">
+                <span>Total Repayment</span>
+                <span id="r-total">₹99,512</span>
+              </div>
+            </div>
+
+            <div class="affordability-bar" id="affordability-bar">
+              <div class="afford-label-row">
+                <span>EMI vs Monthly Income</span>
+                <span id="afford-pct">15.2%</span>
+              </div>
+              <div class="afford-track">
+                <div class="afford-fill" id="afford-fill" style="width:15.2%"></div>
+                <div class="afford-limit" title="40% limit"></div>
+              </div>
+              <p class="afford-note" id="afford-note">✅ EMI is within 40% of income — this loan appears manageable.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main><!-- /#page-calc -->
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <span class="footer-logo">🌾</span>
+        <span class="footer-brand-text">Farmer INT System</span>
+      </div>
+      <p class="footer-note">An independent prototype. Always verify scheme eligibility, benefits, and application steps through official government portals.</p>
+      <p class="footer-copy">© 2026 Farmer INT System · Not affiliated with any government body.</p>
+    </div>
+  </footer>
+
+</div><!-- /#app -->
+
+<script src="js/main.js"></script>
+</body>
+</html>
