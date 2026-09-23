@@ -34,7 +34,7 @@ const SEARCH_INDEX = [
 const API_BASE = window.APP_CONFIG && window.APP_CONFIG.API_BASE_URL;
 
 if (!API_BASE) {
-  throw new Error('API_BASE_URL is not configured. Refusing to fall back to localhost.');
+  throw new Error('API_BASE_URL is not configured.');
 }
 
 class ApiRequestError extends Error {
