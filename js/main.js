@@ -37,8 +37,26 @@ if (!API_BASE) {
   throw new Error('API_BASE_URL is not configured. Refusing to fall back to localhost.');
 }
 
+class ApiRequestError extends Error {
+  constructor(message, kind) {
+    super(message);
+    this.name = 'ApiRequestError';
+    this.kind = kind;
+  }
+}
+
 async function apiRequest(path, options = {}) {
-  const response = await fetch(`${API_BASE}${path}`, options);
+  let response;
+
+  try {
+    response = await fetch(`${API_BASE}${path}`, options);
+  } catch (error) {
+    const message = navigator.onLine === false
+      ? 'Network unavailable. Check your internet connection and try again.'
+      : 'Backend unavailable or blocked by CORS. Check the backend deployment and allowed frontend origin.';
+    throw new ApiRequestError(message, navigator.onLine === false ? 'network' : 'cors');
+  }
+
   const responseText = await response.text();
   let data = null;
 
@@ -46,13 +64,23 @@ async function apiRequest(path, options = {}) {
     try {
       data = JSON.parse(responseText);
     } catch (error) {
-      throw new Error(`Server returned an invalid response (${response.status}).`);
+      throw new ApiRequestError(
+        `Backend returned an invalid or non-JSON response (HTTP ${response.status}).`,
+        'invalid-response'
+      );
     }
   }
 
   if (!response.ok) {
     const message = data && (data.detail || data.message || data.error);
-    throw new Error(message || `Request failed (${response.status}).`);
+    const statusMessage = response.status === 400
+      ? 'Bad request.'
+      : response.status === 401
+        ? 'Authentication failed. Check your credentials or sign in again.'
+        : response.status >= 500
+          ? 'Backend server error. Please try again later.'
+          : `Request failed (HTTP ${response.status}).`;
+    throw new ApiRequestError(`HTTP ${response.status}: ${message || statusMessage}`, 'http');
   }
 
   return data;
