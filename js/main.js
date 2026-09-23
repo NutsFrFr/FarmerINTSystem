@@ -31,7 +31,32 @@ const SEARCH_INDEX = [
 ];
 
 
-const API_BASE = (window.APP_CONFIG && window.APP_CONFIG.API_BASE_URL) || 'http://localhost:8000';
+const API_BASE = window.APP_CONFIG && window.APP_CONFIG.API_BASE_URL;
+
+if (!API_BASE) {
+  throw new Error('API_BASE_URL is not configured. Refusing to fall back to localhost.');
+}
+
+async function apiRequest(path, options = {}) {
+  const response = await fetch(`${API_BASE}${path}`, options);
+  const responseText = await response.text();
+  let data = null;
+
+  if (responseText) {
+    try {
+      data = JSON.parse(responseText);
+    } catch (error) {
+      throw new Error(`Server returned an invalid response (${response.status}).`);
+    }
+  }
+
+  if (!response.ok) {
+    const message = data && (data.detail || data.message || data.error);
+    throw new Error(message || `Request failed (${response.status}).`);
+  }
+
+  return data;
+}
 
 /* ══════════════════════════════════════════════════
    1. AUTH
@@ -119,23 +144,19 @@ const API_BASE = (window.APP_CONFIG && window.APP_CONFIG.API_BASE_URL) || 'http:
     btnSI.disabled = true;
 
     try {
-      const res = await fetch(`${API_BASE}/login`, {
+      const data = await apiRequest('/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password: pw })
       });
 
-      const data = await res.json();
-
-      if (!res.ok) {
-        setError('si-email', 'si-email-err', data.detail || 'Login failed');
-        return;
-      }
-
       const name = data.name || email.split('@')[0];
+      if (data.access_token || data.token) {
+        localStorage.setItem('token', data.access_token || data.token);
+      }
       launchApp(name, email);
     } catch (err) {
-      setError('si-email', 'si-email-err', 'Cannot connect to server.');
+      setError('si-email', 'si-email-err', err.message || 'Cannot connect to server.');
     } finally {
       btnSI.textContent = 'Sign In';
       btnSI.disabled = false;
@@ -169,22 +190,18 @@ const API_BASE = (window.APP_CONFIG && window.APP_CONFIG.API_BASE_URL) || 'http:
     btnSU.disabled = true;
 
     try {
-      const res = await fetch(`${API_BASE}/register`, {
+      const data = await apiRequest('/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, email, password: pw })
       });
 
-      const data = await res.json();
-
-      if (!res.ok) {
-        setError('su-email', 'su-email-err', data.detail || 'Registration failed');
-        return;
+      if (data && (data.access_token || data.token)) {
+        localStorage.setItem('token', data.access_token || data.token);
       }
-
       launchApp(name, email);
     } catch (err) {
-      setError('su-email', 'su-email-err', 'Cannot connect to server.');
+      setError('su-email', 'su-email-err', err.message || 'Cannot connect to server.');
     } finally {
       btnSU.textContent = 'Create Account';
       btnSU.disabled = false;
@@ -359,7 +376,7 @@ const phone = document.getElementById('p-phone').value;
 
 try {
   const token = localStorage.getItem('token');
-  const response = await fetch(`${API_BASE}/users/me`, {
+  await apiRequest('/users/me', {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -368,17 +385,15 @@ try {
     body: JSON.stringify({ name, email, phone })
   });
 
-  if (response.ok) {
-    updateProfileDisplay();
-    setEditable(false);
+  updateProfileDisplay();
+  setEditable(false);
 
-    const old = saveBtn.textContent;
-    saveBtn.textContent = '✓ Saved';
-    saveBtn.style.background = '#16A34A';
-    setTimeout(() => { saveBtn.textContent = old; saveBtn.style.background = ''; }, 2000);
-  }
+  const old = saveBtn.textContent;
+  saveBtn.textContent = '✓ Saved';
+  saveBtn.style.background = '#16A34A';
+  setTimeout(() => { saveBtn.textContent = old; saveBtn.style.background = ''; }, 2000);
 } catch (err) {
-  alert('Failed to save profile');
+  alert(err.message || 'Failed to save profile');
 }
 });
 })();
