@@ -53,6 +53,7 @@ def root():
     return {"message": "Backend is working"}
 
 
+@app.post("/register")
 @app.post("/api/register")
 def register(user: RegisterRequest):
     if users_collection.find_one({"username": user.username}):
@@ -66,6 +67,7 @@ def register(user: RegisterRequest):
     return {"message": "User registered successfully"}
 
 
+@app.post("/login")
 @app.post("/api/login")
 def login(user: RegisterRequest):
     existing_user = users_collection.find_one({"username": user.username})
