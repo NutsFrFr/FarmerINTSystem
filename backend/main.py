@@ -1,7 +1,7 @@
 import os
 
 from dotenv import load_dotenv
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from pymongo import MongoClient
@@ -15,6 +15,17 @@ if not mongo_uri:
 
 client = MongoClient(mongo_uri, serverSelectionTimeoutMS=5000)
 app = FastAPI()
+
+
+@app.middleware("http")
+async def log_request_path(request: Request, call_next):
+    print(
+        f"REQUEST_PATH={request.scope.get('path')}",
+        flush=True
+    )
+
+    response = await call_next(request)
+    return response
 
 app.add_middleware(
     CORSMiddleware,
