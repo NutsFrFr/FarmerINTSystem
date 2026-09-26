@@ -29,9 +29,12 @@ async def log_request_path(request: Request, call_next):
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://127.0.0.1:5501"],
-    allow_methods=["POST"],
-    allow_headers=["Content-Type"],
+    allow_origins=[
+        "http://127.0.0.1:5501",
+        "https://farmer-int-system.vercel.app",
+    ],
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 db = client["loginpass"]
