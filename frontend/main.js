@@ -30,61 +30,9 @@ const SEARCH_INDEX = [
   { icon: '📋', name: 'Income Certificate',         sub: 'Financial document — Under Review',     category: 'Document', page: 'docs' },
 ];
 
-
-const API_BASE = window.APP_CONFIG && window.APP_CONFIG.API_BASE_URL;
-
-if (!API_BASE) {
-  throw new Error('API_BASE_URL is not configured.');
-}
-
-class ApiRequestError extends Error {
-  constructor(message, kind) {
-    super(message);
-    this.name = 'ApiRequestError';
-    this.kind = kind;
-  }
-}
-
-async function apiRequest(path, options = {}) {
-  let response;
-
-  try {
-    response = await fetch(`${API_BASE}${path}`, options);
-  } catch (error) {
-    const message = navigator.onLine === false
-      ? 'Network unavailable. Check your internet connection and try again.'
-      : 'Backend unavailable or blocked by CORS. Check the backend deployment and allowed frontend origin.';
-    throw new ApiRequestError(message, navigator.onLine === false ? 'network' : 'cors');
-  }
-
-  const responseText = await response.text();
-  let data = null;
-
-  if (responseText) {
-    try {
-      data = JSON.parse(responseText);
-    } catch (error) {
-      throw new ApiRequestError(
-        `Backend returned an invalid or non-JSON response (HTTP ${response.status}).`,
-        'invalid-response'
-      );
-    }
-  }
-
-  if (!response.ok) {
-    const message = data && (data.detail || data.message || data.error);
-    const statusMessage = response.status === 400
-      ? 'Bad request.'
-      : response.status === 401
-        ? 'Authentication failed. Check your credentials or sign in again.'
-        : response.status >= 500
-          ? 'Backend server error. Please try again later.'
-          : `Request failed (HTTP ${response.status}).`;
-    throw new ApiRequestError(`HTTP ${response.status}: ${message || statusMessage}`, 'http');
-  }
-
-  return data;
-}
+const API_BASE_URL = window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost'
+  ? 'http://127.0.0.1:8000'
+  : '/api';
 
 /* ══════════════════════════════════════════════════
    1. AUTH
@@ -150,13 +98,6 @@ async function apiRequest(path, options = {}) {
     calculateEMI();
   }
 
-  async function checkExistingSession() {
-    const savedName = localStorage.getItem('user_name');
-    const savedEmail = localStorage.getItem('user_email');
-
-    if (savedEmail) launchApp(savedName || 'Farmer User', savedEmail);
-  }
-
   btnSI && btnSI.addEventListener('click', async () => {
     clearErrors();
     const email = document.getElementById('si-email').value.trim();
@@ -172,19 +113,25 @@ async function apiRequest(path, options = {}) {
     btnSI.disabled = true;
 
     try {
-      const data = await apiRequest('/login', {
+      const response = await fetch(`${API_BASE_URL}/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password: pw })
+        body: JSON.stringify({ username: email, password: pw })
       });
 
-      const name = data.name || email.split('@')[0];
-      if (data.access_token || data.token) {
-        localStorage.setItem('token', data.access_token || data.token);
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error('Invalid username or password');
       }
-      launchApp(name, email);
-    } catch (err) {
-      setError('si-email', 'si-email-err', err.message || 'Cannot connect to server.');
+
+      const message = document.getElementById('si-email-err');
+      if (message) message.textContent = data.message;
+      launchApp(email.split('@')[0], email);
+    } catch (error) {
+      const message = document.getElementById('si-email-err');
+      if (message) message.textContent = error.message === 'Invalid username or password'
+        ? error.message
+        : 'Unable to connect to the backend';
     } finally {
       btnSI.textContent = 'Sign In';
       btnSI.disabled = false;
@@ -218,18 +165,22 @@ async function apiRequest(path, options = {}) {
     btnSU.disabled = true;
 
     try {
-      const data = await apiRequest('/register', {
+      const response = await fetch(`${API_BASE_URL}/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, password: pw })
+        body: JSON.stringify({ username: email, password: pw })
       });
 
-      if (data && (data.access_token || data.token)) {
-        localStorage.setItem('token', data.access_token || data.token);
+      const data = await response.json();
+      const message = document.getElementById('su-email-err');
+      if (message) {
+        message.textContent = response.ok
+          ? data.message
+          : data.detail || 'Unable to create account';
       }
-      launchApp(name, email);
-    } catch (err) {
-      setError('su-email', 'su-email-err', err.message || 'Cannot connect to server.');
+    } catch (error) {
+      const message = document.getElementById('su-email-err');
+      if (message) message.textContent = 'Unable to connect to the backend';
     } finally {
       btnSU.textContent = 'Create Account';
       btnSU.disabled = false;
@@ -252,7 +203,6 @@ async function apiRequest(path, options = {}) {
     });
   });
 
-  checkExistingSession();
 })();
 
 
@@ -397,33 +347,22 @@ function updateProfileDisplay() {
     setEditable(false);
   });
 
-  saveBtn && saveBtn.addEventListener('click', async () => {
-const name = document.getElementById('p-name').value;
-const email = document.getElementById('p-email').value;
-const phone = document.getElementById('p-phone').value;
+  saveBtn && saveBtn.addEventListener('click', () => {
+    const name = document.getElementById('p-name').value;
+    const email = document.getElementById('p-email').value;
 
-try {
-  const token = localStorage.getItem('token');
-  await apiRequest('/users/me', {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`
-    },
-    body: JSON.stringify({ name, email, phone })
+    MOCK_USER.name = name;
+    MOCK_USER.email = email;
+    localStorage.setItem('user_name', name);
+    localStorage.setItem('user_email', email);
+    updateProfileDisplay();
+    setEditable(false);
+
+    const old = saveBtn.textContent;
+    saveBtn.textContent = '✓ Saved';
+    saveBtn.style.background = '#16A34A';
+    setTimeout(() => { saveBtn.textContent = old; saveBtn.style.background = ''; }, 2000);
   });
-
-  updateProfileDisplay();
-  setEditable(false);
-
-  const old = saveBtn.textContent;
-  saveBtn.textContent = '✓ Saved';
-  saveBtn.style.background = '#16A34A';
-  setTimeout(() => { saveBtn.textContent = old; saveBtn.style.background = ''; }, 2000);
-} catch (err) {
-  alert(err.message || 'Failed to save profile');
-}
-});
 })();
 
 
@@ -752,29 +691,26 @@ function calculateEMI() {
 /* ══════════════════════════════════════════════════
    10. INITIAL STATE
 ══════════════════════════════════════════════════ */
-// Set page-home as the default active page on load (kept hidden until login)
+// Keep the authentication screen visible until login succeeds.
 document.addEventListener('DOMContentLoaded', () => {
-  // All pages except home start hidden
+  document.getElementById('auth-overlay')?.style.removeProperty('display');
+  document.getElementById('app')?.classList.add('hidden');
+
   document.querySelectorAll('.page').forEach(p => {
     if (p.id !== 'page-home') p.classList.remove('active');
   });
   const home = document.getElementById('page-home');
   if (home) home.classList.add('active');
 });
-document.addEventListener('DOMContentLoaded', () => {
-checkExistingSession();
-// ... rest of your code
-});
 
 function logout() {
-localStorage.removeItem('token');
-localStorage.removeItem('username');
-window.location.reload();
+  document.getElementById('app')?.classList.add('hidden');
+  const overlay = document.getElementById('auth-overlay');
+  if (overlay) overlay.style.removeProperty('display');
+  document.getElementById('form-signin')?.classList.add('active');
+  document.getElementById('form-signup')?.classList.remove('active');
 }
 
-// Add to nav avatar click
 document.getElementById('nav-avatar')?.addEventListener('click', () => {
-if (confirm('Logout?')) {
-  logout();
-}
+  if (confirm('Logout?')) logout();
 });
