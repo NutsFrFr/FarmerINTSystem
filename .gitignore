@@ -8,3 +8,5 @@ backend/venv/
 **/*.py[cod]
 .vscoode/
 .vscode/
+.vercel
+.env*

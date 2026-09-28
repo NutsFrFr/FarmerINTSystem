@@ -98,44 +98,17 @@ const API_BASE_URL = window.location.hostname === '127.0.0.1' || window.location
     calculateEMI();
   }
 
-  btnSI && btnSI.addEventListener('click', async () => {
+  btnSI && btnSI.addEventListener('click', () => {
     clearErrors();
     const email = document.getElementById('si-email').value.trim();
     const pw    = document.getElementById('si-password').value;
 
     let ok = true;
     if (!email) ok = setError('si-email', 'si-email-err', 'Email is required.') && ok;
-    else if (!isEmail(email)) ok = setError('si-email', 'si-email-err', 'Enter a valid email.') && ok;
     if (!pw) ok = setError('si-password', 'si-pw-err', 'Password is required.') && ok;
     if (!ok) return;
 
-    btnSI.textContent = 'Signing in...';
-    btnSI.disabled = true;
-
-    try {
-      const response = await fetch(`${API_BASE_URL}/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username: email, password: pw })
-      });
-
-      const data = await response.json();
-      if (!response.ok) {
-        throw new Error('Invalid username or password');
-      }
-
-      const message = document.getElementById('si-email-err');
-      if (message) message.textContent = data.message;
-      launchApp(email.split('@')[0], email);
-    } catch (error) {
-      const message = document.getElementById('si-email-err');
-      if (message) message.textContent = error.message === 'Invalid username or password'
-        ? error.message
-        : 'Unable to connect to the backend';
-    } finally {
-      btnSI.textContent = 'Sign In';
-      btnSI.disabled = false;
-    }
+    launchApp(email.split('@')[0], email);
   });
 
   btnSU && btnSU.addEventListener('click', async () => {
