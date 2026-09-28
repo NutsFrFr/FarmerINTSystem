@@ -111,7 +111,7 @@ const API_BASE_URL = window.location.hostname === '127.0.0.1' || window.location
     launchApp(email.split('@')[0], email);
   });
 
-  btnSU && btnSU.addEventListener('click', async () => {
+  btnSU && btnSU.addEventListener('click', () => {
     clearErrors();
     const name    = document.getElementById('su-name').value.trim();
     const email   = document.getElementById('su-email').value.trim();
@@ -134,30 +134,7 @@ const API_BASE_URL = window.location.hostname === '127.0.0.1' || window.location
     }
     if (!ok) return;
 
-    btnSU.textContent = 'Creating account...';
-    btnSU.disabled = true;
-
-    try {
-      const response = await fetch(`${API_BASE_URL}/register`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username: email, password: pw })
-      });
-
-      const data = await response.json();
-      const message = document.getElementById('su-email-err');
-      if (message) {
-        message.textContent = response.ok
-          ? data.message
-          : data.detail || 'Unable to create account';
-      }
-    } catch (error) {
-      const message = document.getElementById('su-email-err');
-      if (message) message.textContent = 'Unable to connect to the backend';
-    } finally {
-      btnSU.textContent = 'Create Account';
-      btnSU.disabled = false;
-    }
+    launchApp(name, email);
   });
 
   document.addEventListener('keydown', (e) => {
