@@ -1,0 +1,642 @@
+[
+  {
+    "id": 1,
+    "state_or_ministry": "Ministry Of Commerce And Industry",
+    "name": "Coffee Development Programme in North Eastern Region: Expansion of Coffee",
+    "description": "The scheme \"Coffee Development Programme in North Eastern Region: Expansion of Coffee\" by the Coffee Board, Department of Commerce, Ministry of Commerce and Industry, aims to facilitate afforestation in the Jhum lands and help settle the tribals on a permanent footing.",
+    "visits_30_days": 91,
+    "tags": ["Agriculture", "Farmer", "DBT", "Subsidy"]
+  },
+  {
+    "id": 2,
+    "state_or_ministry": "Ministry Of Agriculture and Farmers Welfare",
+    "name": "Rashtriya Krishi Vigyan Puraskar",
+    "description": "The Rashtriya Krishi Vigyan Puraskar (RKVP) aims to honor scientists and technical experts for outstanding contributions and innovations in agriculture and allied sciences.",
+    "visits_30_days": null,
+    "tags": ["Krishi", "Award", "Farmer", "Sciences", "Technologies"]
+  },
+  {
+    "id": 3,
+    "state_or_ministry": "Gujarat",
+    "name": "Assistance for Planting Vegetable Crops for Raw and Ripe Mandap",
+    "description": "The scheme provides financial assistance to farmers in Gujarat for setting up vegetable trellises (Mandap) for raw, semi-ripe, and ripe vegetables, with varying support for General, SC, and ST farmers.",
+    "visits_30_days": 14,
+    "tags": ["Vegetable Crops", "Farmer", "Raw And Ripe Mandap"]
+  },
+  {
+    "id": 4,
+    "state_or_ministry": "Gujarat",
+    "name": "A Program to Provide 90 Percent Assistance in Planting Material of Horticultural Fruit Crops",
+    "description": "This scheme offers 90% financial assistance to farmers for purchasing planting materials of fruit crops to promote horticulture.",
+    "visits_30_days": 551,
+    "tags": ["Agriculture", "Horticultural", "Fruit Crops"]
+  },
+  {
+    "id": 5,
+    "state_or_ministry": "Odisha",
+    "name": "Krishi Vidya Nidhi Yojana",
+    "description": "The scheme aims to provide merit-based financial assistance to children of CM-KISAN beneficiaries pursuing professional and technical courses, supporting higher education through Direct Benefit Transfer.",
+    "visits_30_days": null,
+    "tags": ["Scholarship", "Higher Education", "Farmers Children", "DBT", "CM-KISAN"]
+  },
+  {
+    "id": 6,
+    "state_or_ministry": "Rajasthan",
+    "name": "Incentive To Girls",
+    "description": "Rajasthan State started a scheme \"Incentive for Girls\" for state students.",
+    "visits_30_days": 740,
+    "tags": ["Financial Assistance", "Girl Education", "Empowerment", "Higher Education"]
+  },
+  {
+    "id": 7,
+    "state_or_ministry": "Gujarat",
+    "name": "Incentive To Owners Of Artificial Insemination Born Female Calf Through Pure Breeding In Indigenous Cow",
+    "description": "The scheme “Incentive to Owners of Artificial Insemination Born Female Calf through Pure Breeding in Indigenous Cow” was started by the Department of Agriculture, Farmers Welfare & Co-operation, Government of Gujarat.",
+    "visits_30_days": 146,
+    "tags": ["Incentive", "Artificial Insemination", "Indigenous Cow", "Livestock"]
+  },
+  {
+    "id": 8,
+    "state_or_ministry": "Gujarat",
+    "name": "Subsidy Scheme On Establishment Of - 25 Kadaknath/R.I.R. Birds Unit To Scheduled Tribes",
+    "description": "The scheme “Subsidy Scheme on Establishment of - 25 Kadaknath/R.I.R. Birds Unit to Scheduled Tribes” was launched by the Dept. of Agriculture, Farmers Welfare & Co-operation, Govt. of Gujarat to provide employment, nutritious diet and to raise the income of Scheduled Tribe People of Gujarat State.",
+    "visits_30_days": 46,
+    "tags": ["Poultry Farming", "Scheduled Tribe", "Subsidy", "Kadaknath", "Financial Assistance", "Rhode Island Red (RIR)"]
+  },
+  {
+    "id": 9,
+    "state_or_ministry": "Gujarat",
+    "name": "Scheme For Subsidy On Interest For Establishment Of 1 To 20 Milch Animal Farm",
+    "description": "The scheme “Scheme for Subsidy on Interest for Establishment of 1 to 20 Milch Animal Farm for the State Cattle Breeders” was started by the Dept. of Agriculture, Farmers Welfare & Co-operation, Government of Gujarat.",
+    "visits_30_days": 236,
+    "tags": ["Animal Husbandry", "Subsidy", "Farmer", "Cattle Farming", "Loan"]
+  },
+  {
+    "id": 10,
+    "state_or_ministry": "Himachal Pradesh",
+    "name": "Uttam Pashu Puraskar Yojana",
+    "description": "The scheme “Uttam Pashu Puraskar Yojana” was launched by the Department of Animal Husbandry, Government of Himachal Pradesh to provide incentives and encouragement to livestock Owners for rearing good quality high yielding animals.",
+    "visits_30_days": 244,
+    "tags": ["Livestock", "Cattle", "Buffaloes", "Cash Prize", "Milk"]
+  },
+  {
+    "id": 11,
+    "state_or_ministry": "Assam",
+    "name": "Community Canning & Training On Fruit Preservation",
+    "description": "The office of the Deputy Director of Agriculture (Fruit Preservation) Assam was created in 1978, under the Directorate of Agriculture and in 2008 it was transferred to the Directorate of Horticulture and Food Processing.",
+    "visits_30_days": 158,
+    "tags": ["Fruit Preservation", "Community Canning", "Training"]
+  },
+  {
+    "id": 12,
+    "state_or_ministry": "Karnataka",
+    "name": "Madilu Kit",
+    "description": "The Madilu Programme is a government initiative focused on empowering rural communities through skill development and entrepreneurship opportunities. It aims to create sustainable livelihoods, reduce poverty, and enhance social and economic well-being in rural areas.",
+    "visits_30_days": 699,
+    "tags": ["Skill Development", "Entrepreneurship", "Livelihoods", "Poverty Reduction"]
+  },
+  {
+    "id": 13,
+    "state_or_ministry": "Assam",
+    "name": "Mukhya Mantri Krishi Sa Sajuli Yozana - Assam",
+    "description": "The scheme “Mukhya Mantri Krishi Sa Sajuli Yojana” is a State Owned Priority Development (SOPD) scheme for farmers launched by the Assam government in FY 2018-19. The main purpose of launching this scheme for farmers is their holistic development by implementing several farm mechanization schemes.",
+    "visits_30_days": 791,
+    "tags": ["Farmer", "Agriculture", "Direct Benefit Transfer", "Financial Assistance", "Farm Tools"]
+  },
+  {
+    "id": 14,
+    "state_or_ministry": "Himachal Pradesh",
+    "name": "Krishak Bakri Palan Yojna",
+    "description": "The Department of Animal Husbandry, Government of Himachal Pradesh has introduced a scheme named \"Krishak Bakri Palan Yojna\" with the aim to increase income generation opportunities for economically weaker segments of the society as well as to increase meat production.",
+    "visits_30_days": 591,
+    "tags": ["Goat Farming Scheme", "Animal Husbandry", "Financial Assistance", "Rural Development"]
+  },
+  {
+    "id": 15,
+    "state_or_ministry": "Sikkim",
+    "name": "Skilled Youth Startup Scheme",
+    "description": "Sikkim Skilled Youth Startup Scheme was launched in 2020 and is implemented by the Department of Commerce & Industries which aims at assisting the educated unemployed youth in setting up a myriad of enterprises through loans with back-ended financial subsidy assistance.",
+    "visits_30_days": 309,
+    "tags": ["Business", "StartUp", "Employment", "Entrepreneurship", "Youth"]
+  },
+  {
+    "id": 16,
+    "state_or_ministry": "Uttarakhand",
+    "name": "Mukhyamantri Ghasyari Kalyan Yojana",
+    "description": "The scheme aims to provide affordable and nutritious packed silage and total mixed animal feed to livestock farmers, especially women, in the remote hilly areas of Uttarakhand. Under this scheme, silage is made available to livestock farmers at a subsidized rate of ₹2.75 per kg.",
+    "visits_30_days": null,
+    "tags": ["Silage", "Animal Feed", "Fodder", "Livestock Farmer", "Cattle Rearer"]
+  },
+  {
+    "id": 17,
+    "state_or_ministry": "Madhya Pradesh",
+    "name": "Registration for Crop Procurement",
+    "description": "The scheme aims to ensure fair crop prices for farmers by facilitating government procurement and provides easy online registration for landholding farmers to sell their crops at minimum support price.",
+    "visits_30_days": 73,
+    "tags": ["Farmer", "Financial Assistance", "Crop", "Procurement", "Grain"]
+  },
+  {
+    "id": 18,
+    "state_or_ministry": "Goa",
+    "name": "Mukhyamantri Sudharit Kamdhenu Scheme",
+    "description": "The scheme aims to help the farmers to get financial assistance for the purchase of cross bred cows, improved she buffaloes and cows of indigenous breeds namely Sahiwal, Gir, Red Sindhi, Rathi and Tharparkar for their Dairy Unit, to promote self employment in the Dairy Sector.",
+    "visits_30_days": 9,
+    "tags": ["Farmer", "Youth", "Dairy", "Subsidy", "Cattle"]
+  },
+  {
+    "id": 19,
+    "state_or_ministry": "Madhya Pradesh",
+    "name": "Hybrid Chilli Production Program",
+    "description": "The scheme aims to provide self-employment opportunities and increase income for Scheduled Caste farmers living below the poverty line by promoting hybrid chilli cultivation.",
+    "visits_30_days": null,
+    "tags": ["Hybrid Chilli Production", "Financial Assistance", "Horticulture"]
+  },
+  {
+    "id": 20,
+    "state_or_ministry": "Goa",
+    "name": "Development of Manures & Fertilizers: Assistance for Construction/Installation of Vermi-Compost Units",
+    "description": "The \"Vermi-compost Units\" component of the scheme aims to convert available on-field and farm waste material into chemical-free farm resources as farm input for organic farming through vermicomposting processes. The payment of the sanctioned subsidy is through Electronic Clearance System (ECS).",
+    "visits_30_days": 8,
+    "tags": ["Agriculture", "Farmer", "Crop", "Soil", "Plant"]
+  },
+  {
+    "id": 21,
+    "state_or_ministry": "Madhya Pradesh",
+    "name": "Registration for Crop Procurement",
+    "description": "The scheme aims to ensure fair crop prices for farmers by facilitating government procurement and provides easy online registration for landholding farmers to sell their crops at minimum support price.",
+    "visits_30_days": 73,
+    "tags": ["Farmer", "Financial Assistance", "Crop", "Procurement", "Grain"]
+  },
+  {
+    "id": 22,
+    "state_or_ministry": "Goa",
+    "name": "Mukhyamantri Sudharit Kamdhenu Scheme",
+    "description": "The scheme aims to help the farmers to get financial assistance for the purchase of cross bred cows, improved she buffaloes and cows of indigenous breeds namely Sahiwal, Gir, Red Sindhi, Rathi and Tharparkar for their Dairy Unit, to promote self employment in the Dairy Sector.",
+    "visits_30_days": 9,
+    "tags": ["Farmer", "Youth", "Dairy", "Subsidy", "Cattle"]
+  },
+  {
+    "id": 23,
+    "state_or_ministry": "Madhya Pradesh",
+    "name": "Hybrid Chilli Production Program",
+    "description": "The scheme aims to provide self-employment opportunities and increase income for Scheduled Caste farmers living below the poverty line by promoting hybrid chilli cultivation.",
+    "visits_30_days": null,
+    "tags": ["Hybrid Chilli Production", "Financial Assistance", "Horticulture"]
+  },
+  {
+    "id": 24,
+    "state_or_ministry": "Goa",
+    "name": "Development of Manures & Fertilizers: Assistance for Construction/Installation of Vermi-Compost Units",
+    "description": "The \"Vermi-compost Units\" component of the scheme aims to convert available on-field and farm waste material into chemical-free farm resources as farm input for organic farming through vermicomposting processes. The payment of the sanctioned subsidy is through Electronic Clearance System (ECS).",
+    "visits_30_days": 8,
+    "tags": ["Agriculture", "Farmer", "Crop", "Soil", "Plant"]
+  },
+  {
+    "id": 25,
+    "state_or_ministry": "Madhya Pradesh",
+    "name": "Compensation for Crop Damage Caused by Wildlife (in Revenue and Forest Villages)",
+    "description": "The scheme aims to provide timely financial assistance to farmers for crop damage caused by wildlife, assessed and compensated within 30 working days as per revenue book circular guidelines.",
+    "visits_30_days": 24,
+    "tags": ["Farmer", "Financial Relief", "Wild Animal", "Crops"]
+  },
+  {
+    "id": 26,
+    "state_or_ministry": "Uttarakhand",
+    "name": "Machhali Palan",
+    "description": "The scheme aims to provide financial support to fishermen for repairing, reconstructing, and replacing damaged boats and nets due to disasters.",
+    "visits_30_days": 21,
+    "tags": ["Fish Farming", "Fishermen", "Boat", "Net", "Fish Seed Farm"]
+  },
+  {
+    "id": 27,
+    "state_or_ministry": "Uttarakhand",
+    "name": "Maitri Prashikshan Karyakram - Uttarakhand Livestock Development Board",
+    "description": "The scheme aims to enhance livestock productivity and improve artificial insemination services across the state through the training and capacity building of local youth.",
+    "visits_30_days": null,
+    "tags": ["Artificial Insemination", "Livestock Development", "Animal Husbandry", "Training", "Livestock"]
+  },
+  {
+    "id": 28,
+    "state_or_ministry": "Uttarakhand",
+    "name": "National Livestock Mission: Livestock Insurance Scheme - Uttarakhand Livestock Development Board",
+    "description": "The scheme aims to provide insurance coverage to livestock in order to protect cattle rearers against the loss of their animals due to death, thereby encouraging them to adopt better animal husbandry practices.",
+    "visits_30_days": null,
+    "tags": ["Livestock", "Animal Husbandry", "Insurance", "Cattle"]
+  },
+  {
+    "id": 29,
+    "state_or_ministry": "Gujarat",
+    "name": "PMMSY: Motorcycle with Ice Box - Gujarat",
+    "description": "The scheme aims to provide financial assistance for the purchase of motorcycles with ice boxes. Through this scheme, eligible beneficiaries receive subsidies to enhance their livelihood opportunities.",
+    "visits_30_days": 23,
+    "tags": ["Construction Of Plant", "Storage", "Fishermen", "Fish Sellers"]
+  },
+  {
+    "id": 30,
+    "state_or_ministry": "Gujarat",
+    "name": "PMMSY: Construction of Plant/Storage of Minimum 30 Tonne Capacity - Gujarat",
+    "description": "The scheme aims to strengthen fish storage infrastructure for hygienic preservation. Through this scheme, beneficiaries receive financial assistance for constructing 30-tonne capacity plants or storage units.",
+    "visits_30_days": 36,
+    "tags": ["Construction Of Plant", "Storage", "Fishermen", "Fish Sellers"]
+  },
+  {
+    "id": 31,
+    "state_or_ministry": "Gujarat",
+    "name": "PMMSY: Construction of Plant/Storage of Minimum 20 Tonne Capacity - Gujarat",
+    "description": "The scheme aims to provide financial support for the construction of 20-tonne capacity ice plant/storage units, ensuring hygienic fish storage and improving the income of beneficiaries.",
+    "visits_30_days": 14,
+    "tags": ["Construction Of Plant", "Storage", "Fish", "Fishermen", "Fish Sellers", "20 Tonne"]
+  },
+  {
+    "id": 32,
+    "state_or_ministry": "Gujarat",
+    "name": "PMMSY: Support for Acquisition of Deep Sea Fishing Vessels for Traditional Fishermen - Gujarat",
+    "description": "The scheme aims to strengthen fish storage infrastructure for hygienic preservation. Through this scheme, beneficiaries receive financial assistance for the support for acquisition of deep-sea fishing vessels for traditional fishermen.",
+    "visits_30_days": 4,
+    "tags": ["Construction Of Plant", "Storage", "Traditional Fishermen", "Fish Sellers", "Support For Acquisition Of Deep Sea Fishing Vessels"]
+  },
+  {
+    "id": 33,
+    "state_or_ministry": "Gujarat",
+    "name": "PMMSY: Three wheeler with Ice Box including e-rickshaws for fish vending - Gujarat",
+    "description": "The scheme aims to strengthen fish storage infrastructure for hygienic preservation. Through this scheme, beneficiaries receive financial assistance for a three-wheeler with an Ice Box, including e-rickshaws for fish vending.",
+    "visits_30_days": 4,
+    "tags": ["Construction Of Plant", "Storage", "Fishermen", "Fish Sellers"]
+  },
+  {
+    "id": 34,
+    "state_or_ministry": "Gujarat",
+    "name": "Integrated Horticulture Development Program for Tribal Area Farmers (TASP) HRT-3",
+    "description": "The scheme \"Integrated Horticulture Development Program for Tribal Area Farmers (TASP) HRT-3\" by the Agriculture and Co-operation Department, Government of Gujarat, aims to enhance the horticulture sector through financial assistance and subsidies to tribal area farmers across the state.",
+    "visits_30_days": 10,
+    "tags": ["Horticulture", "Tribal Farmers", "Farm Mechanization", "Post Harvest Management", "Subsidy"]
+  },
+  {
+    "id": 35,
+    "state_or_ministry": "Gujarat",
+    "name": "Distribution of Seeds of more productions varieties/ Hybrids varieties Seeds and fertilizer at subsidies etc. to Adivasi farmers in Tribal Area: Castor cake/Neem cake/ Liquid Fermented Organic Manure / Green manure seed (For mix in the soil) Gujarat",
+    "description": "The scheme aims to help tribal farmers improve their livelihood by increasing agricultural crop production. Through this scheme, subsidies are provided on high-yield and hybrid seeds, fertilizers, and other agricultural inputs to Scheduled Tribe farmers.",
+    "visits_30_days": 21,
+    "tags": ["Adivasi Farmers", "Crop Production", "Livelihood", "Castor Cake", "Fertilizer", "Subsidies"]
+  },
+  {
+    "id": 36,
+    "state_or_ministry": "Gujarat",
+    "name": "Distribution of Seeds of more productions varieties/ Hybrids varieties Seeds and fertilizer at subsidies etc. to Adivasi farmers in Tribal Area: Tarpaulin Gujarat",
+    "description": "The scheme aims to enhance crop production and livelihood. It provides subsidies on seeds, fertilizers, tarpaulins, and other agricultural inputs to Scheduled Tribe farmers.",
+    "visits_30_days": 3,
+    "tags": ["Adivasi Farmers", "Crop Production", "Livelihood", "Seeds", "Fertilizer", "Subsidies", "Tarpaulin"]
+  },
+  {
+    "id": 37,
+    "state_or_ministry": "Gujarat",
+    "name": "Distribution of Seeds of more productions varieties/ Hybrids varieties Seeds and fertilizer at subsidies etc. to Adivasi farmers in Tribal Area: Water Carrying Pipe Line (TASP & OTASP) Gujarat",
+    "description": "The scheme aims to improve the agricultural productivity of Scheduled Tribe farmers through subsidized seeds, fertilizers, and equipment. It provides direct support to tribal farmers for enhancing crop production and livelihood.",
+    "visits_30_days": 9,
+    "tags": ["Adivasi Farmers", "Crop Production", "Livelihood", "Fertilizer", "Subsidies", "Water Carrying Pipeline"]
+  },
+  {
+    "id": 38,
+    "state_or_ministry": "Gujarat",
+    "name": "Assistance in Trellise Mandap for Cultivation of Vegetable Crops",
+    "description": "The scheme \"Assistance in Trellise Mandap for Cultivation of Vegetable Crops\" aims to promote structured vegetable farming through the provision of financial assistance for constructing kachha/semi-pucca/pucca trellis mandaps to all farmers across the state.",
+    "visits_30_days": 11,
+    "tags": ["Agriculture", "Vegetable Farming", "Trellis Mandap", "Farming Infrastructure"]
+  },
+  {
+    "id": 39,
+    "state_or_ministry": "Gujarat",
+    "name": "National Mission on Edible Oil–Oil Palm: Planting Materials",
+    "description": "The scheme component \"Planting Materials\" launched under the \"National Mission on Edible Oil–Oil Palm\" scheme aims to increase oil palm production in the state and reduce dependency on imports through financial assistance to farmers for procuring planting materials.",
+    "visits_30_days": null,
+    "tags": ["Edible Oil", "Oil Palm", "Planting Materials", "Imported Plant", "Seedlings", "Subsidy"]
+  },
+  {
+    "id": 40,
+    "state_or_ministry": "Gujarat",
+    "name": "National Mission on Edible Oil- Oil Palm: Nursery",
+    "description": "The scheme component \"Nursery\" launched under the \"National Mission on Edible Oil–Oil Palm\" scheme aims to increase the production of oil palm in the state and reduce dependence on imports through providing subsidy assistance for setting up nurseries for farmers.",
+    "visits_30_days": 1,
+    "tags": ["Edible Oil", "Nursery", "Farmer", "Subsidy"]
+  },
+  {
+    "id": 41,
+    "state_or_ministry": "Assam",
+    "name": "Special Incentive to ST (P)/OBC/MOBC Meritorious Students",
+    "description": "The scheme aims to provide financial grants to meritorious ST (P)/OBC/MOBC students in Assam who secure high marks in Matriculation, 10+2, Graduation, or Post Graduation. Benefits include fixed monetary assistance ranging from ₹10,000/- to ₹25,000/- based on educational level.",
+    "visits_30_days": 277,
+    "tags": ["Incentive", "Student", "School", "Education", "Scheduled Tribe", "Other Backward Class", "Merit"]
+  },
+  {
+    "id": 42,
+    "state_or_ministry": "Assam",
+    "name": "Special Incentive to OBC Meritorious Students (Boys & Girls)",
+    "description": "This scheme offers a financial incentive of up to ₹10,000/- to meritorious Other Backward Classes (OBC) students who have achieved 80% or higher marks in the HSSLC examination. The objective is to motivate and encourage OBC students to pursue higher education.",
+    "visits_30_days": 53,
+    "tags": ["Student", "OBC", "Incentive", "Merit", "Social Welfare"]
+  },
+  {
+    "id": 43,
+    "state_or_ministry": "Assam",
+    "name": "Community Canning & Training On Fruit Preservation",
+    "description": "The office of the Deputy Director of Agriculture (Fruit Preservation) Assam was created in 1978, under the Directorate of Agriculture and in 2008 it was transferred to the Directorate of Horticulture and Food Processing.",
+    "visits_30_days": 158,
+    "tags": ["Fruit Preservation", "Community Canning", "Training"]
+  },
+  {
+    "id": 44,
+    "state_or_ministry": "Assam",
+    "name": "Interest Subvention Scheme For Housing Loan For Regular State Government Employee Under APUN GHAR",
+    "description": "Apun Ghar is a new home loan scheme for Assam Government employees as per announcement made in the Budget Speech,2016-2017 under which home loans will be provided to the State Government employees at subsidized interest rates.",
+    "visits_30_days": 676,
+    "tags": ["Loan", "Insurance", "Interest Subvention", "State Government Employee"]
+  },
+  {
+    "id": 45,
+    "state_or_ministry": "Assam",
+    "name": "Mukhya Mantri Krishi Sa Sajuli Yozana - Assam",
+    "description": "The scheme “Mukhya Mantri Krishi Sa Sajuli Yojana” is a State Owned Priority Development (SOPD) scheme for farmers launched by the Assam government in FY 2018-19. The main purpose of launching this scheme for farmers is their holistic development by implementing several farm mechanization schemes.",
+    "visits_30_days": 791,
+    "tags": ["Farmer", "Agriculture", "Direct Benefit Transfer", "Financial Assistance", "Farm Tools"]
+  },
+  {
+    "id": 46,
+    "state_or_ministry": "Assam",
+    "name": "Aponar Apon Ghar",
+    "description": "\"Aponar Apon Ghar\" is a Home Loan Subsidy Scheme by the Finance Department, Govt. of Assam. The objective is to realize the vision of “Housing For All” by 2022 so that each poor person may have their own house. All the applicants will get home loans at subsidized interest rates.",
+    "visits_30_days": 15110,
+    "tags": ["Loan", "Subsidy"]
+  },
+  {
+    "id": 47,
+    "state_or_ministry": "Assam",
+    "name": "\"Agricultural Income Tax Holiday\" under the \"Assam Tea Industries Special Incentives Scheme\"",
+    "description": "The scheme aims to ensure long-term financial sustainability of the Tea industry and to incentivize manufacturers to move from Crush, Tear, Curl tea to Orthodox tea production. The scheme is implemented by the Finance Department and the Industries & Commerce Department, Government of Assam.",
+    "visits_30_days": 1680,
+    "tags": ["Holiday", "Tea", "Income Tax", "Incentive", "Industry"]
+  },
+  {
+    "id": 48,
+    "state_or_ministry": "Assam",
+    "name": "Simon Sing Horo Special Post-Matric Scholarship",
+    "description": "The scheme aims to provide a one-time incentive of ₹10,000/- to students of the Tea Tribes and Adivasi Community who have cleared High School Leaving Certificate or Higher Secondary School Leaving Certificate examinations during the current year.",
+    "visits_30_days": null,
+    "tags": ["Youth", "Scholarship", "School", "Education", "Student"]
+  },
+  {
+    "id": 49,
+    "state_or_ministry": "Assam",
+    "name": "Grants To Patients Suffering From Tuberculosis/Cancer And Other Major Diseases",
+    "description": "The scheme aims to provide financial assistance for medical treatment to patients suffering from Tuberculosis, Cancer, and other major diseases. It provides a one-time financial grant to patients of the Tea Tribes and Adivasi community.",
+    "visits_30_days": null,
+    "tags": ["Health", "Financial Assistance", "Disease", "Education", "Student", "Cancer", "Tuberculosis", "Patient"]
+  },
+  {
+    "id": 50,
+    "state_or_ministry": "Assam",
+    "name": "Financial Assistance for ANM/GNM/Technical Courses",
+    "description": "The scheme aims to provide assistance to the youths of the Tea Tribes and Adivasi Community for training in job-assured technical and professional Diploma and Degree courses. It supports training for courses like ANM, GNM, and Para-Medical, with a minimum duration of one year.",
+    "visits_30_days": null,
+    "tags": ["Health", "Financial Assistance", "Medical", "Skill", "Training", "Nurse"]
+  },
+  {
+    "id": 51,
+    "state_or_ministry": "Assam",
+    "name": "CM's Jibon Anuprerana Scheme",
+    "description": "The scheme aims to provide one-time financial assistance to eligible research scholars from public institutions in Assam, promoting academic excellence and innovation. It provides ₹25,000/- to research scholars and ₹40,000/- to Divyang research scholars.",
+    "visits_30_days": 154,
+    "tags": ["Research", "Scholar", "PhD", "Financial Assistance", "PwD", "Disability"]
+  },
+  {
+    "id": 52,
+    "state_or_ministry": "Assam",
+    "name": "Financial Incentive For Inter-Caste Marriages Under Protection Of Civil Rights Act 1955 And Scheduled Castes And Scheduled Tribes (Prevention Of Atrocities) Act 1989 In Assam",
+    "description": "The scheme aims to encourage inter-caste marriages in Assam. It provides a one-time financial assistance of ₹2,50,000/- in a joint fixed deposit for eligible couples where one spouse belongs to a Scheduled Caste and the other to a General Caste Hindu.",
+    "visits_30_days": null,
+    "tags": ["Marriage", "Social Welfare", "Financial Assistance", "Caste", "Husband", "Wife"]
+  },
+  {
+    "id": 53,
+    "state_or_ministry": "Assam",
+    "name": "Pre-Matric Scholarship For Scheduled Tribe Students Studying In Classes 9th & 10th",
+    "description": "The scheme aims to support Scheduled Tribe children in classes 9th and 10th to minimize drop-out rates and aid progression to higher education. The scheme provides a recurring monthly scholarship, an annual book grant, and disability allowances directly to the Scheduled Tribe student beneficiaries.",
+    "visits_30_days": null,
+    "tags": ["Student", "Tribal", "Scholarship", "Allowance", "Assistance", "School", "Education"]
+  },
+  {
+    "id": 54,
+    "state_or_ministry": "Assam",
+    "name": "Aamar Dukan On Wheels",
+    "description": "The Assam Government proposes to introduce a new module of “Aamar Dukan” namely “AAMAR DUKAN ON WHEELS” in the same line as the existing ‘Aamar Dukan’ on 22.02.2017.",
+    "visits_30_days": 2270,
+    "tags": ["Aamar Dukan", "Wheels", "Business", "Startup"]
+  },
+  {
+    "id": 55,
+    "state_or_ministry": "Assam",
+    "name": "Coaching For Higher Studies",
+    "description": "The scheme aims to provide coaching to students of Tea Tribes and Adivasi community for preparing them for various competitive examinations like Civil Services, Medical, Engineering, Staff Selection Committee (Graduate level), Banking (Probationary Officers), etc.",
+    "visits_30_days": null,
+    "tags": ["Youth", "Coaching", "College", "Education", "Student"]
+  },
+  {
+    "id": 56,
+    "state_or_ministry": "Assam",
+    "name": "Financial Assistance for Higher Studies",
+    "description": "The scheme aims to provide financial assistance for students belonging to the Tea Tribes and Adivasi community. This assistance supports students pursuing higher education like MBBS, MBA, and Engineering, including studies within and outside the State or Country.",
+    "visits_30_days": null,
+    "tags": ["Youth", "Financial Assistance", "College", "Education", "Student"]
+  },
+  {
+    "id": 57,
+    "state_or_ministry": "Assam",
+    "name": "Pre-Matric & Post-Matric Scholarship",
+    "description": "The scheme aims to provide stipend and financial assistance to students belonging to the Tea Tribes and Adivasi community. The benefits include financial assistance and stipends for poor students from Class 9th up to normal Three Years Degree Courses (e.g. Bachelor of Arts, Bachelor of Science, etc.",
+    "visits_30_days": null,
+    "tags": ["Student", "Scholarship", "Stipend", "Education", "School", "College"]
+  },
+  {
+    "id": 58,
+    "state_or_ministry": "Assam",
+    "name": "\"Subsidy for Orthodox & Speciality Tea Unit for Plant & Machinery\" under the \"Assam Tea Industries Special Incentives Scheme\"",
+    "description": "The scheme aims to ensure long-term financial sustainability of the Tea industry and to incentivize manufacturers to move from Crush, Tear, Curl tea to Orthodox tea production. The scheme is implemented by the Finance Department and the Industries & Commerce Department, Government of Assam.",
+    "visits_30_days": 213,
+    "tags": ["Subsidy", "Tea", "Production", "Incentive", "Industry", "Machinery"]
+  },
+  {
+    "id": 59,
+    "state_or_ministry": "Assam",
+    "name": "\"Orthodox or Specialty Tea Production Subsidy\" under the \"Assam Tea Industries Special Incentives Scheme\"",
+    "description": "The scheme aims to ensure long-term financial sustainability of the Tea industry and to incentivize manufacturers to move from Crush, Tear, Curl tea to Orthodox tea production. The scheme is implemented by the Finance Department and the Industries & Commerce Department, Government of Assam.",
+    "visits_30_days": 153,
+    "tags": ["Subsidy", "Tea", "Production", "Incentive", "Industry"]
+  },
+  {
+    "id": 60,
+    "state_or_ministry": "Assam",
+    "name": "Financial Assistance for UPSC/APSC Mains Exam",
+    "description": "The scheme provides financial assistance to ST and OBC/MOBC students of Assam who have cleared the APSC/UPSC preliminary exam and are appearing for the mains exam in the current year.",
+    "visits_30_days": 189,
+    "tags": ["UPSC", "Examination", "Financial Assistance", "Education", "Student"]
+  },
+  {
+    "id": 61,
+    "state_or_ministry": "Assam",
+    "name": "Promotion of Tribal Culture",
+    "description": "The scheme provides financial grants (up to ₹3,00,000/- per organization) to registered NGOs/Trusts/Voluntary Organizations for promoting tribal culture among ST(P) communities in Assam's plain districts (outside BTC).",
+    "visits_30_days": 27,
+    "tags": ["Culture", "Heritage", "Tribal", "Literature", "NGO"]
+  },
+  {
+    "id": 62,
+    "state_or_ministry": "Assam",
+    "name": "Financial Assistance to Scheduled Tribe (Plains) Students for Coaching for Getting Admission into Medical/Engineering/IIT/etc.",
+    "description": "The scheme aims to provide financial assistance to ST (P) students for coaching to qualify for Medical, Engineering, and IIT entrance exams. It benefits eligible students by reimbursing coaching expenses, with selection based on merit from matriculation exam scores.",
+    "visits_30_days": 35,
+    "tags": ["Coaching", "Financial Assistance", "Scheduled Tribe", "Medical", "Engineering", "IIT"]
+  },
+  {
+    "id": 63,
+    "state_or_ministry": "Assam",
+    "name": "Financial Incentive to SC Meritorious Girls Students",
+    "description": "The scheme provides financial incentives worth ₹5,000/- to the meritorious girls from Scheduled Castes who have secured 80% or above marks in the HSLC examination. To objective is to motivate and encourage SC students to pursue higher studies and bring them at par with the rest.",
+    "visits_30_days": 20,
+    "tags": ["Incentive", "Scheduled Caste", "Student", "Social Welfare", "Merit"]
+  },
+  {
+    "id": 64,
+    "state_or_ministry": "Assam",
+    "name": "Swanirbhar Naari",
+    "description": "The Swanirbhar Naari scheme, initiated by the Directorate of Handloom & Textiles, Assam, aims to promote traditional hand-woven items by procuring them directly from indigenous weavers.",
+    "visits_30_days": 244,
+    "tags": ["Handloom", "Weavers", "Procurement", "Indigenous"]
+  },
+  {
+    "id": 65,
+    "state_or_ministry": "Assam",
+    "name": "Maternity Benefit (A.B.O.C.W.W.B)",
+    "description": "The scheme “Maternity Benefit” was started by the Assam Building and Other Construction Workers Welfare Board (A.B.O.C.W.W.B), Labour Welfare Department, Government of Assam for providing financial assistance to the registered women beneficiaries as maternity benefits during the period of maternity.",
+    "visits_30_days": 606,
+    "tags": ["Maternity", "Construction Worker", "Financial Assistance", "Woman", "Labour"]
+  },
+  {
+    "id": 66,
+    "state_or_ministry": "Assam",
+    "name": "Cash Award (A.B.O.C.W.W.B)",
+    "description": "Cash awards shall be given to the three male & three female children of the registered construction workers in each district to those students who score 75% or above, 65% or less than 75%, and 55% or less than 65% mark in HSLC, AHM and H.S. examinations.",
+    "visits_30_days": 656,
+    "tags": ["Cash Award", "Construction Worker", "Building Worker", "Student", "Labour"]
+  },
+  {
+    "id": 67,
+    "state_or_ministry": "Assam",
+    "name": "Bidya Lakshmi Loan",
+    "description": "\"Bidya Lakshmi\" aims to provide education loans for higher studies to children of Assam State Government employees. Benefits include loans up to ₹10,00,000/- at 4% interest, with subsidies for eligible candidates.",
+    "visits_30_days": 6830,
+    "tags": ["Student", "Loan", "Education", "CLSS"]
+  },
+  {
+    "id": 68,
+    "state_or_ministry": "Assam",
+    "name": "Chief Minister Samagra Gramya Unnayan Yojana",
+    "description": "A 5-year mega-mission called Chief Minister Samagra Gramya Unnayan Yojana (CMSGUY) was launched in the Financial Year(FY) 2016-17, which is scheduled to culminate in the FY 2021-22, coinciding with 75 years of India's Independence.",
+    "visits_30_days": 458,
+    "tags": ["Chief Minister", "Samagra", "Gramya", "Unnayan", "Financial Assistance"]
+  },
+  {
+    "id": 69,
+    "state_or_ministry": "Ministry Of Labour and Employment",
+    "name": "Social Security for Tea Plantation Workers in Assam",
+    "description": "The scheme aims to provide institutionalized social security cover, including provident funds, pensions, and life insurance. It provides monthly pensions, provident fund advances, and lump-sum death benefits to tea plantation workers in Assam and their dependent families.",
+    "visits_30_days": null,
+    "tags": ["Worker", "Employee", "Plantation", "Pension", "Insurance", "Provident Fund"]
+  },
+  {
+    "id": 70,
+    "state_or_ministry": "Assam",
+    "name": "Post Graduate Scholarship for Ph.D./LLM Students",
+    "description": "The scheme aims to provide financial assistance to students of Assam pursuing PhD and LLM degree courses in recognized institutions. It benefits academically meritorious students who have obtained at least 55% marks in their last qualifying examination and are domiciled in Assam.",
+    "visits_30_days": 42,
+    "tags": ["Education", "Scholarship", "PhD", "LLM", "Student", "Research", "Academic"]
+  },
+  {
+    "id": 71,
+    "state_or_ministry": "Assam",
+    "name": "Financial Assistance to Students who Cleared Civil Services Prelims Conducted by UPSC/APSC",
+    "description": "The scheme aims to provide financial assistance to students belonging to the Tea Tribes and Adivasi Community who have cleared the Civil Services Preliminary Examination. The benefits support their preparation for the Mains Examination to ensure their success.",
+    "visits_30_days": null,
+    "tags": ["Student", "Scholarship", "Stipend", "Education", "UPSC", "Exam"]
+  },
+  {
+    "id": 72,
+    "state_or_ministry": "Assam",
+    "name": "Chief Minister’s Free Diagnostic Services",
+    "description": "The Chief Minister’s free diagnostic services is envisaged to ensure the availability of a minimum set of diagnostic services at government-run health institutions. Under the program, CT scan, X-Ray, and laboratory services are provided free of cost to all irrespective of APL and BPL citizens.",
+    "visits_30_days": 432,
+    "tags": ["Quality Diagnosis", "Free Services", "Medical Facility", "CT Scan", "Laboratory Services"]
+  },
+  {
+    "id": 73,
+    "state_or_ministry": "Assam",
+    "name": "Grants In Aid To SC/ST Patients Suffering From Cancer And Other Malignant Diseases",
+    "description": "The objective of the scheme is to provide financial assistance in the form of one-time grants to patients undergoing medical treatment in connection with T.B., Cancer and other malignant diseases. This scheme provides one-time financial assistance to patients belonging to the Tea Tribes community.",
+    "visits_30_days": 142,
+    "tags": ["Cancer Patient", "SC/ST", "Scheduled Caste", "Scheduled Tribe", "Grant"]
+  },
+  {
+    "id": 74,
+    "state_or_ministry": "Assam",
+    "name": "Health Check-up (A.B.O.C.W.W.B)",
+    "description": "Registered construction workers having continuous membership of the Board can avail an amount of ₹5,000/- once in a year for his/ her annual health checkup in any Hospital.",
+    "visits_30_days": 3670,
+    "tags": ["Health", "Check-Up", "Building Worker", "Construction Worker", "Labour", "Financial Assistance"]
+  },
+  {
+    "id": 75,
+    "state_or_ministry": "Assam",
+    "name": "Medical Assistance (A.B.O.C.W.W.B)",
+    "description": "Medical assistance shall be provided to Building & Other Construction Workers who are registered under A.B.O.C.W.W.B. during hospitalization, partial disability & for critical diseases such as Cancer, Heart attack, Failure of kidney, Liver cirrhosis etc. as per the decision of the Board.",
+    "visits_30_days": 58,
+    "tags": ["Medical", "Construction Worker", "Hospital", "Partial Disability", "Critical Diseases", "Labour"]
+  },
+  {
+    "id": 76,
+    "state_or_ministry": "Assam",
+    "name": "Disability Pension (A.B.O.C.W.W.B)",
+    "description": "The Board provides financial assistance as disability pension to a beneficiary who is permanently disabled due to paralysis leprosy, TB., accident etc. in addition to this pension he/she will be eligible for an one time Ex-gratia payment depending upon the percentage of disability.",
+    "visits_30_days": 1060,
+    "tags": ["Pension", "Building Worker", "Construction Worker", "Financial Assistance", "Labour"]
+  },
+  {
+    "id": 77,
+    "state_or_ministry": "Assam",
+    "name": "Educational Assistance (A.B.O.C.W.W.B)",
+    "description": "The “Educational Assistance” scheme was started by the Assam Building and Other Construction Workers Welfare Board, Labour Welfare Department, Government of Assam to provide educational assistance to the children of the registered construction workers who are studying in Class I to Post Graduate.",
+    "visits_30_days": 152,
+    "tags": ["Building Worker", "Construction Worker", "Educational Assistance", "Scholarship", "Student"]
+  },
+  {
+    "id": 78,
+    "state_or_ministry": "Assam",
+    "name": "Journalist's Medical Welfare Scheme - Assam",
+    "description": "The Journalist's Medical Welfare Scheme was first implemented in 2012 by the Government of Assam. Under this scheme, one-time financial assistance is provided to the accredited and recognized journalists of Assam for their medical treatment.",
+    "visits_30_days": 84,
+    "tags": ["Journalist", "Medical Treatment", "Financial Assistance", "Dependent Family"]
+  },
+  {
+    "id": 79,
+    "state_or_ministry": "Assam",
+    "name": "Swahid Kushal Konwar Sarbajanin Briddha Pension Achoni",
+    "description": "Launched on 2nd October 2018, \"Swahid Kushal Konwar Sarbajanin Briddha Pension Achoni\" is a Pension Scheme by the Govt. of Assam. The objective of the scheme is to streamline the payment of old-age pensions and funds. The beneficiary will get a sum of ₹250/- per month.",
+    "visits_30_days": 432,
+    "tags": ["Pension", "Senior Citizen", "Social Welfare"]
+  },
+  {
+    "id": 80,
+    "state_or_ministry": "Assam",
+    "name": "North East Skill Centre",
+    "description": "North East Skill Centre (NESC) -> Assam Skill Development Mission (ASDM) | Skill Employment & Entrepreneurship Department (SEED) under Government of Assam",
+    "visits_30_days": null,
+    "tags": ["NESC", "Beauty And Wellness", "Retail Services", "Hospitality - Food And Beverage Service", "Hospitality - Housekeeping", "Employability", "Vocational International", "ASDM"]
+  }
+]

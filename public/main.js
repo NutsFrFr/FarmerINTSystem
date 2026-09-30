@@ -1,12 +1,12 @@
 /* ══════════════════════════════════════════════════
-   Farmer INT System — main.js
+   SchemeRoute — main.js
 ══════════════════════════════════════════════════ */
 
 /* ── Mock data ── */
 const MOCK_USER = {
-  name: 'Ramesh Kumar',
-  email: 'ramesh.kumar@example.com',
-  initials: 'RK',
+  name: 'John Doe',
+  email: 'johndoe@example.com',
+  initials: 'JD',
 };
 
 const MOCK_DOCS = [
@@ -24,11 +24,119 @@ const SEARCH_INDEX = [
   { icon: '👤', name: 'My Profile',                 sub: 'View and edit personal information',   category: 'Page',   page: 'profile' },
   { icon: '📄', name: 'My Documents',               sub: 'Upload and manage your documents',     category: 'Page',   page: 'docs' },
   { icon: '🧮', name: 'Finance Calculator',         sub: 'Estimate EMI and loan repayment',      category: 'Page',   page: 'calc' },
-  { icon: '📊', name: 'Impact Statistics',          sub: '40+ schemes, ₹10K Cr disbursed',       category: 'Info',   page: 'home' },
+  { icon: '📊', name: 'Impact Statistics',          sub: '80+ schemes, ₹10K Cr disbursed',       category: 'Info',   page: 'home' },
   { icon: '📋', name: 'Aadhaar Card',               sub: 'Identity document — Verified',          category: 'Document', page: 'docs' },
   { icon: '📋', name: 'Caste Certificate',          sub: 'Eligibility document — Verified',       category: 'Document', page: 'docs' },
+
   { icon: '📋', name: 'Income Certificate',         sub: 'Financial document — Under Review',     category: 'Document', page: 'docs' },
 ];
+
+/* ══════════════════════════════════════════════════
+   SCHEMES — loaded from schemes.json
+══════════════════════════════════════════════════ */
+
+// Derive a display score (0–100) from visits_30_days.
+// Max observed visits used as ceiling so scores spread nicely.
+function schemeScore(visits) {
+  if (!visits || visits <= 0) return Math.floor(Math.random() * 20) + 10; // null → low random 10–30
+  // Normalise against 100 as a soft ceiling (91 is the max in the dataset)
+  return Math.min(100, Math.round((visits / 100) * 100));
+}
+
+function scoreTier(score) {
+  if (score >= 70) return 'high';
+  if (score >= 40) return 'med';
+  return 'low';
+}
+
+function schemeTypeTag(tags) {
+  if (!tags || !tags.length) return { label: 'Scheme', cls: 'grant' };
+  const t = tags.map(s => s.toLowerCase());
+  if (t.some(x => x.includes('loan') || x.includes('credit') || x.includes('finance'))) return { label: 'Loan',    cls: 'loan'    };
+  if (t.some(x => x.includes('subsid')))                                                  return { label: 'Subsidy', cls: 'subsidy' };
+  if (t.some(x => x.includes('dbt') || x.includes('direct benefit')))                    return { label: 'DBT',     cls: 'subsidy' };
+  if (t.some(x => x.includes('insur')))                                                   return { label: 'Insurance', cls: 'grant' };
+  return { label: 'Grant', cls: 'grant' };
+}
+
+function renderSchemeCards(schemes) {
+  const grid = document.getElementById('schemes-grid');
+  if (!grid) return;
+
+  // Also update SEARCH_INDEX with all scheme names so global search works
+  schemes.forEach(s => {
+    const exists = SEARCH_INDEX.some(idx => idx.name === s.name);
+    if (!exists) {
+      SEARCH_INDEX.push({
+        icon: '🌾',
+        name: s.name,
+        sub: s.state_or_ministry || '',
+        category: 'Scheme',
+        page: 'home',
+      });
+    }
+  });
+
+  // Show top 6 on the home page; rest available via search
+  const featured = schemes.slice(0, 6);
+
+  grid.innerHTML = featured.map(s => {
+    const score = schemeScore(s.visits_30_days);
+    const tier  = scoreTier(score);
+    const type  = schemeTypeTag(s.tags);
+    const loc   = s.state_or_ministry
+      ? (s.state_or_ministry.toLowerCase().startsWith('ministry') ? '🏛 National' : '📍 ' + s.state_or_ministry)
+      : '🏛 India';
+    const tagHtml = (s.tags || []).slice(0, 2).map(t => `<span class="scheme-tag">🏷 ${t}</span>`).join('');
+
+    return `
+      <div class="scheme-card reveal">
+        <div class="scheme-card-head">
+          <span class="match-badge ${tier}">${score}% Match</span>
+          <span class="scheme-type-tag ${type.cls}">${type.label}</span>
+        </div>
+        <h3 class="scheme-name">${s.name}</h3>
+        <p class="scheme-desc">${(s.description || '').slice(0, 120).trim()}${s.description && s.description.length > 120 ? '…' : ''}</p>
+        <div class="scheme-tags">
+          <span class="scheme-tag">${loc}</span>
+          ${tagHtml}
+        </div>
+        <div class="scheme-card-actions">
+          <button class="btn-card-primary">Apply Now</button>
+          <button class="btn-card-ghost">Learn More</button>
+        </div>
+      </div>`;
+  }).join('');
+
+  // Re-observe reveal elements added dynamically
+  if (typeof IntersectionObserver !== 'undefined') {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.1 });
+    grid.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  }
+}
+
+// Fetch and render schemes — called once on DOMContentLoaded
+function loadSchemes() {
+  fetch('./schemes.json')
+    .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+    .then(schemes => {
+      // Sort: highest visits first (null → end)
+      schemes.sort((a, b) => (b.visits_30_days || 0) - (a.visits_30_days || 0));
+      renderSchemeCards(schemes);
+    })
+    .catch(err => {
+      console.warn('Could not load schemes.json:', err);
+      // Graceful fallback: leave grid with a message
+      const grid = document.getElementById('schemes-grid');
+      if (grid && !grid.children.length) {
+        grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:#6B7280;padding:2rem">Schemes unavailable. Please refresh or check your connection.</p>';
+      }
+    });
+}
 
 const API_BASE_URL = window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost'
   ? 'http://127.0.0.1:8000'
@@ -80,18 +188,35 @@ const API_BASE_URL = window.location.hostname === '127.0.0.1' || window.location
     overlay.style.display = 'none';
     app.classList.remove('hidden');
 
-    const safeName = String(name || 'Farmer User').trim();
-    const safeEmail = String(email || localStorage.getItem('user_email') || '').trim();
-    const initials = safeName.split(' ').filter(Boolean).map(w => w[0]).join('').toUpperCase().slice(0, 2) || 'FU';
+    // Restore any previously-saved profile data
+    const savedName  = localStorage.getItem('user_name');
+    const savedEmail = localStorage.getItem('user_email');
+
+    const safeName  = String(savedName || name || 'John Doe').trim();
+    const safeEmail = String(savedEmail || email || '').trim();
+    const initials  = safeName.split(' ').filter(Boolean).map(w => w[0]).join('').toUpperCase().slice(0, 2) || 'FU';
     const navAvatar = document.getElementById('nav-avatar');
     if (navAvatar) navAvatar.textContent = initials;
 
     localStorage.setItem('user_email', safeEmail);
     localStorage.setItem('user_name', safeName);
 
-    MOCK_USER.name = safeName;
-    MOCK_USER.email = safeEmail;
+    MOCK_USER.name    = safeName;
+    MOCK_USER.email   = safeEmail;
     MOCK_USER.initials = initials;
+
+    // Pre-fill profile inputs from saved data
+    const pName  = document.getElementById('p-name');
+    const pEmail = document.getElementById('p-email');
+    if (pName)  pName.value  = safeName;
+    if (pEmail) pEmail.value = safeEmail;
+
+    // Restore saved eligibility fields
+    ['p-phone','p-location','p-dob','p-gender','p-category','p-income','p-biz','p-stage','p-aadhaar','p-pan'].forEach(id => {
+      const saved = localStorage.getItem('profile_' + id);
+      const el = document.getElementById(id);
+      if (saved && el) el.value = saved;
+    });
 
     updateProfileDisplay();
     renderDocs();
@@ -108,7 +233,7 @@ const API_BASE_URL = window.location.hostname === '127.0.0.1' || window.location
     if (!pw) ok = setError('si-password', 'si-pw-err', 'Password is required.') && ok;
     if (!ok) return;
 
-    launchApp(email.split('@')[0], email);
+    launchApp('John Doe', email);
   });
 
   btnSU && btnSU.addEventListener('click', () => {
@@ -164,11 +289,11 @@ const API_BASE_URL = window.location.hostname === '127.0.0.1' || window.location
     // Hide all pages
     document.querySelectorAll('.page').forEach(p => {
       p.classList.remove('active');
-      p.style.display = '';
+      p.style.display = 'none';
     });
     // Show target
     const target = document.getElementById('page-' + pageName);
-    if (target) { target.classList.add('active'); target.style.display = ''; }
+    if (target) { target.classList.remove('hidden'); target.classList.add('active'); target.style.display = 'block'; }
 
     // Update nav links
     document.querySelectorAll('.nav-link').forEach(link => {
@@ -186,7 +311,7 @@ const API_BASE_URL = window.location.hostname === '127.0.0.1' || window.location
   // Nav link clicks
   document.addEventListener('click', (e) => {
     const link = e.target.closest('[data-page]');
-    if (!link || !document.getElementById('app') || document.getElementById('app').classList.contains('hidden')) return;
+    if (!link) return;
     const page = link.dataset.page;
     if (!page) return;
     e.preventDefault();
@@ -268,6 +393,19 @@ function updateProfileDisplay() {
   if (navAv)    navAv.textContent    = initials;
 }
 
+function updateProfileChips() {
+  const loc      = document.getElementById('p-location');
+  const category = document.getElementById('p-category');
+  const chips    = document.querySelector('.profile-chips');
+  if (!chips) return;
+  const locVal  = loc      ? loc.value.trim()                                    : 'India';
+  const catVal  = category ? category.options[category.selectedIndex].text       : '';
+  // Update location chip (index 1) and category chip (index 2) if they exist
+  const allChips = chips.querySelectorAll('.profile-chip');
+  if (allChips[1]) allChips[1].textContent = '📍 ' + (locVal || 'India');
+  if (allChips[2] && catVal) allChips[2].textContent = '🏷 ' + catVal;
+}
+
 (function () {
   const editBtn    = document.getElementById('profile-edit-btn');
   const saveBtn    = document.getElementById('profile-save-btn');
@@ -298,20 +436,24 @@ function updateProfileDisplay() {
   });
 
   saveBtn && saveBtn.addEventListener('click', () => {
-    const name = document.getElementById('p-name').value;
-    const email = document.getElementById('p-email').value;
+    const name  = document.getElementById('p-name').value.trim()  || MOCK_USER.name;
+    const email = document.getElementById('p-email').value.trim() || MOCK_USER.email;
 
-    MOCK_USER.name = name;
+    MOCK_USER.name  = name;
     MOCK_USER.email = email;
-    localStorage.setItem('user_name', name);
+    localStorage.setItem('user_name',  name);
     localStorage.setItem('user_email', email);
-    updateProfileDisplay();
-    setEditable(false);
 
-    const old = saveBtn.textContent;
-    saveBtn.textContent = '✓ Saved';
-    saveBtn.style.background = '#16A34A';
-    setTimeout(() => { saveBtn.textContent = old; saveBtn.style.background = ''; }, 2000);
+    // Persist all eligibility fields
+    ['p-phone','p-location','p-dob','p-gender','p-category','p-income','p-biz','p-stage','p-aadhaar','p-pan'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) localStorage.setItem('profile_' + id, el.value);
+    });
+
+    updateProfileDisplay();
+    updateProfileChips();
+    setEditable(false);
+    showToast('Profile saved successfully', 'success');
   });
 })();
 
@@ -379,18 +521,24 @@ function renderDocs() {
       if (!doc) return;
 
       if (action === 'view') {
-        alert(`Viewing: ${doc.name}\nType: ${doc.type}\nStatus: ${doc.status}\nUploaded: ${doc.date}`);
+        showDocModal(doc);
       } else if (action === 'download') {
         if (doc.status === 'missing') {
-          alert('This document has not been uploaded yet.');
+          showToast('This document hasn\'t been uploaded yet.', 'warn');
         } else {
-          alert(`Downloading: ${doc.name}\n(In a real app this would trigger a file download)`);
+          showToast(`Downloading "${doc.name}"…`, 'info');
+          // In a real app this would trigger a signed URL download
         }
       } else if (action === 'delete') {
-        if (confirm(`Delete "${doc.name}"? This cannot be undone.`)) {
-          docs = docs.filter(d => d.id !== id);
-          renderDocs();
-        }
+        showConfirmModal(
+          `Delete "${doc.name}"?`,
+          'This action cannot be undone.',
+          () => {
+            docs = docs.filter(d => d.id !== id);
+            renderDocs();
+            showToast(`"${doc.name}" deleted.`, 'success');
+          }
+        );
       }
     });
   });
@@ -643,6 +791,12 @@ function calculateEMI() {
 ══════════════════════════════════════════════════ */
 // Keep the authentication screen visible until login succeeds.
 document.addEventListener('DOMContentLoaded', () => {
+  // Clear legacy stored name/email so John Doe defaults always apply
+  const storedName = localStorage.getItem('user_name');
+  if (storedName && storedName !== 'John Doe') {
+    localStorage.removeItem('user_name');
+    localStorage.removeItem('user_email');
+  }
   document.getElementById('auth-overlay')?.style.removeProperty('display');
   document.getElementById('app')?.classList.add('hidden');
 
@@ -651,6 +805,9 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   const home = document.getElementById('page-home');
   if (home) home.classList.add('active');
+
+  // Load scheme cards from JSON
+  loadSchemes();
 });
 
 function logout() {
@@ -664,3 +821,390 @@ function logout() {
 document.getElementById('nav-avatar')?.addEventListener('click', () => {
   if (confirm('Logout?')) logout();
 });
+
+/* ══════════════════════════════════════════════════
+   UTILITIES — Toast, Doc Modal, Confirm Modal
+══════════════════════════════════════════════════ */
+
+/* ── Toast ── */
+function showToast(message, type = 'info') {
+  // Remove any existing toast
+  document.querySelectorAll('.fi-toast').forEach(t => t.remove());
+
+  const icons = { success: '✅', warn: '⚠️', error: '❌', info: 'ℹ️' };
+  const toast = document.createElement('div');
+  toast.className = `fi-toast fi-toast-${type}`;
+  toast.innerHTML = `<span class="fi-toast-icon">${icons[type] || icons.info}</span><span class="fi-toast-msg">${message}</span>`;
+  document.body.appendChild(toast);
+
+  // Animate in
+  requestAnimationFrame(() => toast.classList.add('fi-toast-show'));
+
+  // Auto-dismiss
+  setTimeout(() => {
+    toast.classList.remove('fi-toast-show');
+    setTimeout(() => toast.remove(), 350);
+  }, 3000);
+}
+
+/* ── Doc viewer modal ── */
+function showDocModal(doc) {
+  closeModal();
+  const statusLabel = { verified: '✓ Verified', review: '⏳ Under Review', missing: '⚠ Missing' }[doc.status] || doc.status;
+  const statusCls   = doc.status;
+
+  const modal = document.createElement('div');
+  modal.id = 'fi-modal';
+  modal.className = 'fi-modal-overlay';
+  modal.innerHTML = `
+    <div class="fi-modal-box" role="dialog" aria-modal="true" aria-label="Document details">
+      <div class="fi-modal-header">
+        <h3 class="fi-modal-title">${doc.name}</h3>
+        <button class="fi-modal-close" aria-label="Close" id="fi-modal-close">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 2l12 12M14 2L2 14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+      <div class="fi-modal-body">
+        <div class="fi-doc-preview-icon">📄</div>
+        <table class="fi-doc-table">
+          <tr><td>Document</td><td><strong>${doc.name}</strong></td></tr>
+          <tr><td>Details</td><td>${doc.sub}</td></tr>
+          <tr><td>Type</td><td>${doc.type}</td></tr>
+          <tr><td>Uploaded</td><td>${doc.date}</td></tr>
+          <tr><td>Status</td><td><span class="doc-status-badge ${statusCls}">${statusLabel}</span></td></tr>
+        </table>
+      </div>
+      <div class="fi-modal-footer">
+        ${doc.status !== 'missing' ? `<button class="btn-primary" id="fi-modal-dl">Download</button>` : ''}
+        <button class="btn-outline-sm" id="fi-modal-cancel">Close</button>
+      </div>
+    </div>`;
+
+  document.body.appendChild(modal);
+  requestAnimationFrame(() => modal.classList.add('fi-modal-show'));
+
+  modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+  document.getElementById('fi-modal-close')?.addEventListener('click', closeModal);
+  document.getElementById('fi-modal-cancel')?.addEventListener('click', closeModal);
+  document.getElementById('fi-modal-dl')?.addEventListener('click', () => {
+    showToast(`Downloading "${doc.name}"…`, 'info');
+    closeModal();
+  });
+  document.addEventListener('keydown', escModal);
+}
+
+/* ── Confirm modal ── */
+function showConfirmModal(title, subtitle, onConfirm) {
+  closeModal();
+  const modal = document.createElement('div');
+  modal.id = 'fi-modal';
+  modal.className = 'fi-modal-overlay';
+  modal.innerHTML = `
+    <div class="fi-modal-box fi-modal-sm" role="dialog" aria-modal="true">
+      <div class="fi-modal-header">
+        <h3 class="fi-modal-title">${title}</h3>
+        <button class="fi-modal-close" id="fi-modal-close" aria-label="Close">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 2l12 12M14 2L2 14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+      <div class="fi-modal-body">
+        <p class="fi-confirm-sub">${subtitle}</p>
+      </div>
+      <div class="fi-modal-footer">
+        <button class="btn-primary fi-btn-danger" id="fi-modal-confirm">Delete</button>
+        <button class="btn-outline-sm" id="fi-modal-cancel">Cancel</button>
+      </div>
+    </div>`;
+
+  document.body.appendChild(modal);
+  requestAnimationFrame(() => modal.classList.add('fi-modal-show'));
+
+  modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+  document.getElementById('fi-modal-close')?.addEventListener('click', closeModal);
+  document.getElementById('fi-modal-cancel')?.addEventListener('click', closeModal);
+  document.getElementById('fi-modal-confirm')?.addEventListener('click', () => {
+    closeModal();
+    onConfirm && onConfirm();
+  });
+  document.addEventListener('keydown', escModal);
+}
+
+function escModal(e) { if (e.key === 'Escape') closeModal(); }
+function closeModal() {
+  const m = document.getElementById('fi-modal');
+  if (!m) return;
+  m.classList.remove('fi-modal-show');
+  document.removeEventListener('keydown', escModal);
+  setTimeout(() => m.remove(), 280);
+}
+
+/* ── Slider track fill (progress tint behind thumb) ── */
+function updateSliderFill(slider) {
+  if (!slider) return;
+  const min = parseFloat(slider.min) || 0;
+  const max = parseFloat(slider.max) || 100;
+  const val = parseFloat(slider.value) || 0;
+  const pct = ((val - min) / (max - min)) * 100;
+  slider.style.background = `linear-gradient(to right, var(--orange) ${pct}%, var(--gray-200) ${pct}%)`;
+}
+
+(function () {
+  ['c-amount','c-down','c-rate','c-tenure','c-income'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    updateSliderFill(el);
+    el.addEventListener('input', () => updateSliderFill(el));
+  });
+})();
+
+/* ── Docs filter tabs ── */
+(function () {
+  const filterBar = document.querySelector('.docs-table-card');
+  if (!filterBar) return;
+
+  const tabsHtml = `<div class="docs-filter-tabs" id="docs-filter-tabs">
+    <button class="docs-tab active" data-filter="all">All</button>
+    <button class="docs-tab" data-filter="verified">Verified</button>
+    <button class="docs-tab" data-filter="review">Under Review</button>
+    <button class="docs-tab" data-filter="missing">Missing</button>
+  </div>`;
+  filterBar.insertAdjacentHTML('beforebegin', tabsHtml);
+
+  let currentFilter = 'all';
+
+  document.getElementById('docs-filter-tabs')?.addEventListener('click', e => {
+    const tab = e.target.closest('.docs-tab');
+    if (!tab) return;
+    document.querySelectorAll('.docs-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    currentFilter = tab.dataset.filter;
+    applyDocFilter();
+  });
+
+  window.__applyDocFilter = function () {
+    const rows = document.querySelectorAll('.doc-row');
+    rows.forEach(row => {
+      const id  = parseInt(row.dataset.id);
+      const doc = docs.find(d => d.id === id || String(d.id) === String(row.dataset.id));
+      if (!doc) return;
+      const show = currentFilter === 'all' || doc.status === currentFilter;
+      row.style.display = show ? '' : 'none';
+    });
+  };
+
+  function applyDocFilter() { window.__applyDocFilter && window.__applyDocFilter(); }
+
+  // Patch renderDocs to call filter after each render
+  const _origRenderDocs = window.renderDocs;
+  // (renderDocs is called after insert; filter applied after render via MutationObserver)
+  const obs = new MutationObserver(() => applyDocFilter());
+  const body = document.getElementById('docs-table-body');
+  if (body) obs.observe(body, { childList: true });
+})();
+
+
+/* ══════════════════════════════════════════════════
+   AI CHATBOT WIDGET
+══════════════════════════════════════════════════ */
+(function () {
+  const fab      = document.getElementById('chatbot-fab');
+  const panel    = document.getElementById('chatbot-panel');
+  const closeBtn = document.getElementById('chatbot-close');
+  const messages = document.getElementById('cb-messages');
+  const input    = document.getElementById('cb-input');
+  const sendBtn  = document.getElementById('cb-send');
+  const chips    = document.querySelectorAll('.cb-chip');
+  const suggestionsEl = document.getElementById('cb-suggestions');
+
+  if (!fab || !panel) return;
+
+  // Hide chatbot if app is not yet launched (auth screen showing)
+  const appEl = document.getElementById('app');
+  function syncFabVisibility() {
+    if (appEl && appEl.classList.contains('hidden')) {
+      fab.classList.add('hidden');
+    } else {
+      fab.classList.remove('hidden');
+    }
+  }
+  syncFabVisibility();
+  // Watch for app becoming visible after login
+  const visObs = new MutationObserver(syncFabVisibility);
+  if (appEl) visObs.observe(appEl, { attributes: true, attributeFilter: ['class'] });
+
+  // Toggle panel
+  fab.addEventListener('click', () => {
+    const isOpen = panel.classList.contains('cb-open');
+    panel.classList.toggle('cb-open', !isOpen);
+    panel.setAttribute('aria-hidden', isOpen ? 'true' : 'false');
+    if (!isOpen) { setTimeout(() => input.focus(), 220); }
+  });
+  closeBtn.addEventListener('click', () => {
+    panel.classList.remove('cb-open');
+    panel.setAttribute('aria-hidden', 'true');
+  });
+
+  // Suggestion chips
+  chips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      const text = chip.textContent.trim();
+      addMessage(text, 'user');
+      suggestionsEl.style.display = 'none';
+      respond(text);
+    });
+  });
+
+  // Send on Enter
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSend(); }
+  });
+  sendBtn.addEventListener('click', handleSend);
+
+  function handleSend() {
+    const text = input.value.trim();
+    if (!text) return;
+    input.value = '';
+    suggestionsEl.style.display = 'none';
+    addMessage(text, 'user');
+    respond(text);
+  }
+
+  function addMessage(text, role) {
+    const div = document.createElement('div');
+    div.className = 'cb-msg cb-msg--' + role;
+    const bubble = document.createElement('div');
+    bubble.className = 'cb-bubble';
+    bubble.textContent = text;
+    div.appendChild(bubble);
+    messages.appendChild(div);
+    messages.scrollTop = messages.scrollHeight;
+    return bubble;
+  }
+
+  function addTyping() {
+    const div = document.createElement('div');
+    div.className = 'cb-msg cb-msg--bot cb-typing';
+    div.id = 'cb-typing-indicator';
+    const bubble = document.createElement('div');
+    bubble.className = 'cb-bubble';
+    bubble.textContent = 'SchemeRoute AI is typing…';
+    div.appendChild(bubble);
+    messages.appendChild(div);
+    messages.scrollTop = messages.scrollHeight;
+  }
+
+  function removeTyping() {
+    const t = document.getElementById('cb-typing-indicator');
+    if (t) t.remove();
+  }
+
+  function addBotMessage(text) {
+    removeTyping();
+    const div = document.createElement('div');
+    div.className = 'cb-msg cb-msg--bot';
+    const bubble = document.createElement('div');
+    bubble.className = 'cb-bubble';
+    bubble.innerHTML = text;
+    div.appendChild(bubble);
+    messages.appendChild(div);
+    messages.scrollTop = messages.scrollHeight;
+  }
+
+  // ── Scheme-aware response engine ──
+  let schemesData = [];
+  // Grab schemes after they load
+  setTimeout(() => {
+    fetch('./schemes.json').then(r => r.json()).then(d => { schemesData = d; }).catch(() => {});
+  }, 800);
+
+  function findSchemes(query) {
+    if (!schemesData.length) return [];
+    const q = query.toLowerCase();
+    return schemesData.filter(s =>
+      s.name.toLowerCase().includes(q) ||
+      (s.description && s.description.toLowerCase().includes(q)) ||
+      (s.tags && s.tags.some(t => t.toLowerCase().includes(q))) ||
+      (s.state_or_ministry && s.state_or_ministry.toLowerCase().includes(q))
+    ).slice(0, 3);
+  }
+
+  function schemeListHtml(schemes) {
+    return schemes.map(s =>
+      `<b>${s.name}</b> — ${(s.description || '').slice(0, 80)}…`
+    ).join('<br><br>');
+  }
+
+  const KB = [
+    {
+      keys: ['pm-kisan', 'pm kisan', 'kisan samman', 'kisan'],
+      reply: `<b>PM-KISAN (Pradhan Mantri Kisan Samman Nidhi)</b> gives ₹6,000/year (₹2,000 every 4 months) directly to small and marginal farmers' bank accounts.<br><br>✅ <b>Eligibility:</b> Land-holding farmers with cultivable land<br>📄 <b>Apply at:</b> pmkisan.gov.in or nearest CSC centre<br>📌 Aadhaar + bank account + land records required.`
+    },
+    {
+      keys: ['solar', 'pump', 'kusum', 'pm kusum'],
+      reply: `<b>PM-KUSUM (Solar Pump Scheme)</b> provides up to 60% subsidy for solar-powered irrigation pumps.<br><br>✅ Individual farmers and FPOs are eligible<br>💡 Capacity: 2HP to 10HP solar pumps<br>📄 Apply through your state agriculture department portal.`
+    },
+    {
+      keys: ['crop insurance', 'fasal bima', 'pmfby', 'insurance'],
+      reply: `<b>PMFBY (Pradhan Mantri Fasal Bima Yojana)</b> provides affordable crop insurance.<br><br>💰 Farmer pays only 2% premium for Kharif, 1.5% for Rabi crops<br>✅ Covers natural calamities, pests, diseases<br>📄 Apply through your bank, CSC, or pmfby.gov.in before the cut-off date.`
+    },
+    {
+      keys: ['loan', 'credit', 'kcc', 'kisan credit card'],
+      reply: `<b>Kisan Credit Card (KCC)</b> provides flexible, low-interest crop loans up to ₹3 lakh at ~4% interest p.a. (with interest subvention).<br><br>✅ All farmers, share-croppers, and tenant farmers eligible<br>📄 Apply at any nationalized bank, cooperative bank, or NABARD-linked branch.`
+    },
+    {
+      keys: ['subsidy', 'equipment', 'machinery', 'tractor', 'mechanisation'],
+      reply: `Several schemes offer machinery subsidies:<br><br>🚜 <b>SMAM</b> — Sub-Mission on Agricultural Mechanisation gives 40-50% subsidy on tractors, harvesters, and implements.<br>💧 <b>PMKSY</b> — Pradhan Mantri Krishi Sinchayee Yojana provides drip/sprinkler irrigation subsidy of up to 55%.<br><br>Apply through your state agriculture department.`
+    },
+    {
+      keys: ['organic', 'paramparagat', 'natural farming'],
+      reply: `<b>Paramparagat Krishi Vikas Yojana (PKVY)</b> promotes organic farming with ₹50,000/hectare support over 3 years.<br><br>✅ Groups of 50 farmers forming clusters are eligible<br>🌿 Covers certification, inputs, and marketing assistance<br>📄 Apply through your state agriculture department.`
+    },
+    {
+      keys: ['eligib', 'eligible', 'qualify', 'who can apply', 'am i'],
+      reply: `Eligibility varies by scheme, but common factors include:<br><br>👤 Land ownership or tenancy proof<br>📇 Valid Aadhaar linked to bank account<br>🏘 SC/ST/OBC/General category (affects priority in some schemes)<br>🌾 Type of farming (crop, horticulture, animal husbandry, fisheries)<br><br>Try searching a specific scheme above, or ask me about a particular one!`
+    },
+    {
+      keys: ['apply', 'application', 'how to', 'process', 'documents'],
+      reply: `<b>How to apply for most government schemes:</b><br><br>1️⃣ Visit the official portal or nearest CSC (Common Service Centre)<br>2️⃣ Keep ready: Aadhaar, bank passbook, land records, caste certificate (if applicable)<br>3️⃣ Fill the application form online or at the CSC<br>4️⃣ Track status on the scheme's official portal<br><br>Which specific scheme would you like to apply for?`
+    },
+    {
+      keys: ['hello', 'hi', 'hey', 'namaste', 'help'],
+      reply: `👋 Hello! I'm your SchemeRoute AI assistant.<br><br>I can help you with:<br>• Finding government schemes for farmers<br>• Eligibility criteria for specific schemes<br>• Application process and documents needed<br>• Subsidies for equipment, solar, irrigation<br>• Crop loans and insurance<br><br>What would you like to know?`
+    },
+    {
+      keys: ['thank', 'thanks', 'thx', 'great', 'awesome', 'helpful'],
+      reply: `You're welcome! 😊 Feel free to ask anything else about government schemes or farmer support programmes. I'm here to help!`
+    },
+  ];
+
+  function getReply(query) {
+    const q = query.toLowerCase();
+
+    // Check knowledge base first
+    for (const entry of KB) {
+      if (entry.keys.some(k => q.includes(k))) {
+        return entry.reply;
+      }
+    }
+
+    // Scheme search from loaded JSON
+    const found = findSchemes(q);
+    if (found.length) {
+      return `Here are some matching schemes I found:<br><br>${schemeListHtml(found)}<br><br>Would you like more details on any of these?`;
+    }
+
+    // Fallback
+    return `I'm not sure about that specific query, but I can help you with:<br><br>• PM-KISAN, PMFBY, KCC, PM-KUSUM<br>• Crop loans, insurance, and subsidies<br>• Organic farming and equipment support<br>• Eligibility and application process<br><br>Try rephrasing your question or pick one of the suggestions above!`;
+  }
+
+  function respond(query) {
+    sendBtn.disabled = true;
+    addTyping();
+    setTimeout(() => {
+      const reply = getReply(query);
+      addBotMessage(reply);
+      sendBtn.disabled = false;
+      input.focus();
+    }, 650 + Math.random() * 400);
+  }
+})();
