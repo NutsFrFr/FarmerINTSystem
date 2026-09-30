@@ -1717,3 +1717,43 @@ ul, ol { list-style: none; }
   #chatbot-panel { right: 12px; width: calc(100vw - 24px); bottom: 90px; }
   #chatbot-fab { bottom: 20px; right: 16px; }
 }
+
+/* ── Finance Calculator — Download PDF button ── */
+.calc-download-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  margin-top: 20px;
+  padding: 12px 20px;
+  background: #fff;
+  color: var(--orange);
+  border: 2px solid var(--orange);
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s, transform 0.12s;
+}
+.calc-download-btn:hover {
+  background: var(--orange);
+  color: #fff;
+  transform: translateY(-1px);
+}
+.calc-download-btn:active { transform: translateY(0); }
+
+/* Print styles — only the PDF print area shows */
+@media print {
+  body * { visibility: hidden !important; }
+  #calc-pdf-print-area,
+  #calc-pdf-print-area * { visibility: visible !important; }
+  #calc-pdf-print-area {
+    position: fixed !important;
+    inset: 0 !important;
+    padding: 32px !important;
+    background: #fff !important;
+    font-family: 'Inter', sans-serif !important;
+  }
+}
